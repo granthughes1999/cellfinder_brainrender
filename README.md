@@ -7,7 +7,8 @@ this combines cellfinder and brainrender into one repository for simplicity
 ## Step 2
 #### open run_cellfinder.bat
 #### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
-##### update the variables in final line 6
+#### use this link to understand voxel & orentation variables https://docs.brainglobe.info/cellfinder/image-orientation
+### update the variables in final line 6
 ##### -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
 
 ## Step 3
