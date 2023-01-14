@@ -17,8 +17,8 @@ this combines cellfinder and brainrender into one repository for simplicity
 #### click enter
 
 ## Step 4
-#### open >> variables.py
-##### update all the varibales
+#### variables.py
+##### Update all the varibales
 
 ## Step 5
 #### run 
