@@ -2,7 +2,7 @@
 this combines cellfinder and brainrender into one repository for simplicity 
 
 ### Step 1
-#### Download both files
+#### Clone repository 
 
 ### Step 2
 #### in working_with_cellfinder_data_combined.py, edit the following 2 variables
