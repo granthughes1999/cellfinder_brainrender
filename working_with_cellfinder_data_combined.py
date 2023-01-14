@@ -2,8 +2,6 @@
 # coding: utf-8
 
 # In[109]:
-
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,23 +14,11 @@ import json
 
 
 
-# # Update these 2 variables
-
-# In[93]:
-
-
-# ID of mouse (example: G25)
+# >> UPDATE these 2 variables
+# 1. ID of mouse (example: G25)
 mouse_id = "test_000"
-
-# cellfinder_output_path = 'path/to/root/directory/of/cellfinder/output/data/'
+# 2. cellfinder_output_path = 'path/to/root/directory/of/cellfinder/output/data/'
 cellfinder_output_path = "/Users/grant/Desktop/mock_df/cellfinder_output/"
-
-
-# ### Create new folder in your cellfinder output folder 
-# 
-
-# In[105]:
-
 
 # Create new folder in your cellfinder output folder 
 new_folder_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis" # create the path for the new folder
@@ -48,18 +34,12 @@ else:
 
 # ### Read in tdTomato & GFP output data from cellfinder
 
-# In[106]:
-
-
 # import cellfinder summary csv, containing cell counts and more 
 gfp_df = pd.read_csv(cellfinder_output_path + 'analysis/' + 'gfp_summary.csv')
 tdTomato_df = pd.read_csv(cellfinder_output_path + 'analysis/' + 'tdTomato_summary.csv')
 
 # output path for created csv
 output_path_csv = new_folder_path + '/' + mouse_id + '_labled_cells.csv'
-
-gfp_df
-
 
 # # GFP Data
 
@@ -112,10 +92,6 @@ with open(file_path, 'w') as f:
     # Save the list to the file
     json.dump(gfp_brain_regions, f)
 
-
-# In[121]:
-
-
 # File path to the desktop
 count_file_path =  new_folder_path + '/gfp_brainregions_count.json'
 print(count_file_path)
@@ -126,11 +102,7 @@ with open(count_file_path, 'w') as f:
     json.dump(gfp_brain_regions_cell_count, f)
 
 
-# # tdTomato Data
-
-# In[98]:
-
-
+#  tdTomato Data
 
 # make list of each brain region with labeled cells
 all_tdTomato_brain_regions = tdTomato_df['structure_name'].to_list()
@@ -143,9 +115,6 @@ print("total cells: " + str(sum(all_tdTomato_brain_regions_cell_count)))
 # make dict of brain_regions & cell_count
 all_tdTomato_dictionary = dict(zip(all_tdTomato_brain_regions, all_tdTomato_brain_regions_cell_count))
 all_tdTomato_df = pd.DataFrame.from_dict(all_tdTomato_dictionary,orient='index')
-
-
-# In[99]:
 
 
 # create a dictonary of only the 
@@ -183,13 +152,6 @@ summary_df.rename(index={1: 'tdTomato'}, inplace=True)
 # Save out summary df
 summary_df.to_csv(new_folder_path + '/' + mouse_id + '_summary_df.csv')
 
-
-summary_df
-
-
-# In[101]:
-
-
 # making a df with percent of gfp cells labled compared to tdTomato
 percent_labled = []
 i = 0
@@ -197,12 +159,7 @@ for count in all_tdTomato_brain_regions_cell_count:
     percent_labled.append(all_gfp_brain_regions_cell_count[i] / count *100)
     i += 1
     
-
-
 # ## df for percentage of labled gfp cells vs tdTomato cells
-
-# In[102]:
-
 
 # create df with gfp and tdTomato cell counts, and percent labled
 all_gfp_df['tdTomato cell count'] = all_tdTomato_brain_regions_cell_count
@@ -212,10 +169,6 @@ all_gfp_df['percent labled gfp/tdTomato'] = percent_labled
 # Add the header 'New Column Name' to column at index 0
 all_gfp_df.rename(columns={gfp_df_01.columns[0]: 'gfp cell count'}, inplace=True)
 
-
-# In[103]:
-
-
 # Find all brain regions with labeled gfp cells, make gfp_df
 labled_cells_df = all_gfp_df[all_gfp_df['gfp cell count'] >= 1]
 labled_cells_df
@@ -223,70 +176,31 @@ labled_cells_df
 labled_cells_df.to_csv(output_path_csv)
 
 
-# In[117]:
-
-
-labled_cells_df[0:20]
-
-
+## >>>> EXTRA CODE, NOT CURRENTLY USED
 # # There are several ways to statistically compare the values at each index location of two lists in Python. Here are a few options:
-# 
 # ### 1. Using the scipy library's stats.ttest_ind() function, you can perform a t-test to compare the means of the two lists at each index location. For example:
 
-# In[614]:
-
-
 t, p = stats.ttest_ind(gfp_brain_regions_cell_count, mock_tdTomato_cellcount)
-print("t-statistic: ", t)
-print("p-value: ", p)
-
 
 # ### 2. Using the numpy library's corrcoef() function, you can calculate the correlation coefficient between the two lists at each index location. For example:
 
-# In[615]:
-
-
-
 corr = np.corrcoef(gfp_brain_regions_cell_count, mock_tdTomato_cellcount)[0, 1]
-print("correlation coefficient: ", corr)
-
 
 # ### 3.  Using the pandas library, you can create a dataframe from the two lists and use the corr() function to calculate the correlation between the two lists:
 
-# In[616]:
-
-
-
 df = pd.DataFrame({'list1': gfp_brain_regions_cell_count, 'list2': mock_tdTomato_cellcount})
 corr = df['list1'].corr(df['list2'])
-print("correlation coefficient: ", corr)
-
 
 # # load voxel locations of cells 
 
 # In[81]:
 
-
 data = np.load("/Users/grant/Desktop/mock_df/points.npy")
-
-
-# In[84]:
-
-
-print(len(data))
-
 
 # # Load cell_classification data
 
-# In[87]:
-
-
 tree = ET.parse("/Users/grant/Desktop/mock_df/cell_classification.xml")
 root = tree.getroot()
-
-
-# In[91]:
-
 
 # Iterate over child elements
 for child in root:
@@ -294,35 +208,10 @@ for child in root:
 
 
 # # load all point 
-
-# In[94]:
-
-
 all_points = pd.read_csv("/Users/grant/Desktop/mock_df/all_points.csv")
 
-
-# In[95]:
-
-
-all_points
-
-
 # # load volumes 
-
-# In[97]:
-
-
 volumes = pd.read_csv("/Users/grant/Desktop/mock_df/volumes.csv")
-
-
-# In[98]:
-
-
-volumes
-
-
-# In[ ]:
-
 
 
 
