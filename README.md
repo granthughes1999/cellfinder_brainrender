@@ -1,5 +1,5 @@
 # cellfinder_brainrender
-this combines cellfinder and brainrender into one repository for simplicity 
+these files take combines cellfinder and brainrender into one repository for simplicity 
 
 ## Step 1
 #### Clone repository 
