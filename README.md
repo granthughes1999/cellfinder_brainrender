@@ -1,7 +1,5 @@
 # cellfinder_brainrender
-this repository takes light-sheet images of cal-light mice
-and adds a folder to the cellfinder ouput directory of that mouse
-these files take combines cellfinder and brainrender into one repository for simplicity 
+this repository is designed to work with light-sheet images from DBS prefromed on cal-light mice.
 
 ## Step 1
 #### Clone repository 
