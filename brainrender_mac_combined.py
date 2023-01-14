@@ -12,18 +12,18 @@ import pandas as pd
 import json
 from bg_atlasapi import show_atlases
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
-import working_with_cellfinder_data_combined
-from working_with_cellfinder_data_combined import cellfinder_output_path, mouse_id
+import variables
+from variables import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um 
 
 
-# >>> UPDATE THESE 4 variables
+# From variables.py
 # 1. How many top brain regions to evaluate. (default is 5)
-brain_regions_to_evalutate = 5
+brain_regions_to_evalutate = brain_regions_to_evalutate
 # 2. path to cellfinder output folder
 # cellfinder_output_path = "/Users/grant/Desktop/mock_df/cellfinder_output/"
 cellfinder_output_path = cellfinder_output_path
 # 3. path to local location of allen mouse brain atlas
-allen_mouse_10um = '/Users/grant/brainglobe/allen_mouse_10um'
+allen_mouse_10um = allen_mouse_10um
 # 4. mouse id (example: G25)
 # mouseid = "test_000"
 mouseid = mouse_id

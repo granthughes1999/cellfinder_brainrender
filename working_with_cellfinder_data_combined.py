@@ -11,13 +11,15 @@ from scipy import stats
 import pickle
 import xml.etree.ElementTree as ET
 import json
+import variables
+from variables import cellfinder_output_path, mouse_id
 
 
-# >> UPDATE these 2 variables
+# From variables.py
 # 1. ID of mouse (example: G25)
-mouse_id = "test_001"
+mouse_id = mouse_id
 # 2. cellfinder_output_path = 'path/to/root/directory/of/cellfinder/output/data/'
-cellfinder_output_path = "/Users/grant/Desktop/mock_df/cellfinder_output/"
+cellfinder_output_path = cellfinder_output_path
 
 # Create new folder in your cellfinder output folder
 new_folder_path = cellfinder_output_path + \
