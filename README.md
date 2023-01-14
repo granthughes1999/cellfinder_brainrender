@@ -8,8 +8,8 @@ this combines cellfinder and brainrender into one repository for simplicity
 ##### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
 ##### use this link to understand voxel & orentation variables https://docs.brainglobe.info/cellfinder/image-orientation
 ### open run_cellfinder.bat
-##### update the variables in final line 6
-##### -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
+##### update the variables 
+##### line 6: cellfinder -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
 
 ## Step 3
 #### open anaconda prompt
