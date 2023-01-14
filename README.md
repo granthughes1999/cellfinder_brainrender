@@ -21,15 +21,16 @@ this combines cellfinder and brainrender into one repository for simplicity
 ##### update all the varibales
 
 ## Step 5
-#### run >> working_with_cellfinder_data_combined.py
+#### run 
+##### working_with_cellfinder_data_combined.py
 
 ## step 6 (skip if you already have a brainrender env)
 #### create brainrender anaconda env
 ##### open terminal 
-##### conda create -n brainrender python=3.9
-##### conda activate brainrender
-##### pip install brainrender
-##### pip install numpy<1.22
+##### >> conda create -n brainrender python=3.9
+##### >> conda activate brainrender
+##### >> pip install brainrender
+##### >> pip install numpy<1.22
 
 ## Step 7
 #### conda activate brainrender
