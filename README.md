@@ -1,6 +1,5 @@
 # cellfinder_brainrender
-this repository is designed to work with light sheet images
-the obtained from DBS prefromed on Cal-light mice
+this repository is designed to work with light sheet images, obtained from DBS prefromed on Cal-light mice
 
 ## Step 1
 #### Clone repository 
