@@ -29,8 +29,6 @@ allen_mouse_10um = '/Users/grant/brainglobe/allen_mouse_10um'
 mouseid = mouse_id
 
 
-
-
 # Path to cellfinder_output points.npy file
 cells_path = cellfinder_output_path + 'points/points.npy'
 print(cells_path)
@@ -43,19 +41,24 @@ brain_regions_acronym = brain_regions_df['acronym'].to_list()
 brain_regions_name = brain_regions_df['name'].to_list()
 
 # File path to the saved json file
-file_path = cellfinder_output_path + mouseid +"_Completed_Analysis/" +"gfp_brainregions_list.json"
+file_path = cellfinder_output_path + mouseid + \
+    "_Completed_Analysis/" + "gfp_brainregions_list.json"
 with open(file_path, 'r') as f:
     file_content = f.read()
     brain_regions_list = json.loads(file_content)
 
-count_file_path = cellfinder_output_path + mouseid +"_Completed_Analysis/" +"gfp_brainregions_count.json"
+count_file_path = cellfinder_output_path + mouseid + \
+    "_Completed_Analysis/" + "gfp_brainregions_count.json"
 with open(count_file_path, 'r') as f:
     file_content = f.read()
     brain_regions_count_list = json.loads(file_content)
 
-brain_regions_dictionary = dict(zip(brain_regions_list, brain_regions_count_list))
-brain_regions_df = pd.DataFrame.from_dict(brain_regions_dictionary,orient='index')
-print("The "+str(brain_regions_to_evalutate)+" brain regions your loading with labled cells count")
+brain_regions_dictionary = dict(
+    zip(brain_regions_list, brain_regions_count_list))
+brain_regions_df = pd.DataFrame.from_dict(
+    brain_regions_dictionary, orient='index')
+print("The "+str(brain_regions_to_evalutate) +
+      " brain regions your loading with labled cells count")
 evaluate = list(brain_regions_dictionary.items())[:brain_regions_to_evalutate]
 print(evaluate)
 
@@ -66,12 +69,14 @@ index = []
 for i in evaluate_brain_regions:
     index.append(brain_regions_name.index(i))
 
-evaluate_brain_region_acronyms = []    
+evaluate_brain_region_acronyms = []
 for i in index:
     evaluate_brain_region_acronyms.append(brain_regions_acronym[i])
 
-evaluate_brain_regions_dictionary = dict(zip(evaluate_brain_regions, evaluate_brain_region_acronyms))
-evaluate_brain_regions_df = pd.DataFrame.from_dict(evaluate_brain_regions_dictionary,orient='index')
+evaluate_brain_regions_dictionary = dict(
+    zip(evaluate_brain_regions, evaluate_brain_region_acronyms))
+evaluate_brain_regions_df = pd.DataFrame.from_dict(
+    evaluate_brain_regions_dictionary, orient='index')
 evaluate_brain_regions_df.rename(index={0: 'acronym'}, inplace=True)
 
 # unknown from cylinder example file on github
@@ -87,13 +92,16 @@ atlas = BrainGlobeAtlas('allen_mouse_50um', check_latest=False)
 scene = Scene(atlas_name='allen_mouse_50um', title=mouseid)
 print(scene.atlas.space)
 
-# add brain regions and labels 
-colors =  ["red",'orange',"yellow","green","blue","red",'orange',"yellow","green","blue","red",'orange',"yellow","green","blue"]
+# add brain regions and labels
+colors = ["red", 'orange', "yellow", "green", "blue", "red", 'orange',
+          "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue"]
 for i in range(brain_regions_to_evalutate):
-    evaluate_brain_region_acronyms[i] = scene.add_brain_region(str(evaluate_brain_region_acronyms[i]), alpha=0.2, color=colors[i])
+    evaluate_brain_region_acronyms[i] = scene.add_brain_region(
+        str(evaluate_brain_region_acronyms[i]), alpha=0.2, color=colors[i])
 
 for i in range(brain_regions_to_evalutate):
-    scene.add_label(evaluate_brain_region_acronyms[i], str(evaluate_brain_regions[i]))
+    scene.add_label(evaluate_brain_region_acronyms[i], str(
+        evaluate_brain_regions[i]))
 
 # You can specify color, transparency... of brain regions
 # VISp = scene.add_brain_region("VISp", alpha=0.2, color="green")
@@ -107,9 +115,10 @@ for i in range(brain_regions_to_evalutate):
 # scene.add_label(LGd, "Lateral Geniculate Nucleus of the Thalmus")
 # scene.add_label(LP, "Lateral Posterior Thalmus")
 
-# create and add a cylinder actor to brain region with the most labled cells 
+# create and add a cylinder actor to brain region with the most labled cells
 actor_electrode = Cylinder(
-    evaluate_brain_region_acronyms[0],  # center the cylinder at the center of mass of Primary Visual area, by using its varaible name
+    # center the cylinder at the center of mass of Primary Visual area, by using its varaible name
+    evaluate_brain_region_acronyms[0],
     scene.root,  # the cylinder actor needs information about the root mesh
 )
 
