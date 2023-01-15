@@ -4,7 +4,7 @@ from analyze_cellfinder_data import analyze_data_cellfinder
 # Update these variables
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_003"
+mouse_id = "test_004"
 
 # 2. cellfinder_output_path, path to where you want the cellfinder output data to be saved to
 # analysis from these files will be added to this output folder
@@ -22,6 +22,3 @@ allen_mouse_10um = '/Users/grant/brainglobe/allen_mouse_10um'
 
 # 5. Your brainrender conda env name
 brainrender_env_name = 'brainrender'
-
-
-analyze_data_cellfinder(cellfinder_output_path, mouse_id)
