@@ -1,4 +1,5 @@
-# cellfinder_brainrender
+# Running & Analizing Cellfinder. And Creating 3D Rendered models using Cellfinder Data
+## Note you may need to retrain the cellfinder network before procceding to analysis, you should verify correct cell labling using napari
 this repository is designed to work with light sheet images, obtained from DBS prefromed on Cal-light mice
 
 # Step 1
