@@ -11,7 +11,8 @@ from scipy import stats
 import pickle
 import xml.etree.ElementTree as ET
 import json
-import variables
+import brainrender_mac_combined
+from brainrender_mac_combined import run_brainrender
 # from variables import cellfinder_output_path, mouse_id
 
 
@@ -182,6 +183,8 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         labled_cells_df
 
         labled_cells_df.to_csv(output_path_csv)
+
+
 
     else:
         print('path already exists, skipping analysis...')

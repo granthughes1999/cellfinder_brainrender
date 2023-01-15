@@ -13,29 +13,23 @@ import json
 from bg_atlasapi import show_atlases
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 import variables
-from variables import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um 
+from variables import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um
 import os
 
 
+# # From variables.py
+# # 1. How many top brain regions to evaluate. (default is 5)
+# brain_regions_to_evalutate = brain_regions_to_evalutate
+# # 2. path to cellfinder output folder
+# # cellfinder_output_path = "/Users/grant/Desktop/mock_df/cellfinder_output/"
+# cellfinder_output_path = cellfinder_output_path
+# # 3. path to local location of allen mouse brain atlas
+# allen_mouse_10um = allen_mouse_10um
+# # 4. mouse id (example: G25)
+# # mouseid = "test_000"
+# mouseid = mouse_id
 
-# From variables.py
-# 1. How many top brain regions to evaluate. (default is 5)
-brain_regions_to_evalutate = brain_regions_to_evalutate
-# 2. path to cellfinder output folder
-# cellfinder_output_path = "/Users/grant/Desktop/mock_df/cellfinder_output/"
-cellfinder_output_path = cellfinder_output_path
-# 3. path to local location of allen mouse brain atlas
-allen_mouse_10um = allen_mouse_10um
-# 4. mouse id (example: G25)
-# mouseid = "test_000"
-mouseid = mouse_id
-
-def run_brainrender(cellfinder_output_path,mouseid,brain_regions_to_evalutate,allen_mouse_10um):
-
-    def activate_env(brainrender_env_name):
-        os.system("conda activate " + brainrender_env_name)
-
-    activate_env("myenv")
+def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
 
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
@@ -66,10 +60,10 @@ def run_brainrender(cellfinder_output_path,mouseid,brain_regions_to_evalutate,al
     brain_regions_df = pd.DataFrame.from_dict(
         brain_regions_dictionary, orient='index')
     print("The "+str(brain_regions_to_evalutate) +
-        " brain regions your loading with labled cells count")
-    evaluate = list(brain_regions_dictionary.items())[:brain_regions_to_evalutate]
+          " brain regions your loading with labled cells count")
+    evaluate = list(brain_regions_dictionary.items())[
+        :brain_regions_to_evalutate]
     print(evaluate)
-
 
     # create lists of just the brain regions you want to evaluate, uses brain_regions_to_evalutate variable value
     evaluate_brain_regions = brain_regions_list[0:brain_regions_to_evalutate]
@@ -102,7 +96,7 @@ def run_brainrender(cellfinder_output_path,mouseid,brain_regions_to_evalutate,al
 
     # add brain regions and labels
     colors = ["red", 'orange', "yellow", "green", "blue", "red", 'orange',
-            "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue"]
+              "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue"]
     for i in range(brain_regions_to_evalutate):
         evaluate_brain_region_acronyms[i] = scene.add_brain_region(
             str(evaluate_brain_region_acronyms[i]), alpha=0.2, color=colors[i])
@@ -135,7 +129,6 @@ def run_brainrender(cellfinder_output_path,mouseid,brain_regions_to_evalutate,al
     # origin: ('Superior', 'Posterior', 'Lateral')
     # sections: ('Frontal plane')
     # shape: (528, 320, 456)
-
 
     # create points actor
     cells = Points(cells_path)
