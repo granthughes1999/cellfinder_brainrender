@@ -186,8 +186,9 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
     else:
         print('path already exists, skipping analysis...')
-        print('to re-run analysis use new mouseid or delete previous completed_analysis folder')
         print(f'{new_folder_path}')
+        print('')
+        print('to re-run analysis chane mouseid in variables.py or delete previously created mouseid_completed_analysis folder')
 
 
 # >>>> EXTRA CODE, NOT CURRENTLY USED

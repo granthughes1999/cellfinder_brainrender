@@ -1,10 +1,10 @@
-import analyze_cellfinder_data
-from analyze_cellfinder_data import analyze_data_cellfinder
+# import analyze_cellfinder_data
+# from analyze_cellfinder_data import analyze_data_cellfinder
 
 # Update these variables
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_004"
+mouse_id = "test_005"
 
 # 2. cellfinder_output_path, path to where you want the cellfinder output data to be saved to
 # analysis from these files will be added to this output folder
