@@ -1,19 +1,19 @@
 # cellfinder_brainrender
 this repository is designed to work with light sheet images, obtained from DBS prefromed on Cal-light mice
 
-## Step 1
+# Step 1
 #### Clone repository 
 
-## Step 2
-### updating the information that cellfinder will use to analyze your light-sheet images
+# Step 2
+## updating the information that cellfinder will use to analyze your light-sheet images
 ##### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
 ##### use this link to understand voxel & orentation variables https://docs.brainglobe.info/cellfinder/image-orientation
 ### open run_cellfinder.bat
 ##### update the variables 6 variables, and add extra signal channels if needed
 ##### line 6: cellfinder -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
 
-## Step 3
-### Running cellfinder
+# Step 3 (skip this step if you have already run cellfinder on your light-sheet images)
+## Running cellfinder
 #### open a Anaconda prompt
 #### activate your cellfinder env
 #### for the Denman Lab Neuropixel Aquisition Computer use "conda activate cellfinder2"
@@ -21,10 +21,11 @@ this repository is designed to work with light sheet images, obtained from DBS p
 #### (cellfinder2) >> path/to/run_cellfinder.bat
 #### click enter
 
-## Step 4
-#### variables.py
+# Step 4
+## Updating the information needed to execute these files 
+### variables.py
 ##### Update all the varibales in this folder
-##### run this file
+### run this file
 #### If the file does not run 
 ##### 1. Check that the folder mouseid_completed_analysis does not already exist in the cellfinder_output folder
 ##### if it does you can either delete this folder and run the variables file again 
