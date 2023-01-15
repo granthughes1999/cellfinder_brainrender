@@ -17,7 +17,7 @@ Please check out my napari repository for how to accomplish network retraining.
 ##### update the variables 6 variables, and add extra signal channels if needed
 ##### line 6: cellfinder -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
 
-# Step 3 (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling)
+# Step 3 (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari)
 ## Running cellfinder
 #### open a Anaconda prompt
 #### activate your cellfinder env
