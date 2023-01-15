@@ -1,5 +1,5 @@
 # cellfinder_brainrender
-this repository is designed to work with light-sheet images, obtained from DBS prefromed on Cal-light mice.
+this repository is designed to work with light-sheet images. specifaclly GFP-labled-cells as a result of DBS prefromed on Cal-light mice, and tdTomato-labled-cells used as a control
 Note you may need to retrain the cellfinder network before procceding to the analysis, you can/should verify correct cell labling using napari
 if the labled cells and non-labled cells appear incorrectly labled, please check out my napari repository 
 
