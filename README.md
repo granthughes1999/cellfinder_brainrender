@@ -27,6 +27,9 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 #### drop in run_cellfinder.bat
 #### (cellfinder2) >> path/to/run_cellfinder.bat
 #### click enter
+#### this step may take 2-8 hours to complete
+## Verify correct cell labling using napari 
+#### please reference my napari repository for these steps 
 
 # Step 4
 ## Updating the information needed to execute these files 
