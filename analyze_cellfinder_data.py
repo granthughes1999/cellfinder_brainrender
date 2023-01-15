@@ -12,14 +12,14 @@ import pickle
 import xml.etree.ElementTree as ET
 import json
 import variables
-from variables import cellfinder_output_path, mouse_id
+# from variables import cellfinder_output_path, mouse_id
 
 
 # From variables.py
 # 1. ID of mouse (example: G25)
-mouse_id = mouse_id
+# mouse_id = mouse_id
 # 2. cellfinder_output_path = 'path/to/root/directory/of/cellfinder/output/data/'
-cellfinder_output_path = cellfinder_output_path
+# cellfinder_output_path = cellfinder_output_path
 
 
 def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
