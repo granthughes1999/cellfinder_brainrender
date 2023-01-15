@@ -11,6 +11,7 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 # Step 1
 #### Clone repository 
 
+
 # Step 2
 ## updating the information that cellfinder will use to analyze your light-sheet images
 ##### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
@@ -18,6 +19,7 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 ### open run_cellfinder.bat
 ##### update the variables 6 variables, and add extra signal channels if needed
 ##### line 6: cellfinder -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
+
 
 # Step 3 (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari)
 ## Running cellfinder
@@ -31,6 +33,7 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 ## Verify correct cell labling using napari 
 #### please reference my napari repository for these steps 
 
+
 # Step 4
 ## Updating the information needed to execute these files 
 ### variables.py
@@ -41,6 +44,7 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 ##### if it does you can either delete this folder and run the variables file again 
 ##### 2. change your mouseid and run the variables file again
 
+
 ## step 5 (skip if you already have a brainrender env)
 #### create brainrender anaconda env
 ##### open terminal 
@@ -48,6 +52,7 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 ##### >> conda activate brainrender
 ##### >> pip install brainrender
 ##### >> pip install numpy<1.22
+
 
 ## Step 6
 #### conda activate brainrender
