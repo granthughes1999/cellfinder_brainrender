@@ -9,7 +9,13 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 
 
 # Step 1
-#### Clone repository 
+#### Clone this repository 
+
+# Step 2
+## create two Anaconda environments 
+### 1. cellfinder (pip install cellfinder)
+### 2. brainrender (pip install brainrender)
+
 
 
 # Step 2
