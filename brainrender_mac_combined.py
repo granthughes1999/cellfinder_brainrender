@@ -15,6 +15,9 @@ from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 import variables
 from variables import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um
 import os
+import brainrender
+
+brainrender.SHADER_STYLE = "cartoon"
 
 
 # # From variables.py
@@ -30,6 +33,9 @@ import os
 # mouseid = mouse_id
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
+
+    scene_export_path = cellfinder_output_path + mouse_id + \
+        '_Completed_analysis/' + mouse_id + '_scence.html'
 
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
@@ -139,5 +145,16 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # print the content of the scence
     scene.content
 
-    # Render the 3D brain Scence
+    # check if 3D render has been saved out
+    # if not export the 3D render, which can be opened in a web viewer
+    if not os.path.exists(scene_export_path):
+        scene.export(scene_export_path)
+        # os.makedirs(scene_export_path)
+        print('3D render has been created and saved too.')
+        print(f'{scene_export_path}')
+
+    else:
+        print('3D render already saved')
+
+    # locally Render the 3D brain Scence
     scene.render()
