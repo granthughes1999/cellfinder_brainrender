@@ -34,8 +34,9 @@ create two Anaconda environments
 ##### line 6: cellfinder -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
 
 
-# Step 4 (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari)
-## Running cellfinder
+# Step 4 
+#### (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari)
+#### Running cellfinder
 #### open a Anaconda prompt
 #### activate your cellfinder env
 #### for the Denman Lab Neuropixel Aquisition Computer use "conda activate cellfinder2"
