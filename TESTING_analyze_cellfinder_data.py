@@ -34,6 +34,15 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         tdTomato_df = pd.read_csv(cellfinder_output_path +
                                   'analysis/' + 'tdTomato_summary.csv')
 
+        # Randomly permute the values in column 'A'
+        gfp_df['total_cells'] = np.random.permutation(gfp_df['total_cells'])
+
+        # Randomly permute the values in column 'A'
+        tdTomato_df['total_cells'] = np.random.permutation(
+            tdTomato_df['total_cells'])
+
+        gfp_df = gfp_df.sort_values(by='total_cells', ascending=False)
+
         # output path for created csv
         output_path_csv = new_folder_path + '/' + mouse_id + '_labled_cells.csv'
 

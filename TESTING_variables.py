@@ -9,7 +9,7 @@
 # Update these variables
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_001"
+mouse_id = "test_002"
 
 # 2. cellfinder_output_path, path to where you want the cellfinder output data to be saved to
 # analysis from these files will be added to this output folder
