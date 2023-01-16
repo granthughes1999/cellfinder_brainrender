@@ -23,7 +23,8 @@ create two Anaconda environments
 
 
 
-# Step 2 (skip this step if you already have cellfinder output data, and just want to analyze the data & create a 3D render)
+# Step 3
+## skip this step if you already have cellfinder output data, and just want to analyze the data & create a 3D render
 ## updating the information that cellfinder will use to analyze your light-sheet images
 ##### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
 ##### use this link to understand voxel & orentation variables https://docs.brainglobe.info/cellfinder/image-orientation
@@ -32,7 +33,7 @@ create two Anaconda environments
 ##### line 6: cellfinder -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
 
 
-# Step 3 (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari)
+# Step 4 (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari)
 ## Running cellfinder
 #### open a Anaconda prompt
 #### activate your cellfinder env
@@ -45,7 +46,7 @@ create two Anaconda environments
 #### please reference my napari repository for these steps 
 
 
-# Step 4
+# Step 5
 ## Updating the information needed to execute these files 
 ### variables.py
 ##### Update all the varibales in this folder
