@@ -1,4 +1,4 @@
-# cellfinder_brainrender
+# Analyze and Visualize Electrical Stimuluation Data 
 This repository is designed to work with light-sheet images. 
 Specifaclly GFP-labled-cells as a result of DBS prefromed on Cal-light mice, and tdTomato-labled-cells used as a control.
 Note you may need to retrain the cellfinder network before procceding to the analysis.
