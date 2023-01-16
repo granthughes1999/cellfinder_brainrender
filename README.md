@@ -35,7 +35,7 @@ create two Anaconda environments
 
 
 # Step 4 
-#### (skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari)
+#### Skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari
 #### Running cellfinder
 #### open a Anaconda prompt
 #### activate your cellfinder env
