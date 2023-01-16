@@ -19,10 +19,11 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 ### 2. brainrender env
 #### >> conda create -n brainrender python=3.9
 #### >> pip install brainrender
+#### >> pip install "numpy<1.24"
 
 
 
-# Step 2
+# Step 2 (skip this step if you already have cellfinder output data, and just want to analyze the data & create a 3D render)
 ## updating the information that cellfinder will use to analyze your light-sheet images
 ##### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
 ##### use this link to understand voxel & orentation variables https://docs.brainglobe.info/cellfinder/image-orientation
@@ -55,15 +56,6 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 ##### 2. change your mouseid and run the variables file again
 
 
-## step 5 (skip if you already have a brainrender env)
-#### create brainrender anaconda env
-##### open terminal 
-##### >> conda create -n brainrender python=3.9
-##### >> conda activate brainrender
-##### >> pip install brainrender
-##### >> pip install numpy<1.22
-
-
-## Step 6
+## Step 5
 #### conda activate brainrender
 #### >> python /path/to/brainrender_mac.py
