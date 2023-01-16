@@ -29,10 +29,6 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         # ### Read in tdTomato & GFP output data from cellfinder
 
         # import cellfinder summary csv, containing cell counts and more
-        # IMPORTANT 
-        # gfp_summary.csv & tdTomato_summary.csv do not exist as a natural ouput of cellfinder
-        # the normal output is just summary.csv 
-        # there for these will need to be changed before really running (these were for testing only)
         gfp_df = pd.read_csv(cellfinder_output_path +
                              'analysis/' + 'gfp_summary.csv')
         tdTomato_df = pd.read_csv(cellfinder_output_path +
