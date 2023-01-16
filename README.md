@@ -5,7 +5,7 @@ Note you may need to retrain the cellfinder network before procceding to the ana
 You can/should verify correct cell labling using napari .
 Please check out my napari repository for how to accomplish network retraining.
 
-All the output data from this repository will be saved in a folder titled mouseid_completed_analysis. This folder can be found inside the cellfinder output folder that cellfinder created when you ran it (this will be the file path you used in the varibles file of this repositry).
+All the output data from this repository will be saved in a folder titled mouseid_completed_analysis. This folder can be found inside the cellfinder output folder that cellfinder created when you ran it (this will be the file path you used in updateME.py).
 
 
 # Step 1 
