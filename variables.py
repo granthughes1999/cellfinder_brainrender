@@ -9,13 +9,13 @@
 # Update these variables
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_000"
+mouse_id = "test_001"
 
 # 2. cellfinder_output_path, path to where you want the cellfinder output data to be saved to
 # analysis from these files will be added to this output folder
 # in a new folder titled --> str(mouse_id) + "_Completed_Analysis"
 # ADD '/' at the end of your output path example: "/Users/grant/Desktop/mock_cellfinder_output/"
-cellfinder_output_path = "/Users/grant/Desktop/mock_cellfinder_output/"
+cellfinder_output_path = "/Users/grant/Desktop/mock_df/cellfinder_output/"
 
 # 3. How many top brain regions to evaluate. (default is 5)
 # This represents how many brain regions brainrender will populate when creating a 3D render.
