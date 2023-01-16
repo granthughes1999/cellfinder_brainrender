@@ -24,8 +24,8 @@ create two Anaconda environments
 
 
 # Step 3
-## skip this step if you already have cellfinder output data, and just want to analyze the data & create a 3D render
-## updating the information that cellfinder will use to analyze your light-sheet images
+##### skip this step if you already have cellfinder output data, and just want to analyze the data & create a 3D render
+##### updating the information that cellfinder will use to analyze your light-sheet images
 ##### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
 ##### use this link to understand voxel & orentation variables https://docs.brainglobe.info/cellfinder/image-orientation
 ### open run_cellfinder.bat
