@@ -12,7 +12,7 @@ All the output data from these files, will be saved to a folder titled mouseid_c
 #### Clone this repository 
 
 # Step 2
-Create Two Anaconda environments 
+## Create Two Anaconda environments 
 ### 1. cellfinder env
 ##### conda create -n cellfinder python=3.9
 ##### pip install cellfinder
