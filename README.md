@@ -8,14 +8,14 @@ Please check out my napari repository for how to accomplish network retraining.
 All the output data from these files, will be saved to a folder titled mouseid_completed_analysis. This folder can be found inside the cellfinder_output folder that cellfinder created when you ran it (this will be the file path you used in the varibles file of this repositry).
 
 
-# Step 1 .
+# Step 1 
 #### Clone this repository 
 
 # Step 2
-create two Anaconda environments 
+Create Two Anaconda environments 
 ### 1. cellfinder env
-##### pip install cellfinder
 ##### conda create -n cellfinder python=3.9
+##### pip install cellfinder
 ##### pip install cellfinder
 ### 2. brainrender env
 ##### conda create -n brainrender python=3.9
