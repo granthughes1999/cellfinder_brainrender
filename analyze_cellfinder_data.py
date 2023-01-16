@@ -11,16 +11,6 @@ from scipy import stats
 import pickle
 import xml.etree.ElementTree as ET
 import json
-# import brainrender_mac_combined
-# from brainrender_mac_combined import run_brainrender
-# from variables import cellfinder_output_path, mouse_id
-
-
-# From variables.py
-# 1. ID of mouse (example: G25)
-# mouse_id = mouse_id
-# 2. cellfinder_output_path = 'path/to/root/directory/of/cellfinder/output/data/'
-# cellfinder_output_path = cellfinder_output_path
 
 
 def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
@@ -49,8 +39,6 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
         # # GFP Data
 
-        # In[108]:
-
         # make list of each brain region with labeled cells
         all_gfp_brain_regions = gfp_df['structure_name'].to_list()
         print("All Brain Regions: " + str(len(all_gfp_brain_regions)))
@@ -63,8 +51,6 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         all_gfp_dictionary = dict(
             zip(all_gfp_brain_regions, all_gfp_brain_regions_cell_count))
         all_gfp_df = pd.DataFrame.from_dict(all_gfp_dictionary, orient='index')
-
-        # In[97]:
 
         # Find all brain regions with labeled gfp cells, make gfp_df
         gfp_cells_df = gfp_df[gfp_df['total_cells'] >= 1]
@@ -84,8 +70,6 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         gfp_dictionary = dict(
             zip(gfp_brain_regions, gfp_brain_regions_cell_count))
         gfp_df_01 = pd.DataFrame.from_dict(gfp_dictionary, orient='index')
-
-        # In[120]:
 
         # File path to the desktop
         file_path = new_folder_path + '/gfp_brainregions_list.json'
@@ -146,8 +130,6 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
             tdTomato_dictionary, orient='index')
 
         # ## Create csv file with summary of gfp and tdTomato Cellcount and Brain Regions
-
-        # In[100]:
 
         data = {'total whole-brain cell count': [gfp_labled_cells_sum, tdTomato_labled_cells_sum],
                 'total brain regions': [gfp_brain_regions_sum, tdTomato_brain_regions_sum],

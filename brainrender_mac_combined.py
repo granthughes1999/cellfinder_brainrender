@@ -20,18 +20,6 @@ import brainrender
 brainrender.SHADER_STYLE = "cartoon"
 
 
-# # From variables.py
-# # 1. How many top brain regions to evaluate. (default is 5)
-# brain_regions_to_evalutate = brain_regions_to_evalutate
-# # 2. path to cellfinder output folder
-# # cellfinder_output_path = "/Users/grant/Desktop/mock_df/cellfinder_output/"
-# cellfinder_output_path = cellfinder_output_path
-# # 3. path to local location of allen mouse brain atlas
-# allen_mouse_10um = allen_mouse_10um
-# # 4. mouse id (example: G25)
-# # mouseid = "test_000"
-# mouseid = mouse_id
-
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
 
     scene_export_path = cellfinder_output_path + mouse_id + \
@@ -111,13 +99,11 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         scene.add_label(evaluate_brain_region_acronyms[i], str(
             evaluate_brain_regions[i]))
 
-    # You can specify color, transparency... of brain regions
+    # Uncomment these if you want to visualize the visual brain areas in the 3D render
     # VISp = scene.add_brain_region("VISp", alpha=0.2, color="green")
     # VISl = scene.add_brain_region('VISl',  alpha=0.2, color="red")
     # LGd = scene.add_brain_region('LGd', alpha=0.2, color="blue")
     # LP = scene.add_brain_region('LP', alpha=0.2, color="yellow")
-
-    # # Add lables to brain regions'
     # scene.add_label(VISp, "Primary Visual area")
     # scene.add_label(VISl, "Lateral Visual area")
     # scene.add_label(LGd, "Lateral Geniculate Nucleus of the Thalmus")
@@ -125,7 +111,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
     # create and add a cylinder actor to brain region with the most labled cells
     actor_electrode = Cylinder(
-        # center the cylinder at the center of mass of Primary Visual area, by using its varaible name
+        # center the cylinder at the center of mass of brain region with the most labled gfp cells, by using its varaible name
         evaluate_brain_region_acronyms[0],
         scene.root,  # the cylinder actor needs information about the root mesh
     )
