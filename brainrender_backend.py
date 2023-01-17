@@ -12,8 +12,8 @@ import pandas as pd
 import json
 from bg_atlasapi import show_atlases
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
-import variables
-from variables import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um
+import UpdateME
+from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um
 import os
 import brainrender
 

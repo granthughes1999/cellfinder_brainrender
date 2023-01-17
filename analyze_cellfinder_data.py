@@ -6,8 +6,8 @@
 
 import UpdateME
 from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um
-import analyze_cellfinder_data
-from analyze_cellfinder_data import analyze_data_cellfinder
+import cellfinder_backend
+from cellfinder_backend import analyze_data_cellfinder
 
 
 analyze_data_cellfinder(cellfinder_output_path, mouse_id)
