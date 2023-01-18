@@ -5,7 +5,6 @@
 # gfp_summary.csv & tdTomato_summary.csv do not exist as a natural ouput of cellfinder
 # the normal output is just summary.csv
 # there for these will need to be changed before really running (these were for testing only)
-
 # Update these variables
 
 # 1. ID of mouse (example: G25)
@@ -16,6 +15,13 @@ mouse_id = "test_005"
 # in a new folder titled --> str(mouse_id) + "_Completed_Analysis"
 # ADD '/' at the end of your output path example: "/Users/grant/Desktop/mock_cellfinder_output/"
 cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/"
+
+# 3. Electrode tip Voxel coordinates. using Paxinos-Franklin coordinate system where 
+# the x-coordinate corresponds to the medial-lateral axis, with positive values towards the right and negative values towards the left. 
+# The y-coordinate corresponds to the dorsal-ventral axis, with positive values towards the dorsal side and negative values towards the ventral side. 
+# The z-coordinate corresponds to the rostral-caudal axis, with positive values towards the rostral side and negative values towards the caudal side. 
+# refrence_point = [8050. -100. 6150.] ----> [x-coordinate, y-coordinate, z-coordinate]
+estim_tip_coordinates = [4850., 7550., 7500.]
 
 # 3. How many top brain regions to evaluate. (default is 5)
 # This represents how many brain regions brainrender will populate when creating a 3D render.

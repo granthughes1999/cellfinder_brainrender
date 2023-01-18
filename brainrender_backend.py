@@ -13,14 +13,16 @@ import json
 from bg_atlasapi import show_atlases
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 import UpdateME
-from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um
+from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates
 import os
 import brainrender
-
+from vedo import Spheres, Sphere
+from vedo import Points as vPoints
 brainrender.SHADER_STYLE = "cartoon"
 
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
+
 
     scene_export_path = cellfinder_output_path + mouse_id + \
         '_Completed_analysis/' + mouse_id + '_scence.html'
@@ -28,6 +30,19 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
     print(cells_path)
+
+    
+     # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
+    cells = np.load(cells_path)
+    # reference_coord = cells[40000]
+    print("Estim tip Coordinates :" + str(estim_tip_coordinates))
+
+    # create points actors for brainrender to plot in the 3D render
+    cells_actor = Points(cells_path)
+    #  mesh = Sphere(pos=pos, r=radius, c=color, alpha=alpha, res=res)
+    estim_tip_sphere_actor = Sphere(estim_tip_coordinates,100,"green",)
+
+
 
     # read in braingloab regions df, make lists of names and acryonms
     atlas = BrainGlobeAtlas("allen_mouse_50um")
@@ -110,11 +125,27 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # scene.add_label(LP, "Lateral Posterior Thalmus")
 
     # create and add a cylinder actor to brain region with the most labled cells
-    actor_electrode = Cylinder(
-        # center the cylinder at the center of mass of brain region with the most labled gfp cells, by using its varaible name
-        evaluate_brain_region_acronyms[0],
+    # mesh = shapes.Cylinder(pos=[top, pos], c=color, r=radius, alpha=alpha)
+    # densest_cell_brain_region_cylinder_actor = Cylinder(
+    #     # center the cylinder at the center of mass of brain region with the most labled gfp cells, by using its varaible name
+    #     evaluate_brain_region_acronyms[0],
+    #     scene.root,
+    #     'powderblue',
+    #     1, 
+    #     100,
+    # )
+
+    # create and add a cylinder actor to brain region with the most labled cells
+     # mesh = shapes.Cylinder(pos=[top, pos], c=color, r=radius, alpha=alpha)
+     #  :param pos: list, np.array of ap, dv, ml coordinates. If an actor is passed, get's the center of mass instead
+    estim_cylinder_actor = Cylinder(
+        # have cylinder run from the referece point to the brains surface 
+        estim_tip_coordinates,
         scene.root,  # the cylinder actor needs information about the root mesh
-    )
+        "yellow",
+        1,
+        100,
+     )
 
     # NOT sure what this does, from brainrender documentation...
     # BGSpace AnatomicalSpace Objects
@@ -122,14 +153,15 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # sections: ('Frontal plane')
     # shape: (528, 320, 456)
 
-    # create points actor
-    cells = Points(cells_path)
 
     # Add cells Actor to Scence
-    scene.add(cells, actor_electrode)
+    scene.add(cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,)
 
     # print the content of the scence
     scene.content
+
+    # Add a sphere in the reference point location
+    # scene.add_sphere(center = reference_point, radius = 25, color = 'red')
 
     # check if 3D render has been saved out
     # if not export the 3D render, which can be opened in a web viewer
@@ -140,7 +172,9 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         print(f'{scene_export_path}')
 
     else:
-        print('3D render already saved')
+        print('A 3D-render of' + str(mouse_id) + ' already exisits...')
+        print('To save out a new render')
+        print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
 
     # locally Render the 3D brain Scence
     scene.render()
