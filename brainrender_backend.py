@@ -13,7 +13,7 @@ import json
 from bg_atlasapi import show_atlases
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 import UpdateME
-from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates
+from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates, extra_brain_region_acryonm
 import os
 import brainrender
 from vedo import Spheres, Sphere
@@ -101,8 +101,6 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
    
-
-    
      # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
     cells = np.load(cells_path)
     # reference_coord = cells[40000]
@@ -122,6 +120,9 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     brain_regions_acronym = brain_regions_df['acronym'].to_list()
     brain_regions_name = brain_regions_df['name'].to_list()
 
+    BrainGlobeAtlas_dictionary = dict(
+        zip(brain_regions_acronym, brain_regions_name))
+
     # File path to the saved json file
     file_path = cellfinder_output_path + mouseid + \
         "_Completed_Analysis/" + "gfp_brainregions_list.json"
@@ -135,6 +136,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         file_content = f.read()
         brain_regions_count_list = json.loads(file_content)
 
+    # create a dictonary and df of brainregion acryonm and name, from the BrainGlobeAtlas. Because this is what brain render uses 
     brain_regions_dictionary = dict(
         zip(brain_regions_list, brain_regions_count_list))
     brain_regions_df = pd.DataFrame.from_dict(
@@ -174,8 +176,9 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     scene = Scene(atlas_name='allen_mouse_50um', title=mouseid)
     print(scene.atlas.space)
 
-    # add brain regions and labels
+    # add top brain regions and labels
     colors = ["red", 'orange', "yellow", "green", "blue", "red", 'orange',
+              "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue","red", 'orange', "yellow", "green", "blue", "red", 'orange',
               "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue"]
     for i in range(brain_regions_to_evalutate):
         evaluate_brain_region_acronyms[i] = scene.add_brain_region(
@@ -184,16 +187,23 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     for i in range(brain_regions_to_evalutate):
         scene.add_label(evaluate_brain_region_acronyms[i], str(
             evaluate_brain_regions[i]))
+    
+ 
+    # # Add extra brain regions. specified in the extra_brain_region_acryonm list found in UpdateME.py
+    # list_len = len(extra_brain_region_acryonm)
+    # if len(extra_brain_region_acryonm) == 0:
+    #     print("adding no extra brain region to this render. to see addition brain regions, add their acryonms to the extra_brain_regions array in UpdateME.py. A full list of brain regions and their associated acryonms is saved in this repository as acronym_brainregions.csv'")
+    # else:
+    #     for i in range(list_len):
+    #         extra_brain_region_acryonm[i] = scene.add_brain_region(
+    #         str(extra_brain_region_acryonm[i]), alpha=0.2, color='yellow')
+        
+    #     for i in range(list_len):
+    #         # brain_region_name = BrainGlobeAtlas_dictionary[str(extra_brain_region_acryonm[i])]
+    #         # print(str(extra_brain_region_acryonm[i]))
+    #         scene.add_label('VIS', 'Visual Areas')
 
-    # Uncomment these if you want to visualize the visual brain areas in the 3D render
-    # VISp = scene.add_brain_region("VISp", alpha=0.2, color="green")
-    # VISl = scene.add_brain_region('VISl',  alpha=0.2, color="red")
-    # LGd = scene.add_brain_region('LGd', alpha=0.2, color="blue")
-    # LP = scene.add_brain_region('LP', alpha=0.2, color="yellow")
-    # scene.add_label(VISp, "Primary Visual area")
-    # scene.add_label(VISl, "Lateral Visual area")
-    # scene.add_label(LGd, "Lateral Geniculate Nucleus of the Thalmus")
-    # scene.add_label(LP, "Lateral Posterior Thalmus")
+
 
     # create and add a cylinder actor to brain region with the most labled cells
     # mesh = shapes.Cylinder(pos=[top, pos], c=color, r=radius, alpha=alpha)
