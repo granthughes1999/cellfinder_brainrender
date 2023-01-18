@@ -57,6 +57,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         cells_path = cellfinder_output_path + 'points/points.npy'
         cells_path
         points = np.load(cells_path)
+        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) 
 
         # Subtract the reference point from each cell coordinate
         displacement = points - estim_tip_coordinates
@@ -68,7 +69,9 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         plt.ylabel('number of cells')
         plt.title('Histogram of cell Euclidean distances from Estim tip')
         # Display & save the histogram
-        plt.savefig(histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) + '_euclidean_distances.png')
+        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) 
+        plt.savefig(hist_save_path + '_euclidean_distances.png')
+        np.save(hist_save_path + '_euclidean_distances.npy', euclidean_distances) 
      
         # manhattan distances calculations: sum of the absolute differences of their coordinates
         manhattan_distances = np.sum(np.abs(points - estim_tip_coordinates), axis=1)
@@ -80,7 +83,8 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         plt.xlabel('Manhattan distance (um)')
         plt.ylabel('number of cells')
         # Save the histogram
-        plt.savefig(histogram_save_path +'/' + str(mouse_id)+ '_' + str(estim_tip_coordinates) + '_manhattan_distances.png')
+        plt.savefig(hist_save_path + '_manhattan_distances.png')
+        np.save(hist_save_path + '_manhattan_distances.npy', manhattan_distances) 
         # create subplot with smooth line overlay
         # sns.histplot(manhattan_distances, kde = True)
     
