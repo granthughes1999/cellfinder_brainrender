@@ -1,16 +1,18 @@
-1#!/usr/bin/env python
+import json
+import xml.etree.ElementTree as ET
+import pickle
+from scipy import stats
+import os
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+1  # !/usr/bin/env python
 # coding: utf-8
 
 # In[109]:
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-import random
-import os
-from scipy import stats
-import pickle
-import xml.etree.ElementTree as ET
-import json
+
+
 
 
 def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
@@ -34,9 +36,9 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         # the normal output is just summary.csv
         # there for these will need to be changed before really running (these were for testing only)
         gfp_df = pd.read_csv(cellfinder_output_path +
-                             'analysis/' + 'summary.csv')
+                             'analysis/' + 'gfp_summary.csv')
         tdTomato_df = pd.read_csv(cellfinder_output_path +
-                                  'analysis/' + 'tdTomato_summary.csv')
+                                  'analysis/' + 'randomized_tdTomato_summary.csv')
 
         # output path for created csv
         output_path_csv = new_folder_path + '/' + mouse_id + '_labled_cells.csv'
@@ -77,7 +79,6 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
         # File path to the desktop
         file_path = new_folder_path + '/gfp_brainregions_list.json'
-        print(file_path)
 
         # Open a file
         with open(file_path, 'w') as f:
@@ -165,8 +166,25 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
             columns={gfp_df_01.columns[0]: 'gfp cell count'}, inplace=True)
 
         # Find all brain regions with labeled gfp cells, make gfp_df
-        labled_cells_df = all_gfp_df[all_gfp_df['gfp cell count'] >= 1]
+        # labled_cells_df = all_gfp_df[all_gfp_df['gfp cell count'] >= 1]
+        labled_cells_df = all_gfp_df
+
         labled_cells_df
+        print(labled_cells_df.head(3))
+        print('')
+        print(gfp_df.head(3))
+        print('')
+        print(tdTomato_df.head(3))
+
+        # divide the values in each column of the gfp_df against the values of the tdTomato_df, and add a new column for that divided data to the labled cells df
+        labled_cells_df = labled_cells_df.assign(percent_cell_count_left=gfp_df['left_cell_count']/tdTomato_df['left_cell_count']*100)
+        labled_cells_df = labled_cells_df.assign(percent_cell_count_right=gfp_df['right_cell_count']/tdTomato_df['right_cell_count']*100)
+
+        labled_cells_df = labled_cells_df.assign(percent_volume_per_mm3_left=gfp_df['right_volume_mm3']/tdTomato_df['right_volume_mm3']*100)
+        labled_cells_df = labled_cells_df.assign(percent_percent_volume_per_mm3_right=gfp_df['left_volume_mm3']/tdTomato_df['left_volume_mm3']*100)
+
+        labled_cells_df = labled_cells_df.assign(percent_cells_per_mm3_right=gfp_df['right_cells_per_mm3']/tdTomato_df['right_cells_per_mm3']*100)
+        labled_cells_df = labled_cells_df.assign( percent_cells_per_mm3_left=gfp_df['left_cells_per_mm3']/tdTomato_df['left_cells_per_mm3']*100)
 
         labled_cells_df.to_csv(output_path_csv)
 
@@ -213,3 +231,5 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
 # # # load volumes
 # volumes = pd.read_csv("/Users/grant/Desktop/mock_df/volumes.csv")
+
+# %%

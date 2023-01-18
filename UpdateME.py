@@ -9,7 +9,7 @@
 # Update these variables
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_002"
+mouse_id = "test_005"
 
 # 2. cellfinder_output_path, path to where you want the cellfinder output data to be saved to
 # analysis from these files will be added to this output folder
@@ -22,7 +22,7 @@ cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cel
 # it uses the regions with the most labled cells first and works down the list.
 brain_regions_to_evalutate = 5
 
-#  OPTIONAL 
+#  OPTIONAL
 
 # 4. path to local location of allen mouse brain atlas
 # you will need a local version of an allen brain atlas.
