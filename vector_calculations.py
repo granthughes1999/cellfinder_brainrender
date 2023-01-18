@@ -8,7 +8,6 @@ import seaborn as sns
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 
 
-
 # Path to cellfinder_output points.npy file
 cells_path = cellfinder_output_path + 'points/points.npy'
 cells_path

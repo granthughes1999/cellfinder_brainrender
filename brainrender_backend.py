@@ -18,24 +18,91 @@ import os
 import brainrender
 from vedo import Spheres, Sphere
 from vedo import Points as vPoints
+import matplotlib.pyplot as plt
+from scipy.spatial import distance
+import seaborn as sns
 brainrender.SHADER_STYLE = "cartoon"
 
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
+    print('Creating 3D-render and histograms for')
+    print("mouse_id: " + str(mouse_id))
+    print("with estim_tip_coordinates :" +str(estim_tip_coordinates))
+    
+    # Create new brainrender folder in your cellfinder output folder
+    brainrender_folder_path = cellfinder_output_path + \
+        str(mouse_id) + "_Completed_Analysis/" +'brainrender_outputs' # create the path for the new folder
 
+    if not os.path.exists(brainrender_folder_path):
+        os.makedirs(brainrender_folder_path)
+        print('brainrender_output folder has been created at')
+        print(f'{brainrender_folder_path}')
+        print('')
+    else: 
+        print('brainrender_output folder already exisits for ' + str(mouse_id) +' with estim_tip_coordinates of ' + str(estim_tip_coordinates))
+    # Create new folder in your cellfinder output folder
+    mouseid_estim_tip_coordinates_folder_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates)   # create the path for the new folder
+    histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms'
+    if not os.path.exists(histogram_folder_path):
+        os.makedirs(histogram_folder_path)
+        print('Histogram folder has been created at')
+        print(f'{ histogram_folder_path}')
+        print('')
+        print('Making histograms...')
+        print('')
 
-    scene_export_path = cellfinder_output_path + mouse_id + \
-        '_Completed_analysis/' + mouse_id + '_scence.html'
+        histogram_save_path = histogram_folder_path 
+        # Calaculate 3d-space distances for cells relative to estim_tip_coordinates. and save out histograms of those distances
+        # Path to cellfinder_output points.npy file
+        cells_path = cellfinder_output_path + 'points/points.npy'
+        cells_path
+        points = np.load(cells_path)
+
+        # Subtract the reference point from each cell coordinate
+        displacement = points - estim_tip_coordinates
+        # Calculate the magnitude of the displacement vectors
+        euclidean_distances = np.linalg.norm(displacement, axis=1)
+        plt.hist(euclidean_distances, bins=500)
+        # Add labels and a title
+        plt.xlabel('Euclidean Distance (um)')
+        plt.ylabel('number of cells')
+        plt.title('Histogram of cell Euclidean distances from Estim tip')
+        # Display & save the histogram
+        plt.savefig(histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) + '_euclidean_distances.png')
+     
+        # manhattan distances calculations: sum of the absolute differences of their coordinates
+        manhattan_distances = np.sum(np.abs(points - estim_tip_coordinates), axis=1)
+        manhattan_distances = distance.cdist(points, [estim_tip_coordinates], metric='cityblock')
+        # Plot manhattan distances histogram
+        plt.hist(manhattan_distances, bins = 100)
+        # Add labels
+        plt.title('Histogram of cell Manhattan distances from Estim tip')
+        plt.xlabel('Manhattan distance (um)')
+        plt.ylabel('number of cells')
+        # Save the histogram
+        plt.savefig(histogram_save_path +'/' + str(mouse_id)+ '_' + str(estim_tip_coordinates) + '_manhattan_distances.png')
+        # create subplot with smooth line overlay
+        # sns.histplot(manhattan_distances, kde = True)
+    
+    else:
+        print('Skipping histogram creation...')
+        print('Histograms for ' + str(mouse_id) + " with estim_tip_coordinates " + str(estim_tip_coordinates) + ' have already been created')
+        print('')
+       
+    
+
+    ## Sart of brainrender anylysis 
+    scene_export_path = mouseid_estim_tip_coordinates_folder_path + '/' + mouse_id + '_' +str(estim_tip_coordinates)+ '_scence.html'
 
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
-    print(cells_path)
+   
 
     
      # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
     cells = np.load(cells_path)
     # reference_coord = cells[40000]
-    print("Estim tip Coordinates :" + str(estim_tip_coordinates))
+   
 
     # create points actors for brainrender to plot in the 3D render
     cells_actor = Points(cells_path)
@@ -166,9 +233,10 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # check if 3D render has been saved out
     # if not export the 3D render, which can be opened in a web viewer
     if not os.path.exists(scene_export_path):
+        print('Saving out brainrender scence, this may take a few minutes...')
         scene.export(scene_export_path)
         # os.makedirs(scene_export_path)
-        print('3D render has been created and saved too.')
+        print('3D render has been created and saved too ')
         print(f'{scene_export_path}')
 
     else:

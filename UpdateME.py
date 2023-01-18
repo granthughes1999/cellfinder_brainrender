@@ -20,8 +20,8 @@ cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cel
 # the x-coordinate corresponds to the medial-lateral axis, with positive values towards the right and negative values towards the left. 
 # The y-coordinate corresponds to the dorsal-ventral axis, with positive values towards the dorsal side and negative values towards the ventral side. 
 # The z-coordinate corresponds to the rostral-caudal axis, with positive values towards the rostral side and negative values towards the caudal side. 
-# refrence_point = [8050. -100. 6150.] ----> [x-coordinate, y-coordinate, z-coordinate]
-estim_tip_coordinates = [4850., 7550., 7500.]
+# refrence_point = [8050., -100., 6150.] ----> [x-coordinate, y-coordinate, z-coordinate]
+estim_tip_coordinates = [7700.,  100., 6500.]
 
 # 3. How many top brain regions to evaluate. (default is 5)
 # This represents how many brain regions brainrender will populate when creating a 3D render.
