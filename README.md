@@ -7,11 +7,7 @@ Please check out my napari repository for how to accomplish network retraining.
 
 All the output data from this repository will be saved in a folder titled mouseid_completed_analysis. This folder can be found inside the cellfinder output folder that cellfinder created when you ran it (this will be the file path you used in updateME.py).
 
-
-# Step 1 
-#### Clone this repository 
-
-# Step 2
+# Before you can run these files 
 ### Create Two Anaconda environments 
 ### 1. cellfinder env
 ##### conda create -n cellfinder python=3.9
@@ -22,22 +18,19 @@ All the output data from this repository will be saved in a folder titled mousei
 ##### pip install brainrender
 ##### pip install "numpy<1.24"
 
+# Step 1 
+#### Clone this repository 
 
-
-# Step 3
-## Running cellfinder
-### Skip this step if you already have cellfinder output data, and just want to analyze the data & create a 3D render
-##### updating the information that cellfinder will use to analyze your light-sheet images
+# Step 2
+## updating the information that cellfinder will use to analyze your light-sheet images
 ##### follow the instructions for updating the variables here https://docs.brainglobe.info/cellfinder/user-guide/command-line
 ##### use this link to understand voxel & orentation variables https://docs.brainglobe.info/cellfinder/image-orientation
 ### open run_cellfinder.bat
 ##### update the variables 6 variables, and add extra signal channels if needed
 ##### line 6: cellfinder -s, -b, -o, --orentation, -v, --atlas allen_mouse_50um
 
-
-# Step 4 
-## Skip this step if you have already run cellfinder on your light-sheet images, and have verfied correct cell labling using napari
-#### Running cellfinder
+# Step 3 
+## Running cellfinder
 #### open a Anaconda prompt
 #### activate your cellfinder env
 #### for the Denman Lab Neuropixel Aquisition Computer use "conda activate cellfinder2"
@@ -45,21 +38,23 @@ All the output data from this repository will be saved in a folder titled mousei
 #### (cellfinder2) >> path/to/run_cellfinder.bat
 #### click enter
 #### this step may take 2-8 hours to complete
+
+# Step 4
 ## Verify correct cell labling using napari 
 #### please reference my napari repository for these steps 
 
-
 # Step 5
-## Updating the information needed to execute these files 
-### variables.py
+## Updating UpdateME.py
 ##### Update all the varibales in this folder
-### run this file
-#### If the file does not run 
-##### 1. Check that the folder mouseid_completed_analysis does not already exist in the cellfinder_output folder
-##### if it does you can either delete this folder and run the variables file again 
-##### 2. change your mouseid and run the variables file again
 
-
-## Step 5
+## Step 6
 #### conda activate brainrender
-#### >> python /path/to/brainrender_mac.py
+#### >> python /path/to/create_3d_render.py
+
+# Step 7
+## Updating UpdateME.py
+##### Update all the varibales in this folder
+
+# Step 8
+#### conda activate brainrender
+#### >> python /path/to/create_3d_render.py
