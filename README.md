@@ -12,7 +12,7 @@ All the output data from this repository will be saved in a folder titled mousei
 ### 1. cellfinder env
 ##### conda create -n cellfinder python=3.9
 ##### pip install cellfinder
-##### pip install cellfinder
+
 ### 2. brainrender env
 ##### conda create -n brainrender python=3.9
 ##### pip install brainrender
