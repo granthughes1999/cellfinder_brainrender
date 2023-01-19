@@ -163,6 +163,21 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         evaluate_brain_regions_dictionary, orient='index')
     evaluate_brain_regions_df.rename(index={0: 'acronym'}, inplace=True)
 
+    # create lists of  the extra brain regions you want to evaluate, uses brain_regions_to_evalutate variable value
+    index = []
+    for i in extra_brain_region_acryonm:
+        index.append(brain_regions_acronym.index(i))
+
+    extra_brain_region_names = []
+    for i in index:
+        extra_brain_region_names.append(brain_regions_name[i])
+
+    extra_brain_regions_dictionary = dict(
+        zip(evaluate_brain_regions, evaluate_brain_region_acronyms))
+    evaluate_brain_regions_df = pd.DataFrame.from_dict(
+        evaluate_brain_regions_dictionary, orient='index')
+    evaluate_brain_regions_df.rename(index={0: 'acronym'}, inplace=True)
+
     # unknown from cylinder example file on github
     settings.SHOW_AXES = False
     settings.WHOLE_SCREEN = False
@@ -185,23 +200,24 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
             str(evaluate_brain_region_acronyms[i]), alpha=0.2, color=colors[i])
 
     for i in range(brain_regions_to_evalutate):
+        print(evaluate_brain_region_acronyms[i])
         scene.add_label(evaluate_brain_region_acronyms[i], str(
             evaluate_brain_regions[i]))
     
  
     # # Add extra brain regions. specified in the extra_brain_region_acryonm list found in UpdateME.py
-    # list_len = len(extra_brain_region_acryonm)
-    # if len(extra_brain_region_acryonm) == 0:
-    #     print("adding no extra brain region to this render. to see addition brain regions, add their acryonms to the extra_brain_regions array in UpdateME.py. A full list of brain regions and their associated acryonms is saved in this repository as acronym_brainregions.csv'")
-    # else:
-    #     for i in range(list_len):
-    #         extra_brain_region_acryonm[i] = scene.add_brain_region(
-    #         str(extra_brain_region_acryonm[i]), alpha=0.2, color='yellow')
-        
-    #     for i in range(list_len):
-    #         # brain_region_name = BrainGlobeAtlas_dictionary[str(extra_brain_region_acryonm[i])]
-    #         # print(str(extra_brain_region_acryonm[i]))
-    #         scene.add_label('VIS', 'Visual Areas')
+
+    list_len = len(extra_brain_region_acryonm)
+    if len(extra_brain_region_acryonm) == 0:
+        print("adding no extra brain region to this render. to see addition brain regions, add their acryonms to the extra_brain_regions array in UpdateME.py. A full list of brain regions and their associated acryonms is saved in this repository as acronym_brainregions.csv'")
+    else:
+        for i in range(list_len):
+            extra_brain_region_acryonm[i] = scene.add_brain_region(
+            str(extra_brain_region_acryonm[i]), alpha=0.2, color='yellow')
+
+        for i in range(list_len):
+            print(extra_brain_region_names[i])
+            scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i]))
 
 
 

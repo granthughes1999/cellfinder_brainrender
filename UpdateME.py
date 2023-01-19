@@ -37,6 +37,7 @@ cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cel
 # by changing these coordinates you can re-run create_3d_brain_render.py, and a new 3d-redner with this electrode cylinder and histograms will be created 
 #  Some examples to try
 # [7750.  300. 7550.] [8400.  450. 4500.] [8900. 1000. 4050.] [4750. 4900. 1900.] [9450. 6050. 2150.] [8550. 6700. 1700.] [7650. 7300. 2550.] [4600. 7150. 8250.] [4500. 7450. 7550.]
+# Good example: [4750., 4900., 1900.] (middle of brain)
 estim_tip_coordinates = [4750., 4900., 1900.]  
 
 # 4. How many top brain regions to evaluate. (default is 5)
@@ -54,7 +55,7 @@ brain_regions_to_evalutate = 5
 # VIS = Visual Areas
 # AUDv4 = Ventral auditory area, layer 4
 # all these brain regions currently load in pink
-extra_brain_region_acryonm = ["VIS","AUDv4"]
+extra_brain_region_acryonm = ['VIS','AUDv4']
 
 #  OPTIONAL
 
