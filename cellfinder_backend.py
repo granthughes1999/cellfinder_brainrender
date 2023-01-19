@@ -7,6 +7,7 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+
 1  # !/usr/bin/env python
 # coding: utf-8
 
@@ -59,6 +60,11 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         all_gfp_dictionary = dict(
             zip(all_gfp_brain_regions, all_gfp_brain_regions_cell_count))
         all_gfp_df = pd.DataFrame.from_dict(all_gfp_dictionary, orient='index')
+
+         # File path to the desktop
+        file_path_0 = new_folder_path + '/all_brainregion_cell_count_list.pkl'
+        with open(file_path_0 , 'wb') as f:
+            pickle.dump(all_gfp_dictionary, f)
 
         # Find all brain regions with labeled gfp cells, make gfp_df
         gfp_cells_df = gfp_df[gfp_df['total_cells'] >= 1]

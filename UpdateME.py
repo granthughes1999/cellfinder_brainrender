@@ -39,6 +39,9 @@ cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cel
 # [7750.  300. 7550.] [8400.  450. 4500.] [8900. 1000. 4050.] [4750. 4900. 1900.] [9450. 6050. 2150.] [8550. 6700. 1700.] [7650. 7300. 2550.] [4600. 7150. 8250.] [4500. 7450. 7550.]
 # Good example: [4750., 4900., 1900.] (middle of brain)
 estim_tip_coordinates = [4750., 4900., 1900.]  
+estim_shank_radius_um = 50
+estim_tip_radius_um = 50
+estim_propigation_radius_um = 300
 
 # 4. How many top brain regions to evaluate. (default is 5)
 # This represents how many brain regions brainrender will populate when creating a 3D render.
@@ -52,17 +55,15 @@ brain_regions_to_evalutate = 5
 # use the acronym of the brain region you want to load. 
 # the acronym_brainregions.csv file in this repoistory  will show you what acronym aligns with what brain regions
 # example:  brain_regions = ["CH", "CTX", ...]
-# VIS = Visual Areas
-# AUDv4 = Ventral auditory area, layer 4
-
+# VISp1 = Primary Visual Areas layer 1
+# VISp2/3 = Primary Visual Areas layer 2/3
 # all these brain regions currently load in pink
-extra_brain_region_acryonm = ['VIS','AUDv4','MOs','SSp-tr']
+# Some brain regions are not apart of brainrender, please double check
+extra_brain_region_acryonm = ['VIS','VISp1','VISp2/3','VISp4','VISp5','VISp6a','VISp6b']
 
-#  OPTIONAL
+#  _______________ OPTIONAL _____________
 
 # 4. path to local location of allen mouse brain atlas
 # you can check which allen atlas you have stored locally by running the allen_atlas_verification.py file
 allen_mouse_10um = '/Users/grant/brainglobe/allen_mouse_10um'
 
-# 5. Your brainrender conda env name
-brainrender_env_name = 'brainrender'

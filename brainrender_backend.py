@@ -13,7 +13,7 @@ import json
 from bg_atlasapi import show_atlases
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 import UpdateME
-from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates, extra_brain_region_acryonm
+from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates, extra_brain_region_acryonm, estim_shank_radius_um, estim_tip_radius_um, estim_propigation_radius_um
 import os
 import brainrender
 from vedo import Spheres, Sphere
@@ -24,9 +24,10 @@ import seaborn as sns
 brainrender.SHADER_STYLE = "cartoon"
 import cellfinder_backend
 from cellfinder_backend import analyze_data_cellfinder
+import pickle 
 
 
-def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
+def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um):
 
     # Run the function from cellfinder_backend.py
     analyze_data_cellfinder(cellfinder_output_path, mouse_id)
@@ -153,7 +154,8 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # create points actors for brainrender to plot in the 3D render
     cells_actor = Points(cells_path)
     #  mesh = Sphere(pos=pos, r=radius, c=color, alpha=alpha, res=res)
-    estim_tip_sphere_actor = Sphere(estim_tip_coordinates,100,"green",)
+    estim_tip_sphere_actor = Sphere(estim_tip_coordinates,estim_tip_radius_um,"green",)
+    estim_propigation_sphere_actor = Sphere(estim_tip_coordinates,estim_propigation_radius_um,"gray",0.25)
 
 
 
@@ -206,7 +208,8 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     evaluate_brain_regions_df = pd.DataFrame.from_dict(
         evaluate_brain_regions_dictionary, orient='index')
     evaluate_brain_regions_df.rename(index={0: 'acronym'}, inplace=True)
-
+    
+    
     # create lists of  the extra brain regions you want to evaluate, uses brain_regions_to_evalutate variable value
     index = []
     for i in extra_brain_region_acryonm:
@@ -246,11 +249,18 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     for i in range(brain_regions_to_evalutate):
         print(evaluate_brain_region_acronyms[i])
         scene.add_label(evaluate_brain_region_acronyms[i], str(
-            evaluate_brain_regions[i]))
+            evaluate_brain_regions[i])+' '+ str(brain_regions_count_list[i]))
     
  
-    # # Add extra brain regions. specified in the extra_brain_region_acryonm list found in UpdateME.py
 
+    # load in the dictonary that has all the brain regions and their call counts for this mouse
+    all_brain_region_cell_count_path = cellfinder_output_path + \
+        str(mouse_id) + "_Completed_Analysis" + '/all_brainregion_cell_count_list.pkl'
+    with open(all_brain_region_cell_count_path, 'rb') as f:
+        loaded_cell_count_dict = pickle.load(f)
+
+    print(loaded_cell_count_dict)
+     # # Add extra brain regions. specified in the extra_brain_region_acryonm list found in UpdateME.py
     list_len = len(extra_brain_region_acryonm)
     if len(extra_brain_region_acryonm) == 0:
         print("adding no extra brain region to this render. to see addition brain regions, add their acryonms to the extra_brain_regions array in UpdateME.py. A full list of brain regions and their associated acryonms is saved in this repository as acronym_brainregions.csv'")
@@ -258,10 +268,15 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         for i in range(list_len):
             extra_brain_region_acryonm[i] = scene.add_brain_region(
             str(extra_brain_region_acryonm[i]), alpha=0.2, color='yellow')
-
+   
         for i in range(list_len):
-            print(extra_brain_region_names[i])
-            scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i]))
+             for key in loaded_cell_count_dict.keys():
+                value = loaded_cell_count_dict.get(str(extra_brain_region_names[i]))
+                if value is None:
+                    print(str(extra_brain_region_names[i]) + " is not apart of brainrenders brainregions, skipping...")
+                    continue
+                cell_count = loaded_cell_count_dict[str(extra_brain_region_names[i])]
+                scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + str(cell_count) +' '+ '(Manually Added)')
 
 
 
@@ -285,7 +300,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         scene.root,  # the cylinder actor needs information about the root mesh
         "powderblue",
         1,
-        100,
+        estim_shank_radius_um,
      )
 
     # NOT sure what this does, from brainrender documentation...
@@ -296,7 +311,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
 
     # Add cells Actor to Scence
-    scene.add(cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,)
+    scene.add(cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor )
 
     # print the content of the scence
     scene.content
