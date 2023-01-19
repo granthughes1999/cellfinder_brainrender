@@ -47,14 +47,6 @@ All the output data from this repository will be saved in a folder titled mousei
 ## Updating UpdateME.py
 ##### Update all the varibales in this folder
 
-## Step 6
-#### conda activate brainrender
-#### >> python /path/to/create_3d_render.py
-
-# Step 7
-## Updating UpdateME.py
-##### Update all the varibales in this folder
-
-# Step 8
-#### conda activate brainrender
+# Step 6
+#### activate your brainrender env
 #### >> python /path/to/create_3d_render.py
