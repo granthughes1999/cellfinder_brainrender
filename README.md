@@ -37,7 +37,7 @@ All the output data from this repository will be saved in a folder titled mousei
 #### drop in run_cellfinder.bat
 #### (cellfinder2) >> path/to/run_cellfinder.bat
 #### click enter
-#### this step may take 2-8 hours to complete
+#### this step may take 2-8 hours to complete per brain
 
 # Step 4
 ## Verify correct cell labling using napari 
