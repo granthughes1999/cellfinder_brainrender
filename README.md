@@ -1,7 +1,7 @@
 # Analyze and Visualize Electrical Brain Stimuluation Data 
 This repository is designed to work with light-sheet images. 
 Specifaclly GFP-labled-cells as a result of DBS prefromed on Cal-light mice, and tdTomato-labled-cells used as a control.
-Note you may/likely need to retrain the cellfinder cell_classification network before procceding to with these analysis steps.
+Note you may/likely need to retrain the cellfinder cell_classification network before procceding to Step 5.
 Please check out my napari repository for how to accomplish network retraining.
 
 All the output data from this repository will be saved in a folder titled mouse_id_Completed_Analysis. This folder will be added to the cellfinder output folder that cellfinder created when you ran it (this should be the file path you use for cellfinder_output_path variable in updateME.py).
