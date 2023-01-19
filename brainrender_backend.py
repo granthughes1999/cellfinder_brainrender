@@ -28,6 +28,7 @@ from cellfinder_backend import analyze_data_cellfinder
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
 
+    # Run the function from cellfinder_backend.py
     analyze_data_cellfinder(cellfinder_output_path, mouse_id)
 
     print('Creating 3D-render and histograms for')
@@ -240,7 +241,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
               "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue"]
     for i in range(brain_regions_to_evalutate):
         evaluate_brain_region_acronyms[i] = scene.add_brain_region(
-            str(evaluate_brain_region_acronyms[i]), alpha=0.2, color=colors[i])
+            str(evaluate_brain_region_acronyms[i]), alpha=0.2, color='blue')
 
     for i in range(brain_regions_to_evalutate):
         print(evaluate_brain_region_acronyms[i])
@@ -282,7 +283,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         # have cylinder run from the referece point to the brains surface 
         estim_tip_coordinates,
         scene.root,  # the cylinder actor needs information about the root mesh
-        "yellow",
+        "powderblue",
         1,
         100,
      )
