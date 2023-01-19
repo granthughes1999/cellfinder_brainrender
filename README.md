@@ -4,7 +4,7 @@ Specifaclly GFP-labled-cells as a result of DBS prefromed on Cal-light mice, and
 Note you may/likely need to retrain the cellfinder cell_classification network before procceding to with these analysis steps.
 Please check out my napari repository for how to accomplish network retraining.
 
-All the output data from this repository will be saved in a folder titled mouseid_completed_analysis. This folder will be added to the cellfinder output folder that cellfinder created when you ran it (this should be the file path you use for cellfinder_output_path variable in updateME.py).
+All the output data from this repository will be saved in a folder titled mouse_id_Completed_Analysis. This folder will be added to the cellfinder output folder that cellfinder created when you ran it (this should be the file path you use for cellfinder_output_path variable in updateME.py).
 
 # Before you can run these files 
 ### Create Two Anaconda environments 
