@@ -19,7 +19,7 @@
 # ___________________________________________ Update these variables ___________________________________
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_007"
+mouse_id = "test_008"
 
 # 2. path to the cellfinder gfp signal channel output folder 
 # this is where all the data from this repository will be saved to, in a folder called mouse_id_Completed_Anaylysis
@@ -54,8 +54,9 @@ brain_regions_to_evalutate = 5
 # example:  brain_regions = ["CH", "CTX", ...]
 # VIS = Visual Areas
 # AUDv4 = Ventral auditory area, layer 4
+
 # all these brain regions currently load in pink
-extra_brain_region_acryonm = ['VIS','AUDv4']
+extra_brain_region_acryonm = ['VIS','AUDv4','MOs','SSp-tr']
 
 #  OPTIONAL
 

@@ -22,9 +22,13 @@ import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import seaborn as sns
 brainrender.SHADER_STYLE = "cartoon"
+import cellfinder_backend
+from cellfinder_backend import analyze_data_cellfinder
 
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um):
+
+    analyze_data_cellfinder(cellfinder_output_path, mouse_id)
 
     print('Creating 3D-render and histograms for')
     print("mouse_id: " + str(mouse_id))
