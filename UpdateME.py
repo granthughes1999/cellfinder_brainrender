@@ -59,7 +59,7 @@ brain_regions_to_evalutate = 5
 # VISp2/3 = Primary Visual Areas layer 2/3
 # all these brain regions currently load in pink
 # Some brain regions are not apart of brainrender, please double check
-extra_brain_region_acryonm = ['VIS','VISp1','VISp2/3','VISp4','VISp5','VISp6a','VISp6b']
+extra_brain_region_acryonm = ['VIS','ECT','VISp1','VISp2/3','VISp4','VISp5','VISp6a','VISp6b']
 
 #  _______________ OPTIONAL _____________
 

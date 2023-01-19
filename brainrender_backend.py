@@ -259,7 +259,6 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     with open(all_brain_region_cell_count_path, 'rb') as f:
         loaded_cell_count_dict = pickle.load(f)
 
-    print(loaded_cell_count_dict)
      # # Add extra brain regions. specified in the extra_brain_region_acryonm list found in UpdateME.py
     list_len = len(extra_brain_region_acryonm)
     if len(extra_brain_region_acryonm) == 0:
@@ -273,7 +272,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
              for key in loaded_cell_count_dict.keys():
                 value = loaded_cell_count_dict.get(str(extra_brain_region_names[i]))
                 if value is None:
-                    print(str(extra_brain_region_names[i]) + " is not apart of brainrenders brainregions, skipping...")
+                    scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + '(Manually Added)')
                     continue
                 cell_count = loaded_cell_count_dict[str(extra_brain_region_names[i])]
                 scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + str(cell_count) +' '+ '(Manually Added)')
