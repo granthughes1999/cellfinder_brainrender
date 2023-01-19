@@ -48,4 +48,4 @@ All the output data from this repository will be saved in a folder titled mouse_
 
 # Step 6
 #### activate your brainrender env
-#### >> python /path/to/create_3d_render.py
+#### >> python /path/to/create_3d_brain_render.py
