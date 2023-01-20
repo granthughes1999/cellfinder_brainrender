@@ -1,5 +1,6 @@
 from brainrender.scene import Scene
 from brainrender.actors import Points
+from brainrender.actors import PointsDensity
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 from brainrender import settings
 from brainrender.actors import Cylinder
@@ -25,6 +26,9 @@ brainrender.SHADER_STYLE = "cartoon"
 import cellfinder_backend
 from cellfinder_backend import analyze_data_cellfinder
 import pickle 
+from distance_calculations_and_histograms import distance_calculations_histograms
+from brainrender.actor import Actor
+
 
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um):
@@ -47,101 +51,14 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         print('')
     else: 
         print('brainrender_output folder already exisits for ' + str(mouse_id) +' with estim_tip_coordinates of ' + str(estim_tip_coordinates))
-    # Create new folder in your cellfinder output folder
-    mouseid_estim_tip_coordinates_folder_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates)   # create the path for the new folder
-    histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms'
-    npy_folder_path = histogram_folder_path + '/' + "distance_arrays"
-    if not os.path.exists(histogram_folder_path):
-        os.makedirs(histogram_folder_path)
-        os.makedirs(npy_folder_path)
-        print('Histogram folder has been created at')
-        print(f'{ histogram_folder_path}')
-        print('')
-        print('Making histograms...')
-        print('')
-
-        histogram_save_path = histogram_folder_path 
-        # npy_save_path = histogram_save_path + '/' + 'distance_arrays'
-        # Calaculate 3d-space distances for cells relative to estim_tip_coordinates. and save out histograms of those distances
-        # Path to cellfinder_output points.npy file
-        cells_path = cellfinder_output_path + 'points/points.npy'
-        cells_path
-        points = np.load(cells_path)
-        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) 
-
-        # Subtract the reference point from each cell coordinate
-        displacement = points - estim_tip_coordinates
-        # Calculate the magnitude of the displacement vectors
-        euclidean_distances = np.linalg.norm(displacement, axis=1)
-        plt.hist(euclidean_distances, bins=500)
-        # Add labels and a title
-        plt.xlabel('Euclidean Distance (um)')
-        plt.ylabel('number of cells')
-        plt.title('Histogram of cell Euclidean distances from Estim tip')
-        # Display & save the histogram
-        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) 
-        plt.savefig(hist_save_path + '_euclidean_distances.png')
-        np.save(npy_folder_path +'/'+ 'euclidean_distances.npy', euclidean_distances) 
-        plt.close()
-        sns.histplot(euclidean_distances, kde = True)
-        plt.savefig(hist_save_path + '_sns_euclidean_distances.png')
-        plt.close()
-
-     
-        # manhattan distances calculations: sum of the absolute differences of their coordinates
-        manhattan_distances = np.sum(np.abs(points - estim_tip_coordinates), axis=1)
-        manhattan_distances = distance.cdist(points, [estim_tip_coordinates], metric='cityblock')
-        # Plot manhattan distances histogram
-        plt.hist(manhattan_distances, bins = 100)
-        # Add labels
-        plt.title('Histogram of cell Manhattan distances from Estim tip')
-        plt.xlabel('Manhattan distance (um)')
-        plt.ylabel('number of cells')
-        # Save the histogram
-        plt.savefig(hist_save_path + '_manhattan_distances.png')
-        np.save(npy_folder_path+'/' + 'manhattan_distances.npy', manhattan_distances) 
-        plt.close()
-        # create subplot with smooth line overlay
-        sns.histplot(manhattan_distances, kde = True)
-        plt.savefig(hist_save_path + '_sns_manhattan_distances.png')
-        plt.close()
-
-        p = 3
-        minkowski_distances = distance.cdist(points, [estim_tip_coordinates], 'minkowski', p=p)
-
-        plt.hist(minkowski_distances, bins=100)
-        plt.xlabel('Minkowski Distance (um) (p={})'.format(p))
-        plt.ylabel('Cell Count')
-        plt.title('Histogram of Minkowski Distances')
-        plt.savefig(hist_save_path + '_minkowski_distances.png')
-        np.save(npy_folder_path +'/'+  'minkowski_distances.npy', minkowski_distances) 
-        plt.close()
-        sns.histplot(minkowski_distances, kde = True)
-        plt.savefig(hist_save_path + '_sns_minkowski_distances.png')
-        plt.close()
-
-
-        chebyshev_distances = distance.cdist(points, [estim_tip_coordinates], 'chebyshev')
-        plt.hist(chebyshev_distances, bins=100)
-        plt.xlabel('Chebyshev Distance (um)')
-        plt.ylabel('Cell count')
-        plt.title('Histogram of Chebyshev Distances')
-        plt.savefig(hist_save_path + '_chebyshev_distances.png')
-        np.save(npy_folder_path +'/'+  'chebyshev_distances.npy', chebyshev_distances) 
-        plt.close()
-        sns.histplot(minkowski_distances, kde = True)
-        plt.savefig(hist_save_path + '_sns_chebyshev_distances.png')
-        plt.close()
     
-    else:
-        print('Skipping histogram creation...')
-        print('Histograms for ' + str(mouse_id) + " with estim_tip_coordinates " + str(estim_tip_coordinates) + ' have already been created')
-        print('')
-       
+    # run distance_calculations_histograms() from distance_calculation_and_histograms.py
+    # calculates 3d-space distances, saves out each cells distance in arrays, and creates histograms of those distances relative to the estim_tip coordinates
+    distance_calculations_histograms(brainrender_folder_path)
     
 
     ## Sart of brainrender anylysis 
-    scene_export_path = mouseid_estim_tip_coordinates_folder_path + '/' + mouse_id + '_' +str(estim_tip_coordinates)+ '_scence.html'
+    scene_export_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '/' + mouse_id + '_' +str(estim_tip_coordinates)+ '_scence.html'
 
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
@@ -154,9 +71,11 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # create points actors for brainrender to plot in the 3D render
     cells_actor = Points(cells_path)
     #  mesh = Sphere(pos=pos, r=radius, c=color, alpha=alpha, res=res)
+  
     estim_tip_sphere_actor = Sphere(estim_tip_coordinates,estim_tip_radius_um,"green",)
     estim_propigation_sphere_actor = Sphere(estim_tip_coordinates,estim_propigation_radius_um,"gray",0.25)
-
+    estim_tip_coordinates_array = np.array([estim_tip_coordinates])
+    # cell_volume_in_propigation_sphere_actor = PointsDensity(data=estim_tip_coordinates_array,name='Electical Propigation Sphere',dims=(100, 100, 100),radius=1000,)
 
 
     # read in braingloab regions df, make lists of names and acryonms
@@ -250,6 +169,9 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         print(evaluate_brain_region_acronyms[i])
         scene.add_label(evaluate_brain_region_acronyms[i], str(
             evaluate_brain_regions[i])+' '+ str(brain_regions_count_list[i]))
+    
+    # scene.add_label(cell_volume_in_propigation_sphere_actor, "Count Volume")
+
     
  
 

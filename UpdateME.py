@@ -19,7 +19,7 @@
 # ___________________________________________ Update these variables ___________________________________
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_008"
+mouse_id = "test_012"
 
 # 2. path to the cellfinder gfp signal channel output folder 
 # this is where all the data from this repository will be saved to, in a folder called mouse_id_Completed_Anaylysis
@@ -38,7 +38,7 @@ cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cel
 #  Some examples to try
 # [7750.  300. 7550.] [8400.  450. 4500.] [8900. 1000. 4050.] [4750. 4900. 1900.] [9450. 6050. 2150.] [8550. 6700. 1700.] [7650. 7300. 2550.] [4600. 7150. 8250.] [4500. 7450. 7550.]
 # Good example: [4750., 4900., 1900.] (middle of brain)
-estim_tip_coordinates = [4750., 4900., 1900.]  
+estim_tip_coordinates = [4600., 7150., 8250.]  
 estim_shank_radius_um = 50
 estim_tip_radius_um = 50
 estim_propigation_radius_um = 300
@@ -49,7 +49,7 @@ estim_propigation_radius_um = 300
 # if it fails to render, it may be because there is not enough colors in the color array on line 176 of brainrender_backend.py
 # you can add more colors to that list if you would like 
 # you can also change the colors in this list. i have the same 5 repreating, but there are more options
-brain_regions_to_evalutate = 5
+brain_regions_to_evalutate = 6
 
 # 5. What extra brain regions you to have render
 # use the acronym of the brain region you want to load. 
