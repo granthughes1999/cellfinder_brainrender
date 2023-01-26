@@ -26,10 +26,11 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
     if not os.path.exists(new_folder_path):
         os.makedirs(new_folder_path)
-        print('folder has been created.')
+        print(' ')
+        print('folder with output data has been created.')
         print(f'{new_folder_path}')
         print('')
-        print('running analysis')
+        print('running cellfinder_backend.py analysis')
 
         # ### Read in tdTomato & GFP output data from cellfinder
 
@@ -50,11 +51,11 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
         # make list of each brain region with labeled cells
         all_gfp_brain_regions = gfp_df['structure_name'].to_list()
-        print("All Brain Regions: " + str(len(all_gfp_brain_regions)))
+        # print("All Brain Regions: " + str(len(all_gfp_brain_regions)))
 
         # make a list of total cell count for each brain region labeled with GFP
         all_gfp_brain_regions_cell_count = gfp_df['total_cells'].to_list()
-        print("total cells: " + str(sum(all_gfp_brain_regions_cell_count)))
+        # print("total cells: " + str(sum(all_gfp_brain_regions_cell_count)))
 
         # make dict of brain_regions & cell_count
         all_gfp_dictionary = dict(
@@ -95,7 +96,6 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
         # File path to the desktop
         count_file_path = new_folder_path + '/gfp_brainregions_count.json'
-        print(count_file_path)
 
         # Open a file
         with open(count_file_path, 'w') as f:
@@ -106,12 +106,12 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
         # make list of each brain region with labeled cells
         all_tdTomato_brain_regions = tdTomato_df['structure_name'].to_list()
-        print("All Brain Regions: " + str(len(all_tdTomato_brain_regions)))
+        # print("All Brain Regions: " + str(len(all_tdTomato_brain_regions)))
 
         # make a list of total cell count for each brain region labeled with GFP
         all_tdTomato_brain_regions_cell_count = tdTomato_df['total_cells'].to_list(
         )
-        print("total cells: " + str(sum(all_tdTomato_brain_regions_cell_count)))
+        # print("total cells: " + str(sum(all_tdTomato_brain_regions_cell_count)))
 
         # make dict of brain_regions & cell_count
         all_tdTomato_dictionary = dict(

@@ -116,6 +116,5 @@ def distance_calculations_histograms(brainrender_folder_path):
         plt.close()
 
     else:
-        print('Skipping histogram creation...')
-        print('Histograms for ' + str(mouse_id) + " with estim_tip_coordinates " + str(estim_tip_coordinates) + ' have already been created')
+        print('Skipping histogram creation, because ' + 'histograms for ' + str(mouse_id) + " with estim_tip_coordinates " + str(estim_tip_coordinates) + ' have already been created')
         print('')

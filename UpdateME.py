@@ -19,14 +19,14 @@
 # ___________________________________________ Update these variables ___________________________________
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_012"
+mouse_id = "test_013"
 
 # 2. path to the cellfinder gfp signal channel output folder 
 # this is where all the data from this repository will be saved to, in a folder called mouse_id_Completed_Anaylysis
 # analysis from these files will be added to this output folder
 # in a new folder titled --> str(mouse_id) + "_Completed_Analysis"
 # ADD '/' at the end of your output path example: "/Users/grant/Desktop/mock_cellfinder_output/"
-cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/"
+cellfinder_output_path = "/Users/grant/Desktop/work/Denman_Lab/Cal_Light/brainrender/cellfinder_brainrender_output/cellfinder_output/"
 
 # 3. Electrode tip Voxel coordinates. using Paxinos-Franklin coordinate system where:
 # the x-coordinate corresponds to the medial-lateral axis, with positive values towards the right and negative values towards the left. 
@@ -38,10 +38,18 @@ cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cel
 #  Some examples to try
 # [7750.  300. 7550.] [8400.  450. 4500.] [8900. 1000. 4050.] [4750. 4900. 1900.] [9450. 6050. 2150.] [8550. 6700. 1700.] [7650. 7300. 2550.] [4600. 7150. 8250.] [4500. 7450. 7550.]
 # Good example: [4750., 4900., 1900.] (middle of brain)
-estim_tip_coordinates = [4600., 7150., 8250.]  
+# [rostral-caudal, z-dpeth, medial-lateral ]
+ #[higher# = back of brain, higher# = deeper, higher# = right hemi]
+estim_tip_coordinates = [5300., 5350., 3300.]  
+
+opticalfiber_tip_coordinates = [5450., 5500., 3450.] 
+
+
+opticalfiber_propigation_radius_um = 200
 estim_shank_radius_um = 50
 estim_tip_radius_um = 50
 estim_propigation_radius_um = 300
+opticalfiper_radius_um = 10
 
 # 4. How many top brain regions to evaluate. (default is 5)
 # This represents how many brain regions brainrender will populate when creating a 3D render.

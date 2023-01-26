@@ -1,44 +1,52 @@
+# General Imports
+import numpy as np
+import os
+import pandas as pd
+import json
+from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pickle 
+from scipy.spatial import distance
+from rich import print
+from myterial import orange
+# brainrender files/function imports
+import brainrender
 from brainrender.scene import Scene
 from brainrender.actors import Points
 from brainrender.actors import PointsDensity
-from bg_atlasapi.bg_atlas import BrainGlobeAtlas
+from brainrender.actor import Actor
 from brainrender import settings
+from brainrender import Scene
 from brainrender.actors import Cylinder
-import bg_space as bg
-import numpy as np
-from rich import print
-from myterial import orange
-from pathlib import Path
-import pandas as pd
-import json
-from bg_atlasapi import show_atlases
-from bg_atlasapi.bg_atlas import BrainGlobeAtlas
-import UpdateME
-from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates, extra_brain_region_acryonm, estim_shank_radius_um, estim_tip_radius_um, estim_propigation_radius_um
-import os
-import brainrender
+brainrender.SHADER_STYLE = "cartoon"
+# vedo imports
 from vedo import Spheres, Sphere
 from vedo import Points as vPoints
-import matplotlib.pyplot as plt
-from scipy.spatial import distance
-import seaborn as sns
-brainrender.SHADER_STYLE = "cartoon"
+# bg_atlasapi imports
+from bg_atlasapi.bg_atlas import BrainGlobeAtlas
+import bg_space as bg
+from bg_atlasapi import show_atlases
+from bg_atlasapi.bg_atlas import BrainGlobeAtlas
+# files and variables from this repo imports
+import UpdateME
+from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates, extra_brain_region_acryonm, estim_shank_radius_um, estim_tip_radius_um, estim_propigation_radius_um, opticalfiper_radius_um, opticalfiber_tip_coordinates,opticalfiber_propigation_radius_um
 import cellfinder_backend
 from cellfinder_backend import analyze_data_cellfinder
-import pickle 
 from distance_calculations_and_histograms import distance_calculations_histograms
-from brainrender.actor import Actor
-
+from vector_calculations import estim_cell_coordinates
 
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um):
 
     # Run the function from cellfinder_backend.py
     analyze_data_cellfinder(cellfinder_output_path, mouse_id)
-
-    print('Creating 3D-render and histograms for')
+    print(' ')
+    print("Running brainrender_backend.py")
+    print('Creating 3D-render and calculating distances for each cell relative to your estim_tip_coordinates')
     print("mouse_id: " + str(mouse_id))
-    print("with estim_tip_coordinates :" +str(estim_tip_coordinates))
+    print("estim_tip_coordinates :" +str(estim_tip_coordinates))
+    print(' ')
     
     # Create new brainrender folder in your cellfinder output folder
     brainrender_folder_path = cellfinder_output_path + \
@@ -62,18 +70,29 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
+    g17_cells_path = cellfinder_output_path + 'points/g17_points.npy'
+
+  
+
    
      # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
     cells = np.load(cells_path)
+    g17_cells = np.load(g17_cells_path)
+
+    g17_cells = g17_cells  * 100
+    print(g17_cells) 
+
     # reference_coord = cells[40000]
    
 
     # create points actors for brainrender to plot in the 3D render
-    cells_actor = Points(cells_path)
+    cells_actor = Points(cells)
+    g17_cells_actor = Points(g17_cells,"green")
     #  mesh = Sphere(pos=pos, r=radius, c=color, alpha=alpha, res=res)
   
     estim_tip_sphere_actor = Sphere(estim_tip_coordinates,estim_tip_radius_um,"green",)
-    estim_propigation_sphere_actor = Sphere(estim_tip_coordinates,estim_propigation_radius_um,"gray",0.25)
+    estim_propigation_sphere_actor = Sphere(estim_tip_coordinates,estim_propigation_radius_um,"black",0.25)
+    opticalfiber_propigation_sphere_actor = Sphere(opticalfiber_tip_coordinates,opticalfiber_propigation_radius_um,"blue",0.25)
     estim_tip_coordinates_array = np.array([estim_tip_coordinates])
     # cell_volume_in_propigation_sphere_actor = PointsDensity(data=estim_tip_coordinates_array,name='Electical Propigation Sphere',dims=(100, 100, 100),radius=1000,)
 
@@ -106,11 +125,11 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         zip(brain_regions_list, brain_regions_count_list))
     brain_regions_df = pd.DataFrame.from_dict(
         brain_regions_dictionary, orient='index')
-    print("The "+str(brain_regions_to_evalutate) +
-          " brain regions your loading with labled cells count")
+  
     evaluate = list(brain_regions_dictionary.items())[
         :brain_regions_to_evalutate]
-    print(evaluate)
+
+
 
     # create lists of just the brain regions you want to evaluate, uses brain_regions_to_evalutate variable value
     evaluate_brain_regions = brain_regions_list[0:brain_regions_to_evalutate]
@@ -139,7 +158,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         extra_brain_region_names.append(brain_regions_name[i])
 
     extra_brain_regions_dictionary = dict(
-        zip(evaluate_brain_regions, evaluate_brain_region_acronyms))
+        zip(extra_brain_region_names, extra_brain_region_acryonm))
     evaluate_brain_regions_df = pd.DataFrame.from_dict(
         evaluate_brain_regions_dictionary, orient='index')
     evaluate_brain_regions_df.rename(index={0: 'acronym'}, inplace=True)
@@ -157,6 +176,22 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     scene = Scene(atlas_name='allen_mouse_50um', title=mouseid)
     print(scene.atlas.space)
 
+     # Iterate over elements in list1
+    for element in evaluate_brain_regions:
+        # Check if element exists in list2
+        if element in extra_brain_region_names:
+            # Remove element from list2
+            extra_brain_region_names.remove(element)
+
+     # Iterate over elements in list1
+    for element in evaluate_brain_region_acronyms:
+        # Check if element exists in list2
+        if element in extra_brain_region_acryonm:
+            # Remove element from list2
+            extra_brain_region_acryonm.remove(element)
+            print(str(element) + ' is already in the top ' + str(brain_regions_to_evalutate) + ' brain regions. Removing from extra brain regions')
+ 
+
     # add top brain regions and labels
     colors = ["red", 'orange', "yellow", "green", "blue", "red", 'orange',
               "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue","red", 'orange', "yellow", "green", "blue", "red", 'orange',
@@ -166,14 +201,11 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
             str(evaluate_brain_region_acronyms[i]), alpha=0.2, color='blue')
 
     for i in range(brain_regions_to_evalutate):
-        print(evaluate_brain_region_acronyms[i])
+        # print(evaluate_brain_region_acronyms[i])
         scene.add_label(evaluate_brain_region_acronyms[i], str(
             evaluate_brain_regions[i])+' '+ str(brain_regions_count_list[i]))
     
     # scene.add_label(cell_volume_in_propigation_sphere_actor, "Count Volume")
-
-    
- 
 
     # load in the dictonary that has all the brain regions and their call counts for this mouse
     all_brain_region_cell_count_path = cellfinder_output_path + \
@@ -181,37 +213,32 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     with open(all_brain_region_cell_count_path, 'rb') as f:
         loaded_cell_count_dict = pickle.load(f)
 
+
+
      # # Add extra brain regions. specified in the extra_brain_region_acryonm list found in UpdateME.py
     list_len = len(extra_brain_region_acryonm)
+    extra_cell_count_list = []
     if len(extra_brain_region_acryonm) == 0:
         print("adding no extra brain region to this render. to see addition brain regions, add their acryonms to the extra_brain_regions array in UpdateME.py. A full list of brain regions and their associated acryonms is saved in this repository as acronym_brainregions.csv'")
     else:
         for i in range(list_len):
             extra_brain_region_acryonm[i] = scene.add_brain_region(
             str(extra_brain_region_acryonm[i]), alpha=0.2, color='yellow')
-   
+    
         for i in range(list_len):
              for key in loaded_cell_count_dict.keys():
                 value = loaded_cell_count_dict.get(str(extra_brain_region_names[i]))
                 if value is None:
+                    extra_cell_count_list.append('n/a')
                     scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + '(Manually Added)')
                     continue
                 cell_count = loaded_cell_count_dict[str(extra_brain_region_names[i])]
+                extra_cell_count_list.append(cell_count)
                 scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + str(cell_count) +' '+ '(Manually Added)')
 
 
-
-    # create and add a cylinder actor to brain region with the most labled cells
-    # mesh = shapes.Cylinder(pos=[top, pos], c=color, r=radius, alpha=alpha)
-    # densest_cell_brain_region_cylinder_actor = Cylinder(
-    #     # center the cylinder at the center of mass of brain region with the most labled gfp cells, by using its varaible name
-    #     evaluate_brain_region_acronyms[0],
-    #     scene.root,
-    #     'powderblue',
-    #     1, 
-    #     100,
-    # )
-
+    extra_brain_regions_dictionary_with_cellcount = dict(
+        zip(extra_brain_region_names, extra_cell_count_list))
     # create and add a cylinder actor to brain region with the most labled cells
      # mesh = shapes.Cylinder(pos=[top, pos], c=color, r=radius, alpha=alpha)
      #  :param pos: list, np.array of ap, dv, ml coordinates. If an actor is passed, get's the center of mass instead
@@ -219,20 +246,30 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         # have cylinder run from the referece point to the brains surface 
         estim_tip_coordinates,
         scene.root,  # the cylinder actor needs information about the root mesh
-        "powderblue",
+        "black",
         1,
         estim_shank_radius_um,
      )
 
-    # NOT sure what this does, from brainrender documentation...
-    # BGSpace AnatomicalSpace Objects
-    # origin: ('Superior', 'Posterior', 'Lateral')
-    # sections: ('Frontal plane')
-    # shape: (528, 320, 456)
+    # pos =  [opticalfiber_surface_coordinates,opticalfiber_tip_coordinates]
+    # print(pos)
+    opticalfiper_cylinder_actor = Cylinder(
+        # have cylinder run from the referece point to the brains surface 
+        opticalfiber_tip_coordinates,
+        scene.root,  # the cylinder actor needs information about the root mesh
+        'blue',
+        1,
+        opticalfiper_radius_um,
+     )
+
+    # Testing 
+    # estim_cell_coordinates_array = np.array([estim_cell_coordinates])
+    # cell_volume_in_propigation_sphere_actor = PointsDensity(data=estim_cell_coordinates_array,name='Electical Propigation Sphere',dims=(100, 100, 100),radius=1000,)
+
 
 
     # Add cells Actor to Scence
-    scene.add(cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor )
+    scene.add(cells_actor,g17_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
 
     # print the content of the scence
     scene.content
@@ -250,9 +287,18 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         print(f'{scene_export_path}')
 
     else:
-        print('A 3D-render of' + str(mouse_id) + ' already exisits...')
+        print('A 3D-render of ' + str(mouse_id) + ' already exisits...')
         print('To save out a new render')
         print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
+        print(' n')
 
     # locally Render the 3D brain Scence
+
+    print("The "+str(brain_regions_to_evalutate) +
+          " brain regions your loading with labled cells count")
+    print(evaluate)
+    print(' ')
+    print("The "+str(len(extra_brain_region_acryonm)) +
+          " extra brain regions your loading with their cell count")
+    print(extra_brain_regions_dictionary_with_cellcount)
     scene.render()
