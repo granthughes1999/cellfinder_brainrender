@@ -8,18 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-1  # !/usr/bin/env python
-# coding: utf-8
-
-# In[109]:
-
-
-
 
 def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
 
-    
     # Create new folder in your cellfinder output folder
     new_folder_path = cellfinder_output_path + \
         str(mouse_id) + "_Completed_Analysis"  # create the path for the new folder
@@ -206,41 +198,3 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         print('to re-run analysis chane mouseid in variables.py or delete previously created mouseid_completed_analysis folder')
 
 
-# >>>> EXTRA CODE, NOT CURRENTLY USED
-# # There are several ways to statistically compare the values at each index location of two lists in Python. Here are a few options:
-# ### 1. Using the scipy library's stats.ttest_ind() function, you can perform a t-test to compare the means of the two lists at each index location. For example:
-
-# t, p = stats.ttest_ind(gfp_brain_regions_cell_count, mock_tdTomato_cellcount)
-
-# ### 2. Using the numpy library's corrcoef() function, you can calculate the correlation coefficient between the two lists at each index location. For example:
-
-# corr = np.corrcoef(gfp_brain_regions_cell_count, mock_tdTomato_cellcount)[0, 1]
-
-# # ### 3.  Using the pandas library, you can create a dataframe from the two lists and use the corr() function to calculate the correlation between the two lists:
-
-# df = pd.DataFrame({'list1': gfp_brain_regions_cell_count, 'list2': mock_tdTomato_cellcount})
-# corr = df['list1'].corr(df['list2'])
-
-# # # load voxel locations of cells
-
-# # In[81]:
-
-# data = np.load("/Users/grant/Desktop/mock_df/points.npy")
-
-# # # Load cell_classification data
-
-# tree = ET.parse("/Users/grant/Desktop/mock_df/cell_classification.xml")
-# root = tree.getroot()
-
-# # Iterate over child elements
-# for child in root:
-#     print(child.tag, child.attrib)
-
-
-# # # load all point
-# all_points = pd.read_csv("/Users/grant/Desktop/mock_df/all_points.csv")
-
-# # # load volumes
-# volumes = pd.read_csv("/Users/grant/Desktop/mock_df/volumes.csv")
-
-# %%

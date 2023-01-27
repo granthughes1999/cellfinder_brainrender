@@ -101,13 +101,6 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
 
 
-
-
-
-
-
-
-
     estim_tip_sphere_actor = Sphere(estim_tip_coordinates,estim_tip_radius_um,"green",)
     estim_propigation_sphere_actor = Sphere(estim_tip_coordinates,estim_propigation_radius_um,"black",0.25)
     opticalfiber_propigation_sphere_actor = Sphere(opticalfiber_tip_coordinates,opticalfiber_propigation_radius_um,"blue",0.25)
@@ -217,11 +210,11 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     for i in range(brain_regions_to_evalutate):
         evaluate_brain_region_acronyms[i] = scene.add_brain_region(
             str(evaluate_brain_region_acronyms[i]), alpha=0.2, color='blue')
-
-    for i in range(brain_regions_to_evalutate):
-        # print(evaluate_brain_region_acronyms[i])
-        scene.add_label(evaluate_brain_region_acronyms[i], str(
-            evaluate_brain_regions[i])+' '+ str(brain_regions_count_list[i]))
+    if show_lables == True:
+        for i in range(brain_regions_to_evalutate):
+            # print(evaluate_brain_region_acronyms[i])
+            scene.add_label(evaluate_brain_region_acronyms[i], str(
+                evaluate_brain_regions[i])+' '+ str(brain_regions_count_list[i]))
     
     # scene.add_label(cell_volume_in_propigation_sphere_actor, "Count Volume")
 
@@ -242,17 +235,18 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         for i in range(list_len):
             extra_brain_region_acryonm[i] = scene.add_brain_region(
             str(extra_brain_region_acryonm[i]), alpha=0.2, color='yellow')
-    
-        for i in range(list_len):
-             for key in loaded_cell_count_dict.keys():
-                value = loaded_cell_count_dict.get(str(extra_brain_region_names[i]))
-                if value is None:
-                    extra_cell_count_list.append('n/a')
-                    scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + '(Manually Added)')
-                    continue
-                cell_count = loaded_cell_count_dict[str(extra_brain_region_names[i])]
-                extra_cell_count_list.append(cell_count)
-                scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + str(cell_count) +' '+ '(Manually Added)')
+        if show_lables == True:
+            for i in range(list_len):
+                for key in loaded_cell_count_dict.keys():
+                    value = loaded_cell_count_dict.get(str(extra_brain_region_names[i]))
+                    if value is None:
+                        extra_cell_count_list.append('n/a')
+                        scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + '(Manually Added)')
+                        continue
+                    cell_count = loaded_cell_count_dict[str(extra_brain_region_names[i])]
+                    extra_cell_count_list.append(cell_count)
+                    scene.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + str(cell_count) +' '+ '(Manually Added)')
+     
 
 
     extra_brain_regions_dictionary_with_cellcount = dict(
@@ -283,8 +277,6 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # Testing 
     # estim_cell_coordinates_array = np.array([estim_cell_coordinates])
     # cell_volume_in_propigation_sphere_actor = PointsDensity(data=estim_cell_coordinates_array,name='Electical Propigation Sphere',dims=(100, 100, 100),radius=1000,)
-
-
 
     # Add cells Actor to Scence
     scene.add(modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)

@@ -59,6 +59,10 @@ opticalfiper_radius_um = 10
 # you can also change the colors in this list. i have the same 5 repreating, but there are more options
 brain_regions_to_evalutate = 6
 
+# True will show brain region lables and their cell count in the 3D render
+# False will not show the brain region lables in the 3D render
+show_lables = False 
+
 # 5. What extra brain regions you to have render
 # use the acronym of the brain region you want to load. 
 # the acronym_brainregions.csv file in this repoistory  will show you what acronym aligns with what brain regions
