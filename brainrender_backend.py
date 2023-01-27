@@ -39,6 +39,23 @@ from vector_calculations import estim_cell_coordinates
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um):
 
+    data = {'mouse_id': str(mouse_id),
+            'cellfinder_output_path': str(cellfinder_output_path),
+            'estim_tip_coordinates': str(estim_tip_coordinates),
+            'opticalfiber_tip_coordinates' : str(opticalfiber_tip_coordinates),
+            'opticalfiber_propigation_radius_um' : str(opticalfiber_propigation_radius_um),
+            'estim_shank_radius_um' : str(estim_shank_radius_um) ,
+            'estim_tip_radius_um' : str(estim_tip_radius_um),
+            'estim_propigation_radius_um' : str(estim_propigation_radius_um),
+            'opticalfiper_radius_um' : str(opticalfiper_radius_um),
+            'brain_regions_to_evalutate' : str(brain_regions_to_evalutate),
+            'extra_brain_region_acryonm' : str(extra_brain_region_acryonm),
+            'allen_mouse_10um' : str(allen_mouse_10um) }
+    upddateME_df = pd.DataFrame(data,index=[0])
+    upddateME_df = upddateME_df.melt()
+    
+
+    # df = df.melt(id_vars=["name"], var_name="variable", value_name="value")
     # Run the function from cellfinder_backend.py
     analyze_data_cellfinder(cellfinder_output_path, mouse_id)
     print(' ')
@@ -63,6 +80,10 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # run distance_calculations_histograms() from distance_calculation_and_histograms.py
     # calculates 3d-space distances, saves out each cells distance in arrays, and creates histograms of those distances relative to the estim_tip coordinates
     distance_calculations_histograms(brainrender_folder_path)
+
+    #Save out the updateME datafram
+    updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/UpdateME.csv" 
+    upddateME_df.to_csv(updateME_save_path, index=False)
     
 
     ## Sart of brainrender anylysis 
@@ -70,26 +91,40 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
     # Path to cellfinder_output points.npy file
     cells_path = cellfinder_output_path + 'points/points.npy'
-    g17_cells_path = cellfinder_output_path + 'points/g17_points.npy'
 
   
-
-   
      # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
     cells = np.load(cells_path)
-    g17_cells = np.load(g17_cells_path)
 
-    g17_cells = g17_cells  * 100
-    print(g17_cells) 
+    # Create Overlapping cells for testing changing the color of the overlapping cells
+    overlapping_cells = cells[40000:50000]
 
-    # reference_coord = cells[40000]
-   
+    # shared_cells = []
+
+    # for i in cells:
+    #     print(i)
+    #     for j in overlapping_cells:
+    #         if all(i == j):
+    #             shared_cells.append(i)
+    #             print(i)
+
+    # cells = np.array([i for i in cells if i not in shared_cells])
+    # overlapping_cells = np.array([i for i in overlapping_cells if i not in shared_cells])
+    
+    # Create an array that contains the shared voxel coordinates between the gfp and tdTomato channels
+    shared_cells = [i for i in overlapping_cells if i in cells]
+    shared_cells = np.array(shared_cells)
+
+    # Remove the shared voxel coordinates from the gfp and TdTomato arrays for cleaner rendering. 
+    # cells = np.array([i for i in cells if i not in shared_cells])
+    # overlapping_cells = np.array([i for i in overlapping_cells if i not in shared_cells])
+
 
     # create points actors for brainrender to plot in the 3D render
     cells_actor = Points(cells)
-    g17_cells_actor = Points(g17_cells,"green")
-    #  mesh = Sphere(pos=pos, r=radius, c=color, alpha=alpha, res=res)
-  
+    overlapping_cells_actor = Points(shared_cells,colors="blackboard",radius=22)
+
+
     estim_tip_sphere_actor = Sphere(estim_tip_coordinates,estim_tip_radius_um,"green",)
     estim_propigation_sphere_actor = Sphere(estim_tip_coordinates,estim_propigation_radius_um,"black",0.25)
     opticalfiber_propigation_sphere_actor = Sphere(opticalfiber_tip_coordinates,opticalfiber_propigation_radius_um,"blue",0.25)
@@ -109,13 +144,13 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
     # File path to the saved json file
     file_path = cellfinder_output_path + mouseid + \
-        "_Completed_Analysis/" + "gfp_brainregions_list.json"
+        "_Completed_Analysis/" + 'cellfinder_summary/'+ "gfp_brainregions_list.json"
     with open(file_path, 'r') as f:
         file_content = f.read()
         brain_regions_list = json.loads(file_content)
 
     count_file_path = cellfinder_output_path + mouseid + \
-        "_Completed_Analysis/" + "gfp_brainregions_count.json"
+        "_Completed_Analysis/"+ 'cellfinder_summary/'+ "gfp_brainregions_count.json"
     with open(count_file_path, 'r') as f:
         file_content = f.read()
         brain_regions_count_list = json.loads(file_content)
@@ -209,7 +244,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
     # load in the dictonary that has all the brain regions and their call counts for this mouse
     all_brain_region_cell_count_path = cellfinder_output_path + \
-        str(mouse_id) + "_Completed_Analysis" + '/all_brainregion_cell_count_list.pkl'
+        str(mouse_id) + "_Completed_Analysis/" + 'cellfinder_summary/'+ 'all_brainregion_cell_count_list.pkl'
     with open(all_brain_region_cell_count_path, 'rb') as f:
         loaded_cell_count_dict = pickle.load(f)
 
@@ -269,7 +304,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
 
     # Add cells Actor to Scence
-    scene.add(cells_actor,g17_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+    scene.add(overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
 
     # print the content of the scence
     scene.content
@@ -292,7 +327,12 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
         print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
         print(' n')
 
-    # locally Render the 3D brain Scence
+    # # locally Render the 3D brain Scence
+    # rendered_brainregions_dict = {**evaluate, **extra_brain_regions_dictionary_with_cellcount}
+    # print(rendered_brainregions_dict)
+
+    # updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/brainrender_outputs" 
+    # upddateME_df.to_csv(updateME_save_path, index=False)
 
     print("The "+str(brain_regions_to_evalutate) +
           " brain regions your loading with labled cells count")

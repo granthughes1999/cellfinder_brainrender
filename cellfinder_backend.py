@@ -19,7 +19,7 @@ import pandas as pd
 def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
 
 
-
+    
     # Create new folder in your cellfinder output folder
     new_folder_path = cellfinder_output_path + \
         str(mouse_id) + "_Completed_Analysis"  # create the path for the new folder
@@ -31,6 +31,9 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         print(f'{new_folder_path}')
         print('')
         print('running cellfinder_backend.py analysis')
+        
+        output_folder_path = new_folder_path + '/' + 'cellfinder_summary'
+        os.makedirs(output_folder_path)
 
         # ### Read in tdTomato & GFP output data from cellfinder
 
@@ -45,7 +48,7 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
                                   'analysis/' + 'randomized_tdTomato_summary.csv')
 
         # output path for created csv
-        output_path_csv = new_folder_path + '/' + mouse_id + '_labled_cells.csv'
+        output_path_csv = output_folder_path + '/' + mouse_id + '_labled_cells.csv'
 
         # # GFP Data
 
@@ -63,7 +66,7 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         all_gfp_df = pd.DataFrame.from_dict(all_gfp_dictionary, orient='index')
 
          # File path to the desktop
-        file_path_0 = new_folder_path + '/all_brainregion_cell_count_list.pkl'
+        file_path_0 = output_folder_path + '/all_brainregion_cell_count_list.pkl'
         with open(file_path_0 , 'wb') as f:
             pickle.dump(all_gfp_dictionary, f)
 
@@ -87,7 +90,7 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         gfp_df_01 = pd.DataFrame.from_dict(gfp_dictionary, orient='index')
 
         # File path to the desktop
-        file_path = new_folder_path + '/gfp_brainregions_list.json'
+        file_path = output_folder_path + '/gfp_brainregions_list.json'
 
         # Open a file
         with open(file_path, 'w') as f:
@@ -95,7 +98,7 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
             json.dump(gfp_brain_regions, f)
 
         # File path to the desktop
-        count_file_path = new_folder_path + '/gfp_brainregions_count.json'
+        count_file_path = output_folder_path + '/gfp_brainregions_count.json'
 
         # Open a file
         with open(count_file_path, 'w') as f:
@@ -153,7 +156,7 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         summary_df.rename(index={1: 'tdTomato'}, inplace=True)
 
         # Save out summary df
-        summary_df.to_csv(new_folder_path + '/' + mouse_id + '_summary_df.csv')
+        summary_df.to_csv(output_folder_path + '/' + mouse_id + '_summary_df.csv')
 
         # making a df with percent of gfp cells labled compared to tdTomato
         percent_labled = []

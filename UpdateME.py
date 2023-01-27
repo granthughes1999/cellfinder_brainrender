@@ -19,7 +19,7 @@
 # ___________________________________________ Update these variables ___________________________________
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_013"
+mouse_id = "test_000"
 
 # 2. path to the cellfinder gfp signal channel output folder 
 # this is where all the data from this repository will be saved to, in a folder called mouse_id_Completed_Anaylysis
