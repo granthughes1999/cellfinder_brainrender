@@ -35,6 +35,7 @@ import cellfinder_backend
 from cellfinder_backend import analyze_data_cellfinder
 from distance_calculations_and_histograms import distance_calculations_histograms
 from vector_calculations import estim_cell_coordinates
+from shared_cells_distance_calculations import shared_cell_distance_calculations_histograms
 
 
 def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um):
@@ -87,33 +88,39 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     
 
     ## Sart of brainrender anylysis 
-    scene_export_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '/' + mouse_id + '_' +str(estim_tip_coordinates)+ '_scence.html'
+    scene_export_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) +  '/scence_' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '.html'
+
+
+
+
+
+
+
+
+
+    # ------------------------------------------  NEEDS EDITIED FOR REAL DATA -----------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------
+
+    # should be gfp and tdTomato channels
 
     # Path to cellfinder_output points.npy file
-    cells_path = cellfinder_output_path + 'points/points.npy'
+    tdTomato_cells_path = cellfinder_output_path + 'points/points.npy' # --> Update path to how cellfinder outputs different channel data 
 
-  
-     # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
-    cells = np.load(cells_path)
+    # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
+    cells = np.load(tdTomato_cells_path)
 
     # Create Overlapping cells for testing changing the color of the overlapping cells
-    overlapping_cells = cells[40000:50000]
+    gfp_cells = cells[49000: 55000] # --> Change to path to gfp points.npy file from cellfinder output
 
-    # shared_cells = []
-
-    # for i in cells:
-    #     print(i)
-    #     for j in overlapping_cells:
-    #         if all(i == j):
-    #             shared_cells.append(i)
-    #             print(i)
-
-    # cells = np.array([i for i in cells if i not in shared_cells])
-    # overlapping_cells = np.array([i for i in overlapping_cells if i not in shared_cells])
-    
+    # malke random gfp cells to plot. this should be removed
+    modified_gfp_cells = np.add(gfp_cells, 250)
+ 
     # Create an array that contains the shared voxel coordinates between the gfp and tdTomato channels
-    shared_cells = [i for i in overlapping_cells if i in cells]
+    shared_cells = [i for i in gfp_cells if i in cells]
     shared_cells = np.array(shared_cells)
+    shared_cells_save_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '/shared_cells_' + mouse_id + '_' +str(estim_tip_coordinates) +  ".npy" 
+    np.save(shared_cells_save_path , shared_cells)
+    shared_cell_distance_calculations_histograms(brainrender_folder_path)
 
     # Remove the shared voxel coordinates from the gfp and TdTomato arrays for cleaner rendering. 
     # cells = np.array([i for i in cells if i not in shared_cells])
@@ -123,6 +130,19 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     # create points actors for brainrender to plot in the 3D render
     cells_actor = Points(cells)
     overlapping_cells_actor = Points(shared_cells,colors="blackboard",radius=22)
+    modified_gfp_cells_actor = Points(modified_gfp_cells, colors = 'green')
+
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
     estim_tip_sphere_actor = Sphere(estim_tip_coordinates,estim_tip_radius_um,"green",)
@@ -304,7 +324,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
 
     # Add cells Actor to Scence
-    scene.add(overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+    scene.add(modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
 
     # print the content of the scence
     scene.content

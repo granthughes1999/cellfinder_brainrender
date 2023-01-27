@@ -25,14 +25,13 @@ brainrender.SHADER_STYLE = "cartoon"
 import cellfinder_backend
 from cellfinder_backend import analyze_data_cellfinder
 import pickle 
-# from brainrender_backend import brainrender_folder_path 
 
 
-def distance_calculations_histograms(brainrender_folder_path):
+def shared_cell_distance_calculations_histograms(brainrender_folder_path):
     # Create new folder in your cellfinder output folder
     mouseid_estim_tip_coordinates_folder_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates)   # create the path for the new folder
-    histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms/tdTomato_cells'
-    npy_folder_path = histogram_folder_path + '/' + "distance_arrays"
+    histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms/overlapping_gfp_tdTomato'
+    npy_folder_path = histogram_folder_path + '/' + "overlapping_distance_arrays"
     if not os.path.exists(histogram_folder_path):
         os.makedirs(histogram_folder_path)
         os.makedirs(npy_folder_path)
@@ -46,10 +45,10 @@ def distance_calculations_histograms(brainrender_folder_path):
         # npy_save_path = histogram_save_path + '/' + 'distance_arrays'
         # Calaculate 3d-space distances for cells relative to estim_tip_coordinates. and save out histograms of those distances
         # Path to cellfinder_output points.npy file
-        cells_path = cellfinder_output_path + 'points/points.npy'
-        cells_path
+
+        cells_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '/shared_cells_' + mouse_id + '_' +str(estim_tip_coordinates) +  ".npy"
         points = np.load(cells_path)
-        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) + '/tdTomato_cells'
+        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) 
 
         # Subtract the reference point from each cell coordinate
         displacement = points - estim_tip_coordinates
@@ -59,7 +58,7 @@ def distance_calculations_histograms(brainrender_folder_path):
         # Add labels and a title
         plt.xlabel('Euclidean Distance (um)')
         plt.ylabel('number of cells')
-        plt.title(str(mouse_id) + ' tdTomato, Histogram of cell Euclidean distances from Estim tip')
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato Euclidean distances from Estim tip')
         # Display & save the histogram
         hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) 
         plt.savefig(hist_save_path + '_euclidean_distances.png')
@@ -76,7 +75,7 @@ def distance_calculations_histograms(brainrender_folder_path):
         # Plot manhattan distances histogram
         plt.hist(manhattan_distances, bins = 100)
         # Add labels
-        plt.title(str(mouse_id) + ' tdTomato, Manhattan distances from Estim tip')
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato Manhattan distances from Estim tip')
         plt.xlabel('Manhattan distance (um)')
         plt.ylabel('number of cells')
         # Save the histogram
@@ -94,7 +93,7 @@ def distance_calculations_histograms(brainrender_folder_path):
         plt.hist(minkowski_distances, bins=100)
         plt.xlabel('Minkowski Distance (um) (p={})'.format(p))
         plt.ylabel('Cell Count')
-        plt.title(str(mouse_id) + ' tdTomato, Minkowski Distances from estim tip')
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato Minkowski Distances from Estim tip')
         plt.savefig(hist_save_path + '_minkowski_distances.png')
         np.save(npy_folder_path +'/'+  'minkowski_distances.npy', minkowski_distances) 
         plt.close()
@@ -105,9 +104,9 @@ def distance_calculations_histograms(brainrender_folder_path):
 
         chebyshev_distances = distance.cdist(points, [estim_tip_coordinates], 'chebyshev')
         plt.hist(chebyshev_distances, bins=100)
-        plt.xlabel('tdTomato, Chebyshev Distance (um)')
+        plt.xlabel('Chebyshev Distance (um)')
         plt.ylabel('Cell count')
-        plt.title(str(mouse_id) + ' tdTomato Chebyshev Distances from estim tip')
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato, Chebyshev Distances from Estim tip')
         plt.savefig(hist_save_path + '_chebyshev_distances.png')
         np.save(npy_folder_path +'/'+  'chebyshev_distances.npy', chebyshev_distances) 
         plt.close()

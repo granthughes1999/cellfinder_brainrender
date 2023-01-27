@@ -28,6 +28,7 @@ mouse_id = "test_000"
 # ADD '/' at the end of your output path example: "/Users/grant/Desktop/mock_cellfinder_output/"
 cellfinder_output_path = "/Users/grant/Desktop/work/Denman_Lab/Cal_Light/brainrender/cellfinder_brainrender_output/cellfinder_output/"
 
+
 # 3. Electrode tip Voxel coordinates. using Paxinos-Franklin coordinate system where:
 # the x-coordinate corresponds to the medial-lateral axis, with positive values towards the right and negative values towards the left. 
 # The y-coordinate corresponds to the dorsal-ventral axis, with positive values towards the dorsal side and negative values towards the ventral side. 
@@ -43,7 +44,6 @@ cellfinder_output_path = "/Users/grant/Desktop/work/Denman_Lab/Cal_Light/brainre
 estim_tip_coordinates = [5300., 5350., 3300.]  
 
 opticalfiber_tip_coordinates = [5450., 5500., 3450.] 
-
 
 opticalfiber_propigation_radius_um = 200
 estim_shank_radius_um = 50
