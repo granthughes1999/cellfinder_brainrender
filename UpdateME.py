@@ -18,6 +18,9 @@
 
 # ___________________________________________ Update these variables ___________________________________
 
+#
+save_render = True
+
 # 1. ID of mouse (example: G25)
 mouse_id = "test_002"
 

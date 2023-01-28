@@ -1,7 +1,7 @@
 from general_Imports import *
 
 
-def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables):
+def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render):
     cellfinder_output_path = cellfinder_output_path
     mouseid = mouse_id
 
@@ -295,18 +295,21 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
 
     # check if 3D render has been saved out
     # if not export the 3D render, which can be opened in a web viewer
-    if not os.path.exists(scene_export_path):
-        print('Saving out brainrender scence, this may take a few minutes...')
-        scene.export(scene_export_path)
-        # os.makedirs(scene_export_path)
-        print('3D render has been created and saved too ')
-        print(f'{scene_export_path}')
+    if save_render == True:
+        if not os.path.exists(scene_export_path):
+            print('Saving out brainrender scence, this may take a few minutes...')
+            scene.export(scene_export_path)
+            # os.makedirs(scene_export_path)
+            print('3D render has been created and saved too ')
+            print(f'{scene_export_path}')
 
+        else:
+            print('A 3D-render of ' + str(mouse_id) + ' already exisits...')
+            print('To save out a new render')
+            print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
+            print(' n')
     else:
-        print('A 3D-render of ' + str(mouse_id) + ' already exisits...')
-        print('To save out a new render')
-        print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
-        print(' n')
+        print('Render Not Saved....')
 
     # # locally Render the 3D brain Scence
     # rendered_brainregions_dict = {**evaluate, **extra_brain_regions_dictionary_with_cellcount}

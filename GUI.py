@@ -2,27 +2,33 @@ import tkinter as tk
 from tkinter import *
 import subprocess
 global show_lables
+global estim_tip_coordinates
+global save_render
+
 from general_Imports import *
 from tkinter import ttk
 
 #  ---- Basics of GUI -----
 root = tk.Tk()
 root.configure(bg='gray')
-root.geometry("1000x300")
+root.geometry("1000x500")
 
 # Create a Notebook widget as the top-level container
 notebook = ttk.Notebook()
 tab1 = ttk.Frame(notebook)
 tab2 = ttk.Frame(notebook)
 tab3 = ttk.Frame(notebook)
+tab4 = ttk.Frame(notebook)
+
 
 
 notebook.add(tab1, text='Imports')
 notebook.add(tab2, text='Estim')
 notebook.add(tab3, text='Brain Regions')
+notebook.add(tab4, text='Channels')
 # ----- Functions -----
-
-# Update the  
+estim_tip_coordinates = [5300., 5350., 3300.]  
+# show_lables function
 def on_checkbutton_click():
     global show_lables
     if checkbutton_var.get() == 1:
@@ -34,6 +40,39 @@ def on_checkbutton_click():
 
 checkbutton_var = tk.IntVar()
 checkbutton = tk.Checkbutton(tab3, text="Show Labels", variable=checkbutton_var, command=on_checkbutton_click)
+
+# save_render function
+def on_render_checkbutton_click():
+    global save_render
+    if checkbutton_var_render.get() == 1:
+        save_render = True
+        print(save_render)
+    else:
+        save_render = False
+        print(save_render)
+
+      
+
+checkbutton_var_render = tk.IntVar()
+checkbutton_render = tk.Checkbutton(root, text="Save 3D Render", variable=checkbutton_var_render, command=on_render_checkbutton_click)
+
+# estim coordinates function 
+def create_coordinates():
+    x = float(x_entry.get())
+    y = float(y_entry.get())
+    z = float(z_entry.get())
+    estim_tip_coordinates = [x, y, z]
+    print(estim_tip_coordinates)
+
+estimCoord_label = tk.Label(tab2, text="Estim Tip Coordinates [x,y,z]")
+x_entry = tk.Entry(tab2)
+x_entry.insert(tk.END, str(5300.))
+y_entry = tk.Entry(tab2)
+y_entry.insert(tk.END, str(5350.))
+z_entry = tk.Entry(tab2)
+z_entry.insert(tk.END, str(3300.))
+
+
 
 # Creates the 3D render when the button is clicked 
 def on_button_click():
@@ -52,7 +91,7 @@ def on_button_click():
     if extra_brain_region_acryonm == ['']:
         extra_brain_region_acryonm = []
     # Get the value of the Entry widget
-    run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables)
+    run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render)
     print("Button was clicked!")
    
 
@@ -85,25 +124,27 @@ allen_mouse_10um_entry = tk.Entry(tab1, textvariable=allen_mouse_10um, width=50)
 allen_mouse_10um_entry.insert(0, '/Users/grant/brainglobe/allen_mouse_10um')
 label_allen_mouse_10um = tk.Label(tab1, text="Enter path to you local allen brain atlas ")
 
+# -------- Estim text boxes ---------------
 estim_shank_radius_um = tk.IntVar()
-estim_shank_radius_um_entry = tk.Entry(tab2, textvariable=estim_shank_radius_um, width=20)
-estim_shank_radius_um_entry.insert(tk.END, str(50))
+estim_shank_radius_um_entry = tk.Entry(tab2, textvariable=estim_shank_radius_um, width=20,insertwidth=1)
+estim_shank_radius_um_entry.insert(tk.END, 50)
 label_estim_shank_radius_um = tk.Label(tab2, text="Enter estim shank radius in (um) ")
 
 
 estim_tip_radius_um = tk.IntVar()
-estim_tip_radius_um_entry = tk.Entry(tab2, textvariable=estim_tip_radius_um, width=20)
-estim_tip_radius_um_entry.insert(tk.END, str(10))
+estim_tip_radius_um_entry = tk.Entry(tab2, textvariable=estim_tip_radius_um, width=20,insertwidth=1)
+estim_tip_radius_um_entry.insert(tk.END, 10)
+estim_shank_radius_um_entry.config(insertwidth=1)
 label_estim_tip_radius_um  = tk.Label(tab2, text="Enter estim tip radius in (um)")
 
 
 
 estim_propigation_radius_um = tk.IntVar()
-estim_propigation_radius_um_entry = tk.Entry(tab2, textvariable=estim_propigation_radius_um, width=20)
-estim_propigation_radius_um_entry.insert(tk.END, str(300))
+estim_propigation_radius_um_entry = tk.Entry(tab2, textvariable=estim_propigation_radius_um, width=20,insertwidth=1)
+estim_propigation_radius_um_entry.insert(tk.END, 300)
 label_estim_propigation_radius_um = tk.Label(tab2, text="Enter estim propigation radius in (um)")
 
-
+# ---------- brain region text boxes -------------
 extra_brain_region_acryonm = tk.StringVar()
 extra_brain_region_acryonm_entry = tk.Entry(tab3, textvariable=extra_brain_region_acryonm, width=100)
 extra_brain_region_acryonm_entry.insert(tk.END, str('VIS, ECT, VISp1, VISp2/3, VISp4, VISp5,  VISp6a, VISp6b'))
@@ -111,42 +152,61 @@ label_extra_brain_region_acryonm = tk.Label(tab3, text="Enter list of brain regi
 
 
 
+# estim_tip_coordinates = tk.StringVar()
+# estim_tip_coordinates_entry = tk.Entry(tab2, textvariable=extra_brain_region_acryonm, width=50)
+# estim_tip_coordinates_entry.insert(tk.END, str("5300., 5350., 3300."))
+# label_estim_tip_coordinates = tk.Label(tab2, text="Enter the coordinates of your estim tip ")
+
 
 # ---- Buttons -----
 run_button = tk.Button(root, text="Create 3D Render", command=on_button_click)
-run_button.grid(row=5, column=0)
 
-# grid for the gui
+
+# grid for the gui\
+# ------- import Tab ----------------
+
 label_cellfinder_output_path.grid(row=1, column=2)
 cellfinder_output_path_entry.grid(row=2, column=2)
-
-label_mouse_id.grid(row=2, column=0)
-mouse_id_entry.grid(row=3,column=0)
-
-label_brain_regions_to_evalutate.grid(row=5, column=2)
-brain_regions_to_evalutate_entry.grid(row=6,column=2)
 
 label_allen_mouse_10um.grid(row=7, column=2)
 allen_mouse_10um_entry.grid(row=8,column=2)
 
-label_estim_shank_radius_um.grid(row=9, column=2)
-estim_shank_radius_um_entry.grid(row=10,column=2)
+# ------- Estim Tab ----------------
 
-label_estim_tip_radius_um.grid(row=11, column=2)
-estim_tip_radius_um_entry.grid(row=12,column=2)
+estimCoord_label.grid(row=0, column=4)
+x_entry.grid(row=1, column=4)
+y_entry.grid(row=2, column=4)
+z_entry.grid(row=3, column=4)
 
-label_estim_propigation_radius_um.grid(row=13, column=2)
-estim_propigation_radius_um_entry.grid(row=14,column=2)
+label_estim_shank_radius_um.grid(row=0, column=2)
+estim_shank_radius_um_entry.grid(row=1,column=2,)
 
+label_estim_tip_radius_um.grid(row=2, column=2)
+estim_tip_radius_um_entry.grid(row=3,column=2)
+
+label_estim_propigation_radius_um.grid(row=4, column=2)
+estim_propigation_radius_um_entry.grid(row=5,column=2)
+# -----------Brain region Tab --------------
 label_extra_brain_region_acryonm.grid(row=15, column=2)
 extra_brain_region_acryonm_entry.grid(row=16, column=2) 
 
+label_brain_regions_to_evalutate.grid(row=5, column=2)
+brain_regions_to_evalutate_entry.grid(row=6,column=2)
 
 checkbutton.grid(row=17, column=2)
+
+# --------- Not in a tab -------
+
+label_mouse_id.grid(row=2, column=0)
+mouse_id_entry.grid(row=3,column=0)
+checkbutton_render.grid(row=4, column=0)
+run_button.grid(row=5, column=0)
+
 notebook.grid(row=0, column=0)
 
 
 checkbutton.bind('<Button-1>', on_checkbutton_click)
+# checkbutton_render.bind('<Button-1>', on_render_checkbutton_click)
 run_button.bind('<Button-1>', on_button_click)
 
 

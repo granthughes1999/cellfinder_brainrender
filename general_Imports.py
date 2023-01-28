@@ -30,7 +30,7 @@ from bg_atlasapi import show_atlases
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 # files and variables from this repo imports
 import UpdateME
-from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates, extra_brain_region_acryonm, estim_shank_radius_um, estim_tip_radius_um, estim_propigation_radius_um, opticalfiper_radius_um, opticalfiber_tip_coordinates,opticalfiber_propigation_radius_um, show_lables
+from UpdateME import cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um, estim_tip_coordinates, extra_brain_region_acryonm, estim_shank_radius_um, estim_tip_radius_um, estim_propigation_radius_um, opticalfiper_radius_um, opticalfiber_tip_coordinates,opticalfiber_propigation_radius_um, show_lables,save_render
 import cellfinder_backend
 from cellfinder_backend import analyze_data_cellfinder
 from distance_calculations_and_histograms import distance_calculations_histograms
