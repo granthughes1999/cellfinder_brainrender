@@ -27,7 +27,7 @@ from cellfinder_backend import analyze_data_cellfinder
 import pickle 
 
 
-def shared_cell_distance_calculations_histograms(brainrender_folder_path):
+def shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_id):
     # Create new folder in your cellfinder output folder
     mouseid_estim_tip_coordinates_folder_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates)   # create the path for the new folder
     histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms/overlapping_gfp_tdTomato'

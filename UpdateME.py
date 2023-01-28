@@ -19,7 +19,7 @@
 # ___________________________________________ Update these variables ___________________________________
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_000"
+mouse_id = "test_002"
 
 # 2. path to the cellfinder gfp signal channel output folder 
 # this is where all the data from this repository will be saved to, in a folder called mouse_id_Completed_Anaylysis
@@ -61,7 +61,7 @@ brain_regions_to_evalutate = 6
 
 # True will show brain region lables and their cell count in the 3D render
 # False will not show the brain region lables in the 3D render
-show_lables = False 
+show_lables = True 
 
 # 5. What extra brain regions you to have render
 # use the acronym of the brain region you want to load. 

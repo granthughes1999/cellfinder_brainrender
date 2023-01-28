@@ -1,7 +1,9 @@
 from general_Imports import *
 
 
-def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um):
+def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables):
+    cellfinder_output_path = cellfinder_output_path
+    mouseid = mouse_id
 
     data = {'mouse_id': str(mouse_id),
             'cellfinder_output_path': str(cellfinder_output_path),
@@ -21,7 +23,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
 
     # df = df.melt(id_vars=["name"], var_name="variable", value_name="value")
     # Run the function from cellfinder_backend.py
-    analyze_data_cellfinder(cellfinder_output_path, mouse_id)
+    analyze_data_cellfinder(cellfinder_output_path, mouse_id) # ADD BACK HERE cellfinder_output_path, mouse_id
     print(' ')
     print("Running brainrender_backend.py")
     print('Creating 3D-render and calculating distances for each cell relative to your estim_tip_coordinates')
@@ -43,7 +45,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     
     # run distance_calculations_histograms() from distance_calculation_and_histograms.py
     # calculates 3d-space distances, saves out each cells distance in arrays, and creates histograms of those distances relative to the estim_tip coordinates
-    distance_calculations_histograms(brainrender_folder_path)
+    distance_calculations_histograms(brainrender_folder_path,mouse_id)
 
     #Save out the updateME datafram
     updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/UpdateME.csv" 
@@ -83,7 +85,7 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     shared_cells = np.array(shared_cells)
     shared_cells_save_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '/shared_cells_' + mouse_id + '_' +str(estim_tip_coordinates) +  ".npy" 
     np.save(shared_cells_save_path , shared_cells)
-    shared_cell_distance_calculations_histograms(brainrender_folder_path)
+    shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_id)
 
     # Remove the shared voxel coordinates from the gfp and TdTomato arrays for cleaner rendering. 
     # cells = np.array([i for i in cells if i not in shared_cells])
@@ -160,18 +162,22 @@ def run_brainrender(cellfinder_output_path, mouseid, brain_regions_to_evalutate,
     
     
     # create lists of  the extra brain regions you want to evaluate, uses brain_regions_to_evalutate variable value
+    # if len(extra_brain_region_acryonm) >= 1:
     index = []
     for i in extra_brain_region_acryonm:
-        index.append(brain_regions_acronym.index(i))
-
+            index.append(brain_regions_acronym.index(i))
+    
     extra_brain_region_names = []
     for i in index:
         extra_brain_region_names.append(brain_regions_name[i])
+        
+    else:
+        print('No extra brain regions added')
 
     extra_brain_regions_dictionary = dict(
-        zip(extra_brain_region_names, extra_brain_region_acryonm))
+    zip(extra_brain_region_names, extra_brain_region_acryonm))
     evaluate_brain_regions_df = pd.DataFrame.from_dict(
-        evaluate_brain_regions_dictionary, orient='index')
+    evaluate_brain_regions_dictionary, orient='index')
     evaluate_brain_regions_df.rename(index={0: 'acronym'}, inplace=True)
 
     # unknown from cylinder example file on github
