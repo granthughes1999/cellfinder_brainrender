@@ -189,10 +189,119 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     # atlas version you want to use
     atlas = BrainGlobeAtlas('allen_mouse_50um', check_latest=False)
 
+    # Iterate over elements in list1
+    for element in evaluate_brain_regions:
+        # Check if element exists in list2
+        if element in extra_brain_region_names:
+            # Remove element from list2
+            extra_brain_region_names.remove(element)
+
+    # Iterate over elements in list1
+    for element in evaluate_brain_region_acronyms:
+        # Check if element exists in list2
+        if element in extra_brain_region_acryonm:
+            # Remove element from list2
+            extra_brain_region_acryonm.remove(element)
+            print(str(element) + ' is already in the top ' + str(brain_regions_to_evalutate) + ' brain regions. Removing from extra brain regions')
+
+# load in the dictonary that has all the brain regions and their call counts for this mouse
+    all_brain_region_cell_count_path = cellfinder_output_path + \
+        str(mouse_id) + "_Completed_Analysis/" + 'cellfinder_summary/'+ 'all_brainregion_cell_count_list.pkl'
+    with open(all_brain_region_cell_count_path, 'rb') as f:
+        loaded_cell_count_dict = pickle.load(f)
+
     # intialise brainrender scene
+
+    # --------------- GFP TESTING HERE TO LINE 306 ------------------
     if show_gfp_only == True:
-        scene = Scene(atlas_name='allen_mouse_50um', title=mouseid + ' GFP cells only')
-        print(scene.atlas.space)
+        scene_gfp = Scene(atlas_name='allen_mouse_50um', title=mouseid + ' GFP cells only')
+        print(scene_gfp.atlas.space)
+       
+        # add top brain regions and labels
+        # colors = ["red", 'orange', "yellow", "green", "blue", "red", 'orange',
+        #           "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue","red", 'orange', "yellow", "green", "blue", "red", 'orange',
+        #           "yellow", "green", "blue", "red", 'orange', "yellow", "green", "blue"]
+        for i in range(brain_regions_to_evalutate):
+            evaluate_brain_region_acronyms[i] = scene_gfp.add_brain_region(
+                str(evaluate_brain_region_acronyms[i]), alpha=0.2, color='blue')
+        if show_lables == True:
+            for i in range(brain_regions_to_evalutate):
+                # print(evaluate_brain_region_acronyms[i])
+                scene_gfp.add_label(evaluate_brain_region_acronyms[i], str(
+                    evaluate_brain_regions[i])+' '+ str(brain_regions_count_list[i]))
+        
+        # scene.add_label(cell_volume_in_propigation_sphere_actor, "Count Volume")
+
+        # # Add extra brain regions. specified in the extra_brain_region_acryonm list found in UpdateME.py
+        list_len = len(extra_brain_region_acryonm)
+        extra_cell_count_list = []
+        if len(extra_brain_region_acryonm) == 0:
+            print("adding no extra brain region to this render. to see addition brain regions, add their acryonms to the extra_brain_regions array in UpdateME.py. A full list of brain regions and their associated acryonms is saved in this repository as acronym_brainregions.csv'")
+        else:
+            for i in range(list_len):
+                extra_brain_region_acryonm[i] = scene_gfp.add_brain_region(
+                str(extra_brain_region_acryonm[i]), alpha=0.2, color='yellow')
+            if show_lables == True:
+                for i in range(list_len):
+                    for key in loaded_cell_count_dict.keys():
+                        value = loaded_cell_count_dict.get(str(extra_brain_region_names[i]))
+                        if value is None:
+                            extra_cell_count_list.append('n/a')
+                            scene_gfp.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + '(Manually Added)')
+                            continue
+                        cell_count = loaded_cell_count_dict[str(extra_brain_region_names[i])]
+                        extra_cell_count_list.append(cell_count)
+                        scene_gfp.add_label(extra_brain_region_acryonm[i], str(extra_brain_region_names[i])+ ' ' + str(cell_count) +' '+ '(Manually Added)')
+        
+
+
+        extra_brain_regions_dictionary_with_cellcount = dict(
+            zip(extra_brain_region_names, extra_cell_count_list))
+        # create and add a cylinder actor to brain region with the most labled cells
+        # mesh = shapes.Cylinder(pos=[top, pos], c=color, r=radius, alpha=alpha)
+        #  :param pos: list, np.array of ap, dv, ml coordinates. If an actor is passed, get's the center of mass instead
+        estim_cylinder_actor = Cylinder(
+            # have cylinder run from the referece point to the brains surface 
+            estim_tip_coordinates,
+            scene_gfp.root,  # the cylinder actor needs information about the root mesh
+            "black",
+            1,
+            estim_shank_radius_um,
+        )
+
+        # pos =  [opticalfiber_surface_coordinates,opticalfiber_tip_coordinates]
+        # print(pos)
+        opticalfiper_cylinder_actor = Cylinder(
+            # have cylinder run from the referece point to the brains surface 
+            opticalfiber_tip_coordinates,
+            scene_gfp.root,  # the cylinder actor needs information about the root mesh
+            'blue',
+            1,
+            opticalfiper_radius_um,
+        )
+
+        # check if 3D render has been saved out
+        # if not export the 3D render, which can be opened in a web viewer
+        if save_render == True:
+            if not os.path.exists(scene_export_path):
+                print('Saving out brainrender scence, this may take a few minutes...')
+                scene.export(scene_export_path)
+                # os.makedirs(scene_export_path)
+                print('3D render has been created and saved too ')
+                print(f'{scene_export_path}')
+
+            else:
+                print('A 3D-render of ' + str(mouse_id) + ' already exisits...')
+                print('To save out a new render')
+                print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
+                print(' n')
+        else:
+            print('Render Not Saved....')
+
+        # print the content of the scence
+        scene_gfp.content
+
+       # --------------- GFP TESTING HERE UP TO LINE 195 ------------------
 
     if show_tdTomato_only == True:
         scene = Scene(atlas_name='allen_mouse_50um', title=mouseid + ' tdTomato cells only')
@@ -294,14 +403,6 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
         opticalfiper_radius_um,
      )
 
-    # Testing 
-    # estim_cell_coordinates_array = np.array([estim_cell_coordinates])
-    # cell_volume_in_propigation_sphere_actor = PointsDensity(data=estim_cell_coordinates_array,name='Electical Propigation Sphere',dims=(100, 100, 100),radius=1000,)
-
-
-    # Add a sphere in the reference point location
-    # scene.add_sphere(center = reference_point, radius = 25, color = 'red')
-
     # check if 3D render has been saved out
     # if not export the 3D render, which can be opened in a web viewer
     if save_render == True:
@@ -320,21 +421,6 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     else:
         print('Render Not Saved....')
 
-    # # locally Render the 3D brain Scence
-    # rendered_brainregions_dict = {**evaluate, **extra_brain_regions_dictionary_with_cellcount}
-    # print(rendered_brainregions_dict)
-
-    # updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/brainrender_outputs" 
-    # upddateME_df.to_csv(updateME_save_path, index=False)
-
-    # print("The "+str(brain_regions_to_evalutate) +
-    #       " brain regions your loading with labled cells count")
-    # print(evaluate)
-    # print(' ')
-    # print("The "+str(len(extra_brain_region_acryonm)) +
-    #       " extra brain regions your loading with their cell count")
-    # print(extra_brain_regions_dictionary_with_cellcount)
-    # scene.render()
     # print the content of the scence
     scene.content
 
@@ -344,8 +430,8 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
         scene.render()
 
     if show_gfp_only == True:
-        scene.add(modified_gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
-        scene.render()
+        scene_gfp.add(modified_gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+        scene_gfp.render()
 
     if show_tdTomato_only == True:
         scene.add(cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
@@ -354,3 +440,4 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     if overlapping_cells_only == True:
         scene.add(overlapping_cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
         scene.render()
+
