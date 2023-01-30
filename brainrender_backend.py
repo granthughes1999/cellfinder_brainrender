@@ -1,7 +1,8 @@
 from general_Imports import *
 
 
-def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render):
+def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render,show_gfp_tdTomato_overlapping,show_gfp_only,show_tdTomato_only,overlapping_cells_only
+):
     cellfinder_output_path = cellfinder_output_path
     mouseid = mouse_id
 
@@ -120,6 +121,7 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     BrainGlobeAtlas_dictionary = dict(
         zip(brain_regions_acronym, brain_regions_name))
 
+
     # File path to the saved json file
     file_path = cellfinder_output_path + mouseid + \
         "_Completed_Analysis/" + 'cellfinder_summary/'+ "gfp_brainregions_list.json"
@@ -180,6 +182,7 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     evaluate_brain_regions_dictionary, orient='index')
     evaluate_brain_regions_df.rename(index={0: 'acronym'}, inplace=True)
 
+
     # unknown from cylinder example file on github
     settings.SHOW_AXES = False
     settings.WHOLE_SCREEN = False
@@ -190,8 +193,22 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     atlas = BrainGlobeAtlas('allen_mouse_50um', check_latest=False)
 
     # intialise brainrender scene
-    scene = Scene(atlas_name='allen_mouse_50um', title=mouseid)
-    print(scene.atlas.space)
+    if show_gfp_only == True:
+        scene = Scene(atlas_name='allen_mouse_50um', title=mouseid + ' GFP cells only')
+        print(scene.atlas.space)
+
+    if show_tdTomato_only == True:
+        scene = Scene(atlas_name='allen_mouse_50um', title=mouseid + ' tdTomato cells only')
+        print(scene.atlas.space)
+
+    if show_gfp_tdTomato_overlapping  == True:
+        scene = Scene(atlas_name='allen_mouse_50um', title=mouseid + ' GFP, tdTomato, and Overlapping cells')
+        print(scene.atlas.space)
+
+    if overlapping_cells_only == True:
+        scene = Scene(atlas_name='allen_mouse_50um', title=mouseid + ' Overlapping gfp/tdTomato cells')
+        print(scene.atlas.space)
+
 
      # Iterate over elements in list1
     for element in evaluate_brain_regions:
@@ -284,11 +301,6 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     # estim_cell_coordinates_array = np.array([estim_cell_coordinates])
     # cell_volume_in_propigation_sphere_actor = PointsDensity(data=estim_cell_coordinates_array,name='Electical Propigation Sphere',dims=(100, 100, 100),radius=1000,)
 
-    # Add cells Actor to Scence
-    scene.add(modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
-
-    # print the content of the scence
-    scene.content
 
     # Add a sphere in the reference point location
     # scene.add_sphere(center = reference_point, radius = 25, color = 'red')
@@ -318,11 +330,33 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     # updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/brainrender_outputs" 
     # upddateME_df.to_csv(updateME_save_path, index=False)
 
-    print("The "+str(brain_regions_to_evalutate) +
-          " brain regions your loading with labled cells count")
-    print(evaluate)
-    print(' ')
-    print("The "+str(len(extra_brain_region_acryonm)) +
-          " extra brain regions your loading with their cell count")
-    print(extra_brain_regions_dictionary_with_cellcount)
-    scene.render()
+    # print("The "+str(brain_regions_to_evalutate) +
+    #       " brain regions your loading with labled cells count")
+    # print(evaluate)
+    # print(' ')
+    # print("The "+str(len(extra_brain_region_acryonm)) +
+    #       " extra brain regions your loading with their cell count")
+    # print(extra_brain_regions_dictionary_with_cellcount)
+    # scene.render()
+    # print the content of the scence
+    scene.content
+
+     # Add cells Actor to Scence
+    if show_gfp_tdTomato_overlapping == True:
+        scene.add(modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+        scene.render()
+
+    if show_gfp_only == True:
+        scene.add(modified_gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+        scene.render()
+
+    if show_tdTomato_only == True:
+        scene.add(cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+        scene.render()
+
+    if overlapping_cells_only == True:
+        scene.add(overlapping_cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+        scene.render()
+
+   
+

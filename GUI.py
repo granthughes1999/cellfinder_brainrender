@@ -4,6 +4,11 @@ import subprocess
 global show_lables
 global estim_tip_coordinates
 global save_render
+global show_gfp_only
+global show_tdTomato_only
+global overlapping_cells_only
+global show_gfp_tdTomato_overlapping
+
 
 from general_Imports import *
 from tkinter import ttk
@@ -21,11 +26,62 @@ tab3 = ttk.Frame(notebook)
 tab4 = ttk.Frame(notebook)
 
 
-
 notebook.add(tab1, text='Imports')
 notebook.add(tab2, text='Estim')
-notebook.add(tab3, text='Brain Regions')
-notebook.add(tab4, text='Channels')
+notebook.add(tab3, text='Channels')
+notebook.add(tab4, text='Brain Regions')
+
+# ------ brain region acryonm and names ----------
+
+atlas = BrainGlobeAtlas("allen_mouse_50um")
+brain_regions_df = atlas.lookup_df.head(1000)
+
+brain_regions_acronym = brain_regions_df['acronym'].to_list()
+brain_regions_name = brain_regions_df['name'].to_list()
+
+BrainGlobeAtlas_dictionary = dict(
+    zip(brain_regions_acronym, brain_regions_name))
+
+BrainGlobeAtlas_dictionary['Acronym'] = brain_regions_acronym
+BrainGlobeAtlas_dictionary['Brain Region'] = brain_regions_name
+
+# Create the listbox to display the data
+listbox = tk.Listbox(tab4)
+listbox.grid(row=18, column=2,columnspan=3,sticky='ew')
+
+for acronym, name in BrainGlobeAtlas_dictionary.items():
+    listbox.insert(tk.END, f" {acronym},  {name}")
+
+# --------- add click on brainregion acryonm to list -----------
+
+selected_items = []
+def add_selected_item_to_list(event):
+    # Get the selected item from the listbox
+    selected_index = listbox.curselection()[0]
+    selected_item = listbox.get(selected_index)
+
+    # acronym, brain_region = selected_item.split(', ',1)
+    acronym, brain_region = selected_item.split(',  ')
+
+    if acronym not in selected_items:
+        # Add the brain region name to the list of selected items
+        selected_items.append(acronym)
+    
+        extra_brain_region_acryonm_entry.insert(0, acronym + ',')
+
+        # if extra_brain_region_acryonm_entry.get():
+        #     extra_brain_region_acryonm_entry.insert(tk.END, ", ")
+        #     extra_brain_region_acryonm_entry.insert(tk.END, acronym)
+    print(selected_items)
+  
+  
+
+# Bind the function to the listbox's `<Button-1>` event
+listbox.bind('<Button-1>', add_selected_item_to_list)
+
+# Bind the function to the listbox
+listbox.bind('<ButtonRelease-1>', add_selected_item_to_list)
+
 # ----- Functions -----
 estim_tip_coordinates = [5300., 5350., 3300.]  
 # show_lables function
@@ -39,7 +95,52 @@ def on_checkbutton_click():
         print(show_lables)
 
 checkbutton_var = tk.IntVar()
-checkbutton = tk.Checkbutton(tab3, text="Show Labels", variable=checkbutton_var, command=on_checkbutton_click)
+checkbutton = tk.Checkbutton(tab4, text= "Show Brain Region Labels", variable=checkbutton_var, command=on_checkbutton_click)
+
+# update which channles you want to render 
+# ---- gfp only ------
+def on_gfp_checkbutton_click():
+    global show_gfp_only
+    if checkbutton_var_02.get() == 1:
+        show_gfp_only = True
+    else:
+        show_gfp_only = False
+     
+checkbutton_var_02 = tk.IntVar()
+checkbutton_02 = tk.Checkbutton(tab3, text= "show GFP cells only", variable=checkbutton_var_02, command=on_gfp_checkbutton_click)
+
+# ---- tdTomato only ------
+def on_tdTomato_checkbutton_click():
+    global show_tdTomato_only
+    if checkbutton_var_03.get() == 1:
+        show_tdTomato_only = True
+    else:
+        show_tdTomato_only = False
+     
+checkbutton_var_03 = tk.IntVar()
+checkbutton_03 = tk.Checkbutton(tab3, text="show tdTomato cells only", variable=checkbutton_var_03, command=on_tdTomato_checkbutton_click)
+
+# ------- overlapping gfp/tdTomato cells only --------
+def on_overlapping_checkbutton_click():
+    global overlapping_cells_only
+    if checkbutton_var_04.get() == 1:
+        overlapping_cells_only = True
+    else:
+        overlapping_cells_only = False
+     
+checkbutton_var_04 = tk.IntVar()
+checkbutton_04 = tk.Checkbutton(tab3, text="show gfp/tdTomato overlapping cells only", variable=checkbutton_var_04, command=on_overlapping_checkbutton_click)
+
+# -------  gfp, tdTomato & overlapping cells  --------
+def on_all_cells_checkbutton_click():
+    global show_gfp_tdTomato_overlapping
+    if checkbutton_var_05.get() == 1:
+        show_gfp_tdTomato_overlapping = True
+    else:
+        show_gfp_tdTomato_overlapping = False
+     
+checkbutton_var_05 = tk.IntVar()
+checkbutton_05 = tk.Checkbutton(tab3, text="show gfp, tdTomato and overlapping cells", variable=checkbutton_var_05, command=on_all_cells_checkbutton_click)
 
 # save_render function
 def on_render_checkbutton_click():
@@ -50,8 +151,6 @@ def on_render_checkbutton_click():
     else:
         save_render = False
         print(save_render)
-
-      
 
 checkbutton_var_render = tk.IntVar()
 checkbutton_render = tk.Checkbutton(root, text="Save 3D Render", variable=checkbutton_var_render, command=on_render_checkbutton_click)
@@ -90,8 +189,12 @@ def on_button_click():
     extra_brain_region_acryonm = stripped_string_list
     if extra_brain_region_acryonm == ['']:
         extra_brain_region_acryonm = []
+    # for acryonm in extra_brain_region_acryonm:
+    #     acryonm[-1].remove(',')
+    
     # Get the value of the Entry widget
-    run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render)
+    run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render,show_gfp_tdTomato_overlapping,show_gfp_only,show_tdTomato_only,overlapping_cells_only
+)
     print("Button was clicked!")
    
 
@@ -114,8 +217,8 @@ label_mouse_id = tk.Label(root, text="Enter Mouse ID ")
 
 # number of top brain regions you want to be seen in the render. (top meaning containing the most labled cells)
 brain_regions_to_evalutate = tk.IntVar()
-brain_regions_to_evalutate_entry = tk.Entry(tab3, textvariable=brain_regions_to_evalutate, width=20)
-label_brain_regions_to_evalutate = tk.Label(tab3, text="Enter number of top labled brain regions you want to render ")
+brain_regions_to_evalutate_entry = tk.Entry(tab4, textvariable=brain_regions_to_evalutate, width=20)
+label_brain_regions_to_evalutate = tk.Label(tab4, text="Enter number of top labled brain regions you want to render ")
 
 # brain_regions_to_evalutate_entry.pack()
 # Path to the local allen brain atlas directory you want to use
@@ -146,9 +249,9 @@ label_estim_propigation_radius_um = tk.Label(tab2, text="Enter estim propigation
 
 # ---------- brain region text boxes -------------
 extra_brain_region_acryonm = tk.StringVar()
-extra_brain_region_acryonm_entry = tk.Entry(tab3, textvariable=extra_brain_region_acryonm, width=100)
-extra_brain_region_acryonm_entry.insert(tk.END, str('VIS, ECT, VISp1, VISp2/3, VISp4, VISp5,  VISp6a, VISp6b'))
-label_extra_brain_region_acryonm = tk.Label(tab3, text="Enter list of brain region acryonms you want to render ")
+extra_brain_region_acryonm_entry = tk.Entry(tab4, textvariable=extra_brain_region_acryonm, width=100)
+# extra_brain_region_acryonm_entry.insert(tk.END, str('VIS, ECT, VISp1, VISp2/3, VISp4, VISp5,  VISp6a, VISp6b'))
+label_extra_brain_region_acryonm = tk.Label(tab4, text="Select Brain Regions from list below that you want to see in the render ")
 
 
 
@@ -186,6 +289,13 @@ estim_tip_radius_um_entry.grid(row=3,column=2)
 
 label_estim_propigation_radius_um.grid(row=4, column=2)
 estim_propigation_radius_um_entry.grid(row=5,column=2)
+
+# ----------- channels tab -------------------
+# checkbutton_02.grid(row=0, column = 2)
+checkbutton_02.pack()
+checkbutton_03.pack()
+checkbutton_04.pack()
+checkbutton_05.pack()
 # -----------Brain region Tab --------------
 label_extra_brain_region_acryonm.grid(row=15, column=2)
 extra_brain_region_acryonm_entry.grid(row=16, column=2) 

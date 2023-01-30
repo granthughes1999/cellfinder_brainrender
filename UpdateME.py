@@ -20,6 +20,11 @@
 
 #
 save_render = True
+show_gfp_tdTomato_overlapping = False
+show_gfp_only = False
+show_tdTomato_only = False
+overlapping_cells_only = False
+
 
 # 1. ID of mouse (example: G25)
 mouse_id = "test_002"
