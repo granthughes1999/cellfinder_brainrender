@@ -16,7 +16,7 @@ from tkinter import ttk
 #  ---- Basics of GUI -----
 root = tk.Tk()
 root.configure(bg='gray')
-root.geometry("1000x500")
+root.geometry("1000x550")
 
 # Create a Notebook widget as the top-level container
 notebook = ttk.Notebook()
@@ -259,22 +259,23 @@ label_allen_mouse_10um = tk.Label(tab1, text="Enter path to you local allen brai
 
 # -------- Estim text boxes ---------------
 estim_shank_radius_um = tk.IntVar()
-estim_shank_radius_um_entry = tk.Entry(tab2, textvariable=estim_shank_radius_um, width=20,insertwidth=1)
-estim_shank_radius_um_entry.insert(tk.END, 50)
+estim_shank_radius_um_entry = tk.Entry(tab2)
+# estim_shank_radius_um_entry = tk.Entry(tab2, textvariable=estim_shank_radius_um, width=20,insertwidth=1)
+estim_shank_radius_um_entry.insert(tk.END, str(50))
 label_estim_shank_radius_um = tk.Label(tab2, text="Enter estim shank radius in (um) ")
 
 
 estim_tip_radius_um = tk.IntVar()
-estim_tip_radius_um_entry = tk.Entry(tab2, textvariable=estim_tip_radius_um, width=20,insertwidth=1)
-estim_tip_radius_um_entry.insert(tk.END, 10)
+estim_tip_radius_um_entry = tk.Entry(tab2)
+estim_tip_radius_um_entry.insert(tk.END, str(10))
 estim_shank_radius_um_entry.config(insertwidth=1)
 label_estim_tip_radius_um  = tk.Label(tab2, text="Enter estim tip radius in (um)")
 
 
 
 estim_propigation_radius_um = tk.IntVar()
-estim_propigation_radius_um_entry = tk.Entry(tab2, textvariable=estim_propigation_radius_um, width=20,insertwidth=1)
-estim_propigation_radius_um_entry.insert(tk.END, 300)
+estim_propigation_radius_um_entry = tk.Entry(tab2)
+estim_propigation_radius_um_entry.insert(tk.END, str(300))
 label_estim_propigation_radius_um = tk.Label(tab2, text="Enter estim propigation radius in (um)")
 
 # ---------- brain region text boxes -------------
