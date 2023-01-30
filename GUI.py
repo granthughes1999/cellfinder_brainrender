@@ -83,7 +83,7 @@ listbox.bind('<Button-1>', add_selected_item_to_list)
 listbox.bind('<ButtonRelease-1>', add_selected_item_to_list)
 
 # ----- Functions -----
-estim_tip_coordinates = [5300., 5350., 3300.]  
+
 # show_lables function
 def on_checkbutton_click():
     global show_lables
@@ -157,6 +157,7 @@ checkbutton_render = tk.Checkbutton(root, text="Save 3D Render", variable=checkb
 
 # estim coordinates function 
 def create_coordinates():
+    global estim_tip_coordinates
     x = float(x_entry.get())
     y = float(y_entry.get())
     z = float(z_entry.get())
@@ -170,6 +171,12 @@ y_entry = tk.Entry(tab2)
 y_entry.insert(tk.END, str(5350.))
 z_entry = tk.Entry(tab2)
 z_entry.insert(tk.END, str(3300.))
+
+x = float(x_entry.get())
+y = float(y_entry.get())
+z = float(z_entry.get())
+estim_tip_coordinates = [x, y, z]
+print(estim_tip_coordinates)
 
 
 
@@ -189,6 +196,11 @@ def on_button_click():
     extra_brain_region_acryonm = stripped_string_list
     if extra_brain_region_acryonm == ['']:
         extra_brain_region_acryonm = []
+    x = float(x_entry.get())
+    y = float(y_entry.get())
+    z = float(z_entry.get())
+    estim_tip_coordinates = [x, y, z]
+    print(estim_tip_coordinates)
     # for acryonm in extra_brain_region_acryonm:
     #     acryonm[-1].remove(',')
     

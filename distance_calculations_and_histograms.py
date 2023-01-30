@@ -28,7 +28,7 @@ import pickle
 # from brainrender_backend import brainrender_folder_path 
 
 
-def distance_calculations_histograms(brainrender_folder_path,mouse_id):
+def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates):
     # Create new folder in your cellfinder output folder
     mouseid_estim_tip_coordinates_folder_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates)   # create the path for the new folder
     histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms/tdTomato_cells'

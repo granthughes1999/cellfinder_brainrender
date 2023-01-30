@@ -1,4 +1,6 @@
 from general_Imports import *
+from scene_gfp import gfp_scene
+from scene_tdTomato import tdTomato_scene
 
 
 def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render,show_gfp_tdTomato_overlapping,show_gfp_only,show_tdTomato_only,overlapping_cells_only
@@ -46,7 +48,7 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     
     # run distance_calculations_histograms() from distance_calculation_and_histograms.py
     # calculates 3d-space distances, saves out each cells distance in arrays, and creates histograms of those distances relative to the estim_tip coordinates
-    distance_calculations_histograms(brainrender_folder_path,mouse_id)
+    distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates)
 
     #Save out the updateME datafram
     updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/UpdateME.csv" 
@@ -86,11 +88,7 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     shared_cells = np.array(shared_cells)
     shared_cells_save_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '/shared_cells_' + mouse_id + '_' +str(estim_tip_coordinates) +  ".npy" 
     np.save(shared_cells_save_path , shared_cells)
-    shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_id)
-
-    # Remove the shared voxel coordinates from the gfp and TdTomato arrays for cleaner rendering. 
-    # cells = np.array([i for i in cells if i not in shared_cells])
-    # overlapping_cells = np.array([i for i in overlapping_cells if i not in shared_cells])
+    shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates)
 
 
     # create points actors for brainrender to plot in the 3D render
@@ -297,14 +295,6 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
         opticalfiper_radius_um,
      )
 
-    # Testing 
-    # estim_cell_coordinates_array = np.array([estim_cell_coordinates])
-    # cell_volume_in_propigation_sphere_actor = PointsDensity(data=estim_cell_coordinates_array,name='Electical Propigation Sphere',dims=(100, 100, 100),radius=1000,)
-
-
-    # Add a sphere in the reference point location
-    # scene.add_sphere(center = reference_point, radius = 25, color = 'red')
-
     # check if 3D render has been saved out
     # if not export the 3D render, which can be opened in a web viewer
     if save_render == True:
@@ -323,21 +313,6 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     else:
         print('Render Not Saved....')
 
-    # # locally Render the 3D brain Scence
-    # rendered_brainregions_dict = {**evaluate, **extra_brain_regions_dictionary_with_cellcount}
-    # print(rendered_brainregions_dict)
-
-    # updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/brainrender_outputs" 
-    # upddateME_df.to_csv(updateME_save_path, index=False)
-
-    # print("The "+str(brain_regions_to_evalutate) +
-    #       " brain regions your loading with labled cells count")
-    # print(evaluate)
-    # print(' ')
-    # print("The "+str(len(extra_brain_region_acryonm)) +
-    #       " extra brain regions your loading with their cell count")
-    # print(extra_brain_regions_dictionary_with_cellcount)
-    # scene.render()
     # print the content of the scence
     scene.content
 
@@ -357,6 +332,4 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     if overlapping_cells_only == True:
         scene.add(overlapping_cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
         scene.render()
-
-   
 
