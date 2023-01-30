@@ -47,7 +47,6 @@ BrainGlobeAtlas_dictionary['Brain Region'] = brain_regions_name
 
 # Create the listbox to display the data
 listbox = tk.Listbox(tab4)
-listbox.grid(row=18, column=2,columnspan=3,sticky='ew')
 
 for acronym, name in BrainGlobeAtlas_dictionary.items():
     listbox.insert(tk.END, f" {acronym},  {name}")
@@ -76,6 +75,22 @@ def add_selected_item_to_list(event):
     
       
     print(selected_items)
+
+# --------- Search bar for extra brain regions -----------
+# Create a search bar
+search_var = tk.StringVar()
+search_entry = tk.Entry(tab4, textvariable=search_var)
+
+# Function to filter the listbox based on the search query
+def filter_listbox(event):
+    search_query = search_var.get().lower()
+    listbox.delete(0, tk.END)
+    for acronym, brain_region in BrainGlobeAtlas_dictionary.items():
+        if search_query in brain_region.lower():
+            listbox.insert(tk.END, f" {acronym},  {brain_region}")
+
+# Call the filter function whenever the search bar changes
+search_entry.bind("<KeyRelease>", filter_listbox)
   
   
 
@@ -268,6 +283,9 @@ extra_brain_region_acryonm_entry = tk.Entry(tab4, textvariable=extra_brain_regio
 # extra_brain_region_acryonm_entry.insert(tk.END, str('VIS, ECT, VISp1, VISp2/3, VISp4, VISp5,  VISp6a, VISp6b'))
 label_extra_brain_region_acryonm = tk.Label(tab4, text="Select Brain Regions from list below that you want to see in the render ")
 
+# Search bar label
+label_search_bar = tk.Label(tab4, text="Search for Brain Regions")
+
 
 
 # estim_tip_coordinates = tk.StringVar()
@@ -318,7 +336,13 @@ extra_brain_region_acryonm_entry.grid(row=16, column=2)
 label_brain_regions_to_evalutate.grid(row=5, column=2)
 brain_regions_to_evalutate_entry.grid(row=6,column=2)
 
-checkbutton.grid(row=17, column=2)
+checkbutton.grid(row=18, column=2)
+
+label_search_bar.grid(row=19, column=2)
+search_entry.grid(row=20, column=2)
+listbox.grid(row=21, column=2,columnspan=3,sticky='ew')
+
+
 
 # --------- Not in a tab -------
 
