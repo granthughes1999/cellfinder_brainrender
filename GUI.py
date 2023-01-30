@@ -11,11 +11,17 @@ global show_gfp_tdTomato_overlapping
 global brain_region_estim
 from general_Imports import *
 from tkinter import ttk
+import tkinter.filedialog as filedialog
+from PIL import Image
+from PIL import ImageTk
+
+
+
 
 #  ---- Basics of GUI -----
 root = tk.Tk()
 root.configure(bg='gray')
-root.geometry("1000x550")
+root.geometry("1000x1000")
 
 # Create a Notebook widget as the top-level container
 notebook = ttk.Notebook()
@@ -31,7 +37,78 @@ notebook.add(tab1, text='Imports')
 notebook.add(tab2, text='Estim')
 notebook.add(tab3, text='Channels')
 notebook.add(tab4, text='Brain Regions')
-notebook.add(tab5, text='Optical Fiber')
+notebook.add(tab5, text='Histogram Viewer')
+
+
+
+# ---------- TESTING histogram viewing window ---------------------------------------------
+# Create a new tab
+
+# Create a label to display the images
+image_label = tk.Label(tab5)
+image_label.grid(row=0, column=0, columnspan=5)
+
+# Create a variable to store the path to the directory of images
+image_directory = tk.StringVar()
+
+# Create a button to open a file explorer to select the image directory
+def browse_image_directory():
+    directory = filedialog.askdirectory()
+    image_directory.set(directory)
+
+browse_image_directory_button = tk.Button(tab5, text="Browse", command=browse_image_directory)
+browse_image_directory_button.grid(row=1, column=0)
+
+# Create an entry to display the selected image directory
+image_directory_entry = tk.Entry(tab5, textvariable=image_directory)
+image_directory_entry.grid(row=1, column=1,columnspan=5)
+
+# Create a list of images
+images = []
+
+# Create a function to load the images from the selected directory
+def load_images():
+    directory = image_directory.get()
+    for filename in os.listdir(directory):
+        if filename.endswith(".png"):
+            image_path = os.path.join(directory, filename)
+            image = Image.open(image_path)
+            images.append(image)
+
+# Create a button to load the images
+load_images_button = tk.Button(tab5, text="Load Images", command=load_images)
+load_images_button.grid(row=2, column=0, columnspan=2)
+
+# Create a variable to store the current image index
+current_image_index = 0
+
+# Create a function to display the current image
+def show_current_image():
+    global current_image_index
+    image = images[current_image_index]
+    image = ImageTk.PhotoImage(image)
+    image_label.config(image=image)
+    image_label.image = image
+
+# Create a button to show the previous image
+def show_previous_image():
+    global current_image_index
+    current_image_index = (current_image_index - 1) % len(images)
+    show_current_image()
+
+previous_image_button = tk.Button(tab5, text="<", command=show_previous_image)
+previous_image_button.grid(row=3, column=0)
+
+# Create a button to show the next image
+def show_next_image():
+    global current_image_index
+    current_image_index = (current_image_index + 1) % len(images)
+    show_current_image()
+
+next_image_button = tk.Button(tab5, text=">", command=show_next_image)
+next_image_button.grid(row=3, column=1)
+
+# ---------- END OF TESTING histogram viewing window ---------------------------------------------
 
 
 # ------ brain region acryonm and names ----------
@@ -251,7 +328,7 @@ def on_button_click():
 # path to cellfinder output data, also where all data will be stored from these files
 cellfinder_output_path = tk.StringVar()
 cellfinder_output_path_entry = tk.Entry(tab1, textvariable=cellfinder_output_path, width=110)
-cellfinder_output_path_entry.insert(0, '/Users/grant/Desktop/work/Denman_Lab/Cal_Light/brainrender/cellfinder_brainrender_output/cellfinder_output/')
+cellfinder_output_path_entry.insert(0, "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/")
 label_cellfinder_output_path = tk.Label(tab1, text="Enter path to cellfinder output data ")
 # cellfinder_output_path_entry.pack()
 # mouse id used, (ie. G19, G18...)
