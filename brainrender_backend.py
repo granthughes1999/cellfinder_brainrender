@@ -2,7 +2,7 @@ from general_Imports import *
 
 
 
-def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render,show_gfp_tdTomato_overlapping,show_gfp_only,show_tdTomato_only,overlapping_cells_only
+def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render,show_gfp_tdTomato_overlapping,show_gfp_only,show_tdTomato_only,overlapping_cells_only,brain_region_estim
 ):
     cellfinder_output_path = cellfinder_output_path
     mouseid = mouse_id
@@ -271,9 +271,23 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
 
     extra_brain_regions_dictionary_with_cellcount = dict(
         zip(extra_brain_region_names, extra_cell_count_list))
+
     # create and add a cylinder actor to brain region with the most labled cells
-     # mesh = shapes.Cylinder(pos=[top, pos], c=color, r=radius, alpha=alpha)
-     #  :param pos: list, np.array of ap, dv, ml coordinates. If an actor is passed, get's the center of mass instead
+    VISp5 = scene.add_brain_region(
+    "VISp5",
+    alpha=0.4,
+    )
+
+
+    visual_cylinder_actor = Cylinder(
+        # have cylinder run from the referece point to the brains surface 
+        VISp5,
+        scene.root,  # the cylinder actor needs information about the root mesh
+        "black",
+        1,
+        estim_shank_radius_um,
+     )
+
     estim_cylinder_actor = Cylinder(
         # have cylinder run from the referece point to the brains surface 
         estim_tip_coordinates,
@@ -338,19 +352,38 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     # print the content of the scence
     scene.content
 
-     # Add cells Actor to Scence
-    if show_gfp_tdTomato_overlapping == True:
-        scene.add(modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
-        scene.render()
+    if brain_region_estim == False:
+        # Add cells Actor to Scence
+        if show_gfp_tdTomato_overlapping == True:
+            scene.add(modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()
 
-    if show_gfp_only == True:
-        scene.add(modified_gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
-        scene.render()
+        if show_gfp_only == True:
+            scene.add(modified_gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()
 
-    if show_tdTomato_only == True:
-        scene.add(cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
-        scene.render()
+        if show_tdTomato_only == True:
+            scene.add(cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()
 
-    if overlapping_cells_only == True:
-        scene.add(overlapping_cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
-        scene.render()
+        if overlapping_cells_only == True:
+            scene.add(overlapping_cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()
+       
+    if brain_region_estim == True:
+            # Add cells Actor to Scence
+        if show_gfp_tdTomato_overlapping == True:
+            scene.add(visual_cylinder_actor,modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()
+
+        if show_gfp_only == True:
+            scene.add(visual_cylinder_actor,modified_gfp_cells_actor, estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()
+
+        if show_tdTomato_only == True:
+            scene.add(visual_cylinder_actor,cells_actor,estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()
+
+        if overlapping_cells_only == True:
+            scene.add(visual_cylinder_actor,overlapping_cells_actor,estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.render()

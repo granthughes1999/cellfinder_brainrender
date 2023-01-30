@@ -24,6 +24,7 @@ show_gfp_tdTomato_overlapping = False
 show_gfp_only = False
 show_tdTomato_only = False
 overlapping_cells_only = False
+brain_region_estim = False
 
 
 # 1. ID of mouse (example: G25)
@@ -86,4 +87,6 @@ extra_brain_region_acryonm = ['VIS','ECT','VISp1','VISp2/3','VISp4','VISp5','VIS
 # 4. path to local location of allen mouse brain atlas
 # you can check which allen atlas you have stored locally by running the allen_atlas_verification.py file
 allen_mouse_10um = '/Users/grant/brainglobe/allen_mouse_10um'
+
+
 

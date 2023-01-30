@@ -8,8 +8,6 @@ global show_gfp_only
 global show_tdTomato_only
 global overlapping_cells_only
 global show_gfp_tdTomato_overlapping
-
-
 from general_Imports import *
 from tkinter import ttk
 
@@ -24,12 +22,16 @@ tab1 = ttk.Frame(notebook)
 tab2 = ttk.Frame(notebook)
 tab3 = ttk.Frame(notebook)
 tab4 = ttk.Frame(notebook)
+tab5 = ttk.Frame(notebook)
+
 
 
 notebook.add(tab1, text='Imports')
 notebook.add(tab2, text='Estim')
 notebook.add(tab3, text='Channels')
 notebook.add(tab4, text='Brain Regions')
+notebook.add(tab5, text='Optical Fiber')
+
 
 # ------ brain region acryonm and names ----------
 
@@ -182,11 +184,14 @@ def create_coordinates():
     estim_tip_coordinates = [x, y, z]
     print(estim_tip_coordinates)
 
-estimCoord_label = tk.Label(tab2, text="Estim Tip Coordinates [x,y,z]")
+estimCoord_label = tk.Label(tab2, text="Estim Tip Coordinates [y,z,x]")
+x_label = tk.Label(tab2, text="Rotral/Caudal")
 x_entry = tk.Entry(tab2)
 x_entry.insert(tk.END, str(5300.))
+y_label = tk.Label(tab2, text="Superior/Inferior or Dorsal/Venntral")
 y_entry = tk.Entry(tab2)
 y_entry.insert(tk.END, str(5350.))
+z_label = tk.Label(tab2, text="Medial/Lateral")
 z_entry = tk.Entry(tab2)
 z_entry.insert(tk.END, str(3300.))
 
@@ -200,7 +205,6 @@ print(estim_tip_coordinates)
 
 # Creates the 3D render when the button is clicked 
 def on_button_click():
-   
     cellfinder_output_path = cellfinder_output_path_entry.get()
     mouse_id  = mouse_id_entry.get()
     brain_regions_to_evalutate = int(brain_regions_to_evalutate_entry.get())
@@ -223,8 +227,7 @@ def on_button_click():
     #     acryonm[-1].remove(',')
     
     # Get the value of the Entry widget
-    run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render,show_gfp_tdTomato_overlapping,show_gfp_only,show_tdTomato_only,overlapping_cells_only
-)
+    run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate, allen_mouse_10um,estim_shank_radius_um,estim_tip_radius_um,estim_propigation_radius_um,extra_brain_region_acryonm,show_lables,estim_tip_coordinates,save_render,show_gfp_tdTomato_overlapping,show_gfp_only,show_tdTomato_only,overlapping_cells_only,brain_region_estim)
     print("Button was clicked!")
    
 
@@ -311,9 +314,12 @@ allen_mouse_10um_entry.grid(row=8,column=2)
 # ------- Estim Tab ----------------
 
 estimCoord_label.grid(row=0, column=4)
-x_entry.grid(row=1, column=4)
-y_entry.grid(row=2, column=4)
-z_entry.grid(row=3, column=4)
+x_label.grid(row=1, column=4)
+x_entry.grid(row=2, column=4)
+y_label.grid(row=3, column=4)
+y_entry.grid(row=4, column=4)
+z_label.grid(row=5, column=4)
+z_entry.grid(row=6, column=4)
 
 label_estim_shank_radius_um.grid(row=0, column=2)
 estim_shank_radius_um_entry.grid(row=1,column=2,)
