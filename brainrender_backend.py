@@ -273,15 +273,15 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
         zip(extra_brain_region_names, extra_cell_count_list))
 
     # create and add a cylinder actor to brain region with the most labled cells
-    VISp5 = scene.add_brain_region(
-    "VISp5",
+    VISl5 = scene.add_brain_region(
+    "VISl5",
     alpha=0.4,
     )
 
 
     visual_cylinder_actor = Cylinder(
         # have cylinder run from the referece point to the brains surface 
-        VISp5,
+        VISl5,
         scene.root,  # the cylinder actor needs information about the root mesh
         "black",
         1,

@@ -8,6 +8,7 @@ global show_gfp_only
 global show_tdTomato_only
 global overlapping_cells_only
 global show_gfp_tdTomato_overlapping
+global brain_region_estim
 from general_Imports import *
 from tkinter import ttk
 
@@ -116,6 +117,17 @@ def on_checkbutton_click():
 
 checkbutton_var = tk.IntVar()
 checkbutton = tk.Checkbutton(tab4, text= "Show Brain Region Labels", variable=checkbutton_var, command=on_checkbutton_click)
+
+# estim render in slected brain region function
+def on_estim_checkbutton_click():
+    global brain_region_estim
+    if checkbutton_var_estim.get() == 1:
+        brain_region_estim = True
+    else:
+        brain_region_estim = False
+
+checkbutton_var_estim = tk.IntVar()
+checkbutton_estim = tk.Checkbutton(tab2, text= "Render Estim at center of selected brain region", variable=checkbutton_var_estim, command=on_estim_checkbutton_click)
 
 # update which channles you want to render 
 # ---- gfp only ------
@@ -320,6 +332,8 @@ y_label.grid(row=3, column=4)
 y_entry.grid(row=4, column=4)
 z_label.grid(row=5, column=4)
 z_entry.grid(row=6, column=4)
+checkbutton_estim.grid(row=7, column=4)
+
 
 label_estim_shank_radius_um.grid(row=0, column=2)
 estim_shank_radius_um_entry.grid(row=1,column=2,)
