@@ -67,11 +67,14 @@ def add_selected_item_to_list(event):
         # Add the brain region name to the list of selected items
         selected_items.append(acronym)
     
-        extra_brain_region_acryonm_entry.insert(0, acronym + ',')
-
-        # if extra_brain_region_acryonm_entry.get():
-        #     extra_brain_region_acryonm_entry.insert(tk.END, ", ")
-        #     extra_brain_region_acryonm_entry.insert(tk.END, acronym)
+        # extra_brain_region_acryonm_entry.insert(0, acronym + ',')
+         # Check if the list has more than one item
+        if len(selected_items) > 1:
+            extra_brain_region_acryonm_entry.insert(0, acronym + ',' )
+        else:
+            extra_brain_region_acryonm_entry.insert(0, acronym)
+    
+      
     print(selected_items)
   
   
