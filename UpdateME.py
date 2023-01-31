@@ -35,7 +35,8 @@ mouse_id = "test_002"
 # analysis from these files will be added to this output folder
 # in a new folder titled --> str(mouse_id) + "_Completed_Analysis"
 # ADD '/' at the end of your output path example: "/Users/grant/Desktop/mock_cellfinder_output/"
-cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/"
+cellfinder_output_path = ''
+# cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/"
 
 
 # 3. Electrode tip Voxel coordinates. using Paxinos-Franklin coordinate system where:
