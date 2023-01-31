@@ -7,10 +7,7 @@ Please check out my napari repository for how to accomplish network retraining.
 All the output data from this repository will be saved in a folder titled mouse_id_Completed_Analysis. This folder will be added to the cellfinder output folder that cellfinder created when you ran it (this should be the file path you use for cellfinder_output_path variable in updateME.py).
 
 # Before you can run these files 
-### Create Two Anaconda environments 
-### 1. cellfinder env
-##### conda create -n cellfinder python=3.9
-##### pip install cellfinder
+### Create This Anaconda environment
 
 ### 2. brainrender env
 ##### conda create -n brainrender python=3.9
@@ -19,6 +16,38 @@ All the output data from this repository will be saved in a folder titled mouse_
 
 # Step 1 
 #### Clone this repository 
+
+# Step 2
+#### activate brainrender env
+### type the following
+#### (brainrender) python path/to/GUI.py
+#### you can drag and drop GUI.py behind the word python
+#### click enter 
+
+# Step 3
+## on the imports tab of the GUI 
+#### browse your computer and select the cellfinder output director 
+
+# Step 4
+## Add a mouse ID
+
+# Step 5
+## Update any features you want in the GUI
+
+# Step 6
+## Click Create 3D Render 
+
+
+
+
+
+
+
+# OLD STEPS 
+## Create cellfinder Anaconda ENV
+### 1. cellfinder env
+##### conda create -n cellfinder python=3.9
+##### pip install cellfinder
 
 # Step 2
 ## updating the information that cellfinder will use to analyze your light-sheet images
