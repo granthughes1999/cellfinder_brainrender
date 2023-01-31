@@ -110,15 +110,7 @@ next_image_button.grid(row=3, column=1)
 
 # ---------- END OF TESTING histogram viewing window ---------------------------------------------
 
-# ------ search for cellfinder output folder --------------
-# def select_file_path():
-#     file_path = filedialog.askopenfilename()
-#     cellfinder_output_path_entry.insert(0, file_path)
 
-# def browse_file():
-#     file_path = filedialog.askopenfilename()
-#     cellfinder_output_path_entry.delete(0, tk.END)
-#     cellfinder_output_path_entry.insert(0, file_path)
 
 # Create a variable to store the path to the directory of images
 cellfinder_output_path_01 = tk.StringVar()
@@ -494,6 +486,12 @@ checkbutton.bind('<Button-1>', on_checkbutton_click)
 # checkbutton_render.bind('<Button-1>', on_render_checkbutton_click)
 run_button.bind('<Button-1>', on_button_click)
 
+# clear the exra brain region acryonm list when you hit the backspace or delete key
+def clear_selected_items(event):
+    selected_items.clear()
+
+extra_brain_region_acryonm_entry.bind("<BackSpace>", clear_selected_items)
+extra_brain_region_acryonm_entry.bind("<Delete>", clear_selected_items)
 
 
 
