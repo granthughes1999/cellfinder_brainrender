@@ -225,50 +225,129 @@ def on_estim_checkbutton_click():
 checkbutton_var_estim = tk.IntVar()
 checkbutton_estim = tk.Checkbutton(tab2, text= "Render Estim at center of selected brain region", variable=checkbutton_var_estim, command=on_estim_checkbutton_click)
 
-# update which channles you want to render 
-# ---- gfp only ------
+# ------------- UNCOMMENT DOWN TO LINE 271 ----------------------
+# # update which channles you want to render 
+# # ---- gfp only ------
+# def on_gfp_checkbutton_click():
+#     global show_gfp_only
+#     if checkbutton_var_02.get() == 1:
+#         show_gfp_only = True
+#     else:
+#         show_gfp_only = False
+     
+# checkbutton_var_02 = tk.IntVar()
+# checkbutton_02 = tk.Checkbutton(tab3, text= "show GFP cells only", variable=checkbutton_var_02, command=on_gfp_checkbutton_click)
+
+# # ---- tdTomato only ------
+# def on_tdTomato_checkbutton_click():
+#     global show_tdTomato_only
+#     if checkbutton_var_03.get() == 1:
+#         show_tdTomato_only = True
+#     else:
+#         show_tdTomato_only = False
+     
+# checkbutton_var_03 = tk.IntVar()
+# checkbutton_03 = tk.Checkbutton(tab3, text="show tdTomato cells only", variable=checkbutton_var_03, command=on_tdTomato_checkbutton_click)
+
+# # ------- overlapping gfp/tdTomato cells only --------
+# def on_overlapping_checkbutton_click():
+#     global overlapping_cells_only
+#     if checkbutton_var_04.get() == 1:
+#         overlapping_cells_only = True
+#     else:
+#         overlapping_cells_only = False
+     
+# checkbutton_var_04 = tk.IntVar()
+# checkbutton_04 = tk.Checkbutton(tab3, text="show gfp/tdTomato overlapping cells only", variable=checkbutton_var_04, command=on_overlapping_checkbutton_click)
+
+# # -------  gfp, tdTomato & overlapping cells  --------
+# def on_all_cells_checkbutton_click():
+#     global show_gfp_tdTomato_overlapping
+#     if checkbutton_var_05.get() == 1:
+#         show_gfp_tdTomato_overlapping = True
+#     else:
+#         show_gfp_tdTomato_overlapping = False
+     
+# checkbutton_var_05 = tk.IntVar()
+# checkbutton_05 = tk.Checkbutton(tab3, text="show gfp, tdTomato and overlapping cells", variable=checkbutton_var_05, command=on_all_cells_checkbutton_click)
+ # -------------- UNCOMMENT UP TO LINE 226 --------------------------
 def on_gfp_checkbutton_click():
     global show_gfp_only
+    global show_tdTomato_only
+    global show_gfp_tdTomato_overlapping
+    global overlapping_cells_only
     if checkbutton_var_02.get() == 1:
+        checkbutton_var_03.set(0)
+        checkbutton_var_04.set(0)
+        checkbutton_var_05.set(0)
         show_gfp_only = True
+        show_tdTomato_only = False
+        overlapping_cells_only = False
+        show_gfp_tdTomato_overlapping = False
+
     else:
         show_gfp_only = False
-     
+
 checkbutton_var_02 = tk.IntVar()
 checkbutton_02 = tk.Checkbutton(tab3, text= "show GFP cells only", variable=checkbutton_var_02, command=on_gfp_checkbutton_click)
 
-# ---- tdTomato only ------
 def on_tdTomato_checkbutton_click():
     global show_tdTomato_only
+    global show_gfp_only
+    global show_gfp_tdTomato_overlapping
+    global overlapping_cells_only
     if checkbutton_var_03.get() == 1:
+        checkbutton_var_02.set(0)
+        checkbutton_var_04.set(0)
+        checkbutton_var_05.set(0)
         show_tdTomato_only = True
+        show_gfp_only = False
+        overlapping_cells_only = False
+        show_gfp_tdTomato_overlapping = False
     else:
         show_tdTomato_only = False
-     
+
 checkbutton_var_03 = tk.IntVar()
 checkbutton_03 = tk.Checkbutton(tab3, text="show tdTomato cells only", variable=checkbutton_var_03, command=on_tdTomato_checkbutton_click)
 
-# ------- overlapping gfp/tdTomato cells only --------
 def on_overlapping_checkbutton_click():
     global overlapping_cells_only
+    global show_gfp_only
+    global show_tdTomato_only
+    global show_gfp_tdTomato_overlapping
     if checkbutton_var_04.get() == 1:
+        checkbutton_var_02.set(0)
+        checkbutton_var_03.set(0)
+        checkbutton_var_05.set(0)
         overlapping_cells_only = True
+        show_gfp_only = False
+        show_tdTomato_only = False
+        show_gfp_tdTomato_overlapping = False
     else:
         overlapping_cells_only = False
-     
+
 checkbutton_var_04 = tk.IntVar()
 checkbutton_04 = tk.Checkbutton(tab3, text="show gfp/tdTomato overlapping cells only", variable=checkbutton_var_04, command=on_overlapping_checkbutton_click)
 
-# -------  gfp, tdTomato & overlapping cells  --------
 def on_all_cells_checkbutton_click():
     global show_gfp_tdTomato_overlapping
+    global show_gfp_only
+    global show_tdTomato_only
+    global overlapping_cells_only
     if checkbutton_var_05.get() == 1:
+        checkbutton_var_02.set(0)
+        checkbutton_var_03.set(0)
+        checkbutton_var_04.set(0)
         show_gfp_tdTomato_overlapping = True
+        show_gfp_only = False
+        show_tdTomato_only = False
+        overlapping_cells_only = False
     else:
         show_gfp_tdTomato_overlapping = False
-     
+
 checkbutton_var_05 = tk.IntVar()
 checkbutton_05 = tk.Checkbutton(tab3, text="show gfp, tdTomato and overlapping cells", variable=checkbutton_var_05, command=on_all_cells_checkbutton_click)
+
 
 # save_render function
 def on_render_checkbutton_click():
