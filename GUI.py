@@ -110,6 +110,33 @@ next_image_button.grid(row=3, column=1)
 
 # ---------- END OF TESTING histogram viewing window ---------------------------------------------
 
+# ------ search for cellfinder output folder --------------
+# def select_file_path():
+#     file_path = filedialog.askopenfilename()
+#     cellfinder_output_path_entry.insert(0, file_path)
+
+# def browse_file():
+#     file_path = filedialog.askopenfilename()
+#     cellfinder_output_path_entry.delete(0, tk.END)
+#     cellfinder_output_path_entry.insert(0, file_path)
+
+# Create a variable to store the path to the directory of images
+cellfinder_output_path_01 = tk.StringVar()
+
+# Create a button to open a file explorer to select the image directory
+def browse_image_directory():
+    directory = filedialog.askdirectory()
+    directory = directory + "/"
+    cellfinder_output_path_01.set(directory)
+
+browse_image_directory_button_01 = tk.Button(tab1, text="Browse", command=browse_image_directory)
+
+# Create an entry to display the selected image directory
+cellfinder_output_path_01_entry = tk.Entry(tab1, textvariable=cellfinder_output_path_01)
+# cellfinder_output_path_01_entry.grid(row=1, column=1,columnspan=5)
+
+# # Create a button for selecting the file path
+# select_file_path_button = tk.Button(tab1, text="Select cellfinder output directory", command=browse_file)
 
 # ------ brain region acryonm and names ----------
 
@@ -294,7 +321,7 @@ print(estim_tip_coordinates)
 
 # Creates the 3D render when the button is clicked 
 def on_button_click():
-    cellfinder_output_path = cellfinder_output_path_entry.get()
+    cellfinder_output_path = cellfinder_output_path_01_entry.get()
     mouse_id  = mouse_id_entry.get()
     brain_regions_to_evalutate = int(brain_regions_to_evalutate_entry.get())
     allen_mouse_10um = allen_mouse_10um_entry.get()
@@ -328,7 +355,7 @@ def on_button_click():
 # path to cellfinder output data, also where all data will be stored from these files
 cellfinder_output_path = tk.StringVar()
 cellfinder_output_path_entry = tk.Entry(tab1, textvariable=cellfinder_output_path, width=110)
-cellfinder_output_path_entry.insert(0, "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/")
+# cellfinder_output_path_entry.insert(0, "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/")
 label_cellfinder_output_path = tk.Label(tab1, text="Enter path to cellfinder output data ")
 # cellfinder_output_path_entry.pack()
 # mouse id used, (ie. G19, G18...)
@@ -338,8 +365,9 @@ label_mouse_id = tk.Label(root, text="Enter Mouse ID ")
 
 
 # number of top brain regions you want to be seen in the render. (top meaning containing the most labled cells)
-brain_regions_to_evalutate = tk.IntVar()
+# brain_regions_to_evalutate = tk.IntVar()
 brain_regions_to_evalutate_entry = tk.Entry(tab4, textvariable=brain_regions_to_evalutate, width=20)
+brain_regions_to_evalutate_entry.insert(tk.END, str(0))
 label_brain_regions_to_evalutate = tk.Label(tab4, text="Enter number of top labled brain regions you want to render ")
 
 # brain_regions_to_evalutate_entry.pack()
@@ -373,7 +401,6 @@ label_estim_propigation_radius_um = tk.Label(tab2, text="Enter estim propigation
 # ---------- brain region text boxes -------------
 extra_brain_region_acryonm = tk.StringVar()
 extra_brain_region_acryonm_entry = tk.Entry(tab4, textvariable=extra_brain_region_acryonm, width=100)
-# extra_brain_region_acryonm_entry.insert(tk.END, str('VIS, ECT, VISp1, VISp2/3, VISp4, VISp5,  VISp6a, VISp6b'))
 label_extra_brain_region_acryonm = tk.Label(tab4, text="Select Brain Regions from list below that you want to see in the render ")
 
 # Search bar label
@@ -393,12 +420,23 @@ run_button = tk.Button(root, text="Create 3D Render", command=on_button_click)
 
 # grid for the gui\
 # ------- import Tab ----------------
+# select_file_path_button.grid(row=1, column=1, padx=10, pady=10)
+# # label_cellfinder_output_path.grid(row=1, column=2)
+# cellfinder_output_path_entry.grid(row=2, column=2)
 
-label_cellfinder_output_path.grid(row=1, column=2)
-cellfinder_output_path_entry.grid(row=2, column=2)
+# label_allen_mouse_10um.grid(row=7, column=2)
+# allen_mouse_10um_entry.grid(row=8,column=2)
 
-label_allen_mouse_10um.grid(row=7, column=2)
-allen_mouse_10um_entry.grid(row=8,column=2)
+# select_file_path_button.pack()
+browse_image_directory_button_01.pack()
+cellfinder_output_path_01_entry.pack()
+
+
+# label_cellfinder_output_path.grid(row=1, column=2)
+# cellfinder_output_path_entry.pack()
+
+label_allen_mouse_10um.pack()
+allen_mouse_10um_entry.pack()
 
 # ------- Estim Tab ----------------
 

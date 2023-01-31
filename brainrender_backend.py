@@ -271,22 +271,22 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
 
     extra_brain_regions_dictionary_with_cellcount = dict(
         zip(extra_brain_region_names, extra_cell_count_list))
+   
+    if brain_region_estim == True:
+            # create and add a cylinder actor to brain region with the most labled cells
+            VISl5 = scene.add_brain_region(
+            "VISl5",
+            alpha=0.4,
+            )
 
-    # create and add a cylinder actor to brain region with the most labled cells
-    VISl5 = scene.add_brain_region(
-    "VISl5",
-    alpha=0.4,
-    )
-
-
-    visual_cylinder_actor = Cylinder(
-        # have cylinder run from the referece point to the brains surface 
-        VISl5,
-        scene.root,  # the cylinder actor needs information about the root mesh
-        "black",
-        1,
-        estim_shank_radius_um,
-     )
+            visual_cylinder_actor = Cylinder(
+                # have cylinder run from the referece point to the brains surface 
+                VISl5,
+                scene.root,  # the cylinder actor needs information about the root mesh
+                "black",
+                1,
+                estim_shank_radius_um,
+            )
 
     estim_cylinder_actor = Cylinder(
         # have cylinder run from the referece point to the brains surface 
