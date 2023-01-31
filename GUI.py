@@ -56,7 +56,7 @@ def browse_image_directory():
     directory = filedialog.askdirectory()
     image_directory.set(directory)
 
-browse_image_directory_button = tk.Button(tab5, text="Browse", command=browse_image_directory)
+browse_image_directory_button = tk.Button(tab5, text="Browse for histogram image directory", command=browse_image_directory)
 browse_image_directory_button.grid(row=1, column=0)
 
 # Create an entry to display the selected image directory
@@ -129,7 +129,7 @@ def browse_image_directory():
     directory = directory + "/"
     cellfinder_output_path_01.set(directory)
 
-browse_image_directory_button_01 = tk.Button(tab1, text="Browse", command=browse_image_directory)
+browse_image_directory_button_01 = tk.Button(tab1, text="Browse for cellfinder output directory", command=browse_image_directory)
 
 # Create an entry to display the selected image directory
 cellfinder_output_path_01_entry = tk.Entry(tab1, textvariable=cellfinder_output_path_01)

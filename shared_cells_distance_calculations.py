@@ -65,6 +65,9 @@ def shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_i
         np.save(npy_folder_path +'/'+ 'euclidean_distances.npy', euclidean_distances) 
         plt.close()
         sns.histplot(euclidean_distances, kde = True)
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato Euclidean distances from Estim tip')
+        plt.xlabel('Euclidean Distance (um)')
+        plt.ylabel('number of cells')
         plt.savefig(hist_save_path + '_sns_euclidean_distances.png')
         plt.close()
 
@@ -84,6 +87,9 @@ def shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_i
         plt.close()
         # create subplot with smooth line overlay
         sns.histplot(manhattan_distances, kde = True)
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato Manhattan distances from Estim tip')
+        plt.xlabel('Manhattan distance (um)')
+        plt.ylabel('number of cells')
         plt.savefig(hist_save_path + '_sns_manhattan_distances.png')
         plt.close()
 
@@ -98,6 +104,9 @@ def shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_i
         np.save(npy_folder_path +'/'+  'minkowski_distances.npy', minkowski_distances) 
         plt.close()
         sns.histplot(minkowski_distances, kde = True)
+        plt.xlabel('Minkowski Distance (um) (p={})'.format(p))
+        plt.ylabel('Cell Count')
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato Minkowski Distances from Estim tip')
         plt.savefig(hist_save_path + '_sns_minkowski_distances.png')
         plt.close()
 
@@ -111,6 +120,9 @@ def shared_cell_distance_calculations_histograms(brainrender_folder_path,mouse_i
         np.save(npy_folder_path +'/'+  'chebyshev_distances.npy', chebyshev_distances) 
         plt.close()
         sns.histplot(minkowski_distances, kde = True)
+        plt.xlabel('Chebyshev Distance (um)')
+        plt.ylabel('Cell count')
+        plt.title(str(mouse_id) + ' Overlapping gfp & tdTomato, Chebyshev Distances from Estim tip')
         plt.savefig(hist_save_path + '_sns_chebyshev_distances.png')
         plt.close()
 

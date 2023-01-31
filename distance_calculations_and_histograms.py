@@ -66,6 +66,9 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         np.save(npy_folder_path +'/'+ 'euclidean_distances.npy', euclidean_distances) 
         plt.close()
         sns.histplot(euclidean_distances, kde = True)
+        plt.xlabel('Euclidean Distance (um)')
+        plt.ylabel('number of cells')
+        plt.title(str(mouse_id) + ' tdTomato, Histogram of cell Euclidean distances from Estim tip')
         plt.savefig(hist_save_path + '_sns_euclidean_distances.png')
         plt.close()
 
@@ -85,6 +88,9 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         plt.close()
         # create subplot with smooth line overlay
         sns.histplot(manhattan_distances, kde = True)
+        plt.title(str(mouse_id) + ' tdTomato, Manhattan distances from Estim tip')
+        plt.xlabel('Manhattan distance (um)')
+        plt.ylabel('number of cells')
         plt.savefig(hist_save_path + '_sns_manhattan_distances.png')
         plt.close()
 
@@ -99,6 +105,9 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         np.save(npy_folder_path +'/'+  'minkowski_distances.npy', minkowski_distances) 
         plt.close()
         sns.histplot(minkowski_distances, kde = True)
+        plt.xlabel('Minkowski Distance (um) (p={})'.format(p))
+        plt.ylabel('Cell Count')
+        plt.title(str(mouse_id) + ' tdTomato, Minkowski Distances from estim tip')
         plt.savefig(hist_save_path + '_sns_minkowski_distances.png')
         plt.close()
 
@@ -112,6 +121,9 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         np.save(npy_folder_path +'/'+  'chebyshev_distances.npy', chebyshev_distances) 
         plt.close()
         sns.histplot(minkowski_distances, kde = True)
+        plt.xlabel('tdTomato, Chebyshev Distance (um)')
+        plt.ylabel('Cell count')
+        plt.title(str(mouse_id) + ' tdTomato Chebyshev Distances from estim tip')
         plt.savefig(hist_save_path + '_sns_chebyshev_distances.png')
         plt.close()
 
