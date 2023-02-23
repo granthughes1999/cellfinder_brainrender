@@ -47,7 +47,7 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     
     # run distance_calculations_histograms() from distance_calculation_and_histograms.py
     # calculates 3d-space distances, saves out each cells distance in arrays, and creates histograms of those distances relative to the estim_tip coordinates
-    distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates)
+    distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates,cellfinder_output_path)
 
     #Save out the updateME datafram
     updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/UpdateME.csv" 
@@ -71,19 +71,22 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     # should be gfp and tdTomato channels
 
     # Path to cellfinder_output points.npy file
-    tdTomato_cells_path = cellfinder_output_path + 'points/points.npy' # --> Update path to how cellfinder outputs different channel data 
+    tdTomato_cells_path = cellfinder_output_path + 'points/tdTomato_points.npy' # --> Update path to how cellfinder outputs different channel data 
+    gfp_cells_path = cellfinder_output_path + 'points/gfp_points.npy'
+
 
     # Load in all registered cell coordinates, and Define the reference point as one of those coordinates
-    cells = np.load(tdTomato_cells_path)
+    tdTomato_cells = np.load(tdTomato_cells_path)
+    gfp_cells = np.load(gfp_cells_path)
 
     # Create Overlapping cells for testing changing the color of the overlapping cells
-    gfp_cells = cells[49000: 55000] # --> Change to path to gfp points.npy file from cellfinder output
+    ## gfp_cells = cells[49000: 55000] # --> Change to path to gfp points.npy file from cellfinder output
 
     # malke random gfp cells to plot. this should be removed
-    modified_gfp_cells = np.add(gfp_cells, 250)
+    # modified_gfp_cells = np.add(gfp_cells, 250)
  
     # Create an array that contains the shared voxel coordinates between the gfp and tdTomato channels
-    shared_cells = [i for i in gfp_cells if i in cells]
+    shared_cells = [i for i in gfp_cells if i in tdTomato_cells]
     shared_cells = np.array(shared_cells)
     shared_cells_save_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '/shared_cells_' + mouse_id + '_' +str(estim_tip_coordinates) +  ".npy" 
     np.save(shared_cells_save_path , shared_cells)
@@ -91,9 +94,9 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
 
 
     # create points actors for brainrender to plot in the 3D render
-    cells_actor = Points(cells)
+    tdTomato_cells_actor = Points(tdTomato_cells)
     overlapping_cells_actor = Points(shared_cells,colors="blackboard",radius=22)
-    modified_gfp_cells_actor = Points(modified_gfp_cells, colors = 'green')
+    gfp_cells_actor = Points(gfp_cells, colors = 'green')
 
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -355,15 +358,15 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     if brain_region_estim == False:
         # Add cells Actor to Scence
         if show_gfp_tdTomato_overlapping == True:
-            scene.add(modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.add(gfp_cells_actor,overlapping_cells_actor,tdTomato_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
 
         if show_gfp_only == True:
-            scene.add(modified_gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.add(gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
 
         if show_tdTomato_only == True:
-            scene.add(cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.add(tdTomato_cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
 
         if overlapping_cells_only == True:
@@ -373,15 +376,15 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     if brain_region_estim == True:
             # Add cells Actor to Scence
         if show_gfp_tdTomato_overlapping == True:
-            scene.add(visual_cylinder_actor,modified_gfp_cells_actor,overlapping_cells_actor,cells_actor, estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.add(visual_cylinder_actor,gfp_cells_actor,overlapping_cells_actor,tdTomato_cells_actor, estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
 
         if show_gfp_only == True:
-            scene.add(visual_cylinder_actor,modified_gfp_cells_actor, estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.add(visual_cylinder_actor,gfp_cells_actor, estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
 
         if show_tdTomato_only == True:
-            scene.add(visual_cylinder_actor,cells_actor,estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            scene.add(visual_cylinder_actor,tdTomato_cells_actor,estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
 
         if overlapping_cells_only == True:

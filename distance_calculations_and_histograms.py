@@ -28,7 +28,7 @@ import pickle
 # from brainrender_backend import brainrender_folder_path 
 
 
-def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates):
+def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates,cellfinder_output_path):
     # Create new folder in your cellfinder output folder
     mouseid_estim_tip_coordinates_folder_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates)   # create the path for the new folder
     histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms/tdTomato_cells'
@@ -46,9 +46,10 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         # npy_save_path = histogram_save_path + '/' + 'distance_arrays'
         # Calaculate 3d-space distances for cells relative to estim_tip_coordinates. and save out histograms of those distances
         # Path to cellfinder_output points.npy file
-        cells_path = cellfinder_output_path + 'points/points.npy'
-        cells_path
-        points = np.load(cells_path)
+        print('cellfinder Output Path:' + str(cellfinder_output_path))
+        tdTomato_cells_path = cellfinder_output_path + 'points/tdTomato_points.npy'
+        tdTomato_cells_path
+        points = np.load(tdTomato_cells_path)
         hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) + '/tdTomato_cells'
 
         # Subtract the reference point from each cell coordinate

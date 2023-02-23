@@ -28,14 +28,14 @@ brain_region_estim = False
 
 
 # 1. ID of mouse (example: G25)
-mouse_id = "test_002"
+mouse_id = "G21_010"
 
 # 2. path to the cellfinder gfp signal channel output folder 
 # this is where all the data from this repository will be saved to, in a folder called mouse_id_Completed_Anaylysis
 # analysis from these files will be added to this output folder
 # in a new folder titled --> str(mouse_id) + "_Completed_Analysis"
 # ADD '/' at the end of your output path example: "/Users/grant/Desktop/mock_cellfinder_output/"
-cellfinder_output_path = ''
+cellfinder_output_path = '/Users/grant/Desktop/cellfinder/G21/cellfinder_output_021423'
 # cellfinder_output_path = "/Users/grant/Desktop/cellfinder_brainrender_output/cellfinder_output/"
 
 

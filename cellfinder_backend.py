@@ -37,7 +37,7 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         gfp_df = pd.read_csv(cellfinder_output_path +
                              'analysis/' + 'gfp_summary.csv')
         tdTomato_df = pd.read_csv(cellfinder_output_path +
-                                  'analysis/' + 'randomized_tdTomato_summary.csv')
+                                  'analysis/' + 'tdTomato_summary.csv')
 
         # output path for created csv
         output_path_csv = output_folder_path + '/' + mouse_id + '_labled_cells.csv'
@@ -154,10 +154,13 @@ def analyze_data_cellfinder(cellfinder_output_path, mouse_id):
         percent_labled = []
         i = 0
         for count in all_tdTomato_brain_regions_cell_count:
-            percent_labled.append(
-                all_gfp_brain_regions_cell_count[i] / count * 100)
-            i += 1
-
+            if count >= 1:
+                percent_labled.append(
+                    all_gfp_brain_regions_cell_count[i] / count * 100)
+                i += 1
+            else:
+                percent_labled.append('0')
+                i += 1
         # ## df for percentage of labled gfp cells vs tdTomato cells
 
         # create df with gfp and tdTomato cell counts, and percent labled
