@@ -31,7 +31,7 @@ import pickle
 def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates,cellfinder_output_path):
     # Create new folder in your cellfinder output folder
     mouseid_estim_tip_coordinates_folder_path = brainrender_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates)   # create the path for the new folder
-    histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms/tdTomato_cells'
+    histogram_folder_path = mouseid_estim_tip_coordinates_folder_path + '/' + str(mouse_id) + '_' + str(estim_tip_coordinates) + '_histograms/gfp_cells'
     npy_folder_path = histogram_folder_path + '/' + "distance_arrays"
     if not os.path.exists(histogram_folder_path):
         os.makedirs(histogram_folder_path)
@@ -47,20 +47,20 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         # Calaculate 3d-space distances for cells relative to estim_tip_coordinates. and save out histograms of those distances
         # Path to cellfinder_output points.npy file
         print('cellfinder Output Path:' + str(cellfinder_output_path))
-        tdTomato_cells_path = cellfinder_output_path + 'points/tdTomato_points.npy'
-        tdTomato_cells_path
-        points = np.load(tdTomato_cells_path)
-        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) + '/tdTomato_cells'
+        gfp_cells_path = cellfinder_output_path + 'points/gfp_points.npy'
+        gfp_cells_path
+        points = np.load(gfp_cells_path)
+        hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) + '/gfp_cells'
 
         # Subtract the reference point from each cell coordinate
         displacement = points - estim_tip_coordinates
         # Calculate the magnitude of the displacement vectors
         euclidean_distances = np.linalg.norm(displacement, axis=1)
-        plt.hist(euclidean_distances, bins=25)
+        plt.hist(euclidean_distances, bins=100)
         # Add labels and a title
         plt.xlabel('Euclidean Distance (um)')
         plt.ylabel('number of cells')
-        plt.title(str(mouse_id) + ' tdTomato, Histogram of cell Euclidean distances from Estim tip')
+        plt.title(str(mouse_id) + ' gfp, Histogram of cell Euclidean distances from Estim tip')
         # Display & save the histogram
         hist_save_path = histogram_save_path +'/'+ str(mouse_id)+ '_' + str(estim_tip_coordinates) 
         plt.savefig(hist_save_path + '_euclidean_distances.png')
@@ -69,7 +69,7 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         sns.histplot(euclidean_distances, kde = True)
         plt.xlabel('Euclidean Distance (um)')
         plt.ylabel('number of cells')
-        plt.title(str(mouse_id) + ' tdTomato, Histogram of cell Euclidean distances from Estim tip')
+        plt.title(str(mouse_id) + ' gfp, Histogram of cell Euclidean distances from Estim tip')
         plt.savefig(hist_save_path + '_sns_euclidean_distances.png')
         plt.close()
 
@@ -78,9 +78,9 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         manhattan_distances = np.sum(np.abs(points - estim_tip_coordinates), axis=1)
         manhattan_distances = distance.cdist(points, [estim_tip_coordinates], metric='cityblock')
         # Plot manhattan distances histogram
-        plt.hist(manhattan_distances, bins = 25)
+        plt.hist(manhattan_distances, bins = 100)
         # Add labels
-        plt.title(str(mouse_id) + ' tdTomato, Manhattan distances from Estim tip')
+        plt.title(str(mouse_id) + ' gfp, Manhattan distances from Estim tip')
         plt.xlabel('Manhattan distance (um)')
         plt.ylabel('number of cells')
         # Save the histogram
@@ -89,7 +89,7 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         plt.close()
         # create subplot with smooth line overlay
         sns.histplot(manhattan_distances, kde = True)
-        plt.title(str(mouse_id) + ' tdTomato, Manhattan distances from Estim tip')
+        plt.title(str(mouse_id) + ' gfp, Manhattan distances from Estim tip')
         plt.xlabel('Manhattan distance (um)')
         plt.ylabel('number of cells')
         plt.savefig(hist_save_path + '_sns_manhattan_distances.png')
@@ -98,33 +98,33 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         p = 3
         minkowski_distances = distance.cdist(points, [estim_tip_coordinates], 'minkowski', p=p)
 
-        plt.hist(minkowski_distances, bins=25)
+        plt.hist(minkowski_distances, bins=100)
         plt.xlabel('Minkowski Distance (um) (p={})'.format(p))
         plt.ylabel('Cell Count')
-        plt.title(str(mouse_id) + ' tdTomato, Minkowski Distances from estim tip')
+        plt.title(str(mouse_id) + ' gfp, Minkowski Distances from estim tip')
         plt.savefig(hist_save_path + '_minkowski_distances.png')
         np.save(npy_folder_path +'/'+  'minkowski_distances.npy', minkowski_distances) 
         plt.close()
         sns.histplot(minkowski_distances, kde = True)
         plt.xlabel('Minkowski Distance (um) (p={})'.format(p))
         plt.ylabel('Cell Count')
-        plt.title(str(mouse_id) + ' tdTomato, Minkowski Distances from estim tip')
+        plt.title(str(mouse_id) + ' gfp, Minkowski Distances from estim tip')
         plt.savefig(hist_save_path + '_sns_minkowski_distances.png')
         plt.close()
 
 
         chebyshev_distances = distance.cdist(points, [estim_tip_coordinates], 'chebyshev')
-        plt.hist(chebyshev_distances, bins=25)
-        plt.xlabel('tdTomato, Chebyshev Distance (um)')
+        plt.hist(chebyshev_distances, bins=100)
+        plt.xlabel('gfp, Chebyshev Distance (um)')
         plt.ylabel('Cell count')
-        plt.title(str(mouse_id) + ' tdTomato Chebyshev Distances from estim tip')
+        plt.title(str(mouse_id) + ' gfp Chebyshev Distances from estim tip')
         plt.savefig(hist_save_path + '_chebyshev_distances.png')
         np.save(npy_folder_path +'/'+  'chebyshev_distances.npy', chebyshev_distances) 
         plt.close()
         sns.histplot(minkowski_distances, kde = True)
-        plt.xlabel('tdTomato, Chebyshev Distance (um)')
+        plt.xlabel('gfp, Chebyshev Distance (um)')
         plt.ylabel('Cell count')
-        plt.title(str(mouse_id) + ' tdTomato Chebyshev Distances from estim tip')
+        plt.title(str(mouse_id) + ' gfp Chebyshev Distances from estim tip')
         plt.savefig(hist_save_path + '_sns_chebyshev_distances.png')
         plt.close()
 
