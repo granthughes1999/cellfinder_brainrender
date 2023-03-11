@@ -56,7 +56,7 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         displacement = points - estim_tip_coordinates
         # Calculate the magnitude of the displacement vectors
         euclidean_distances = np.linalg.norm(displacement, axis=1)
-        plt.hist(euclidean_distances, bins=500)
+        plt.hist(euclidean_distances, bins=25)
         # Add labels and a title
         plt.xlabel('Euclidean Distance (um)')
         plt.ylabel('number of cells')
@@ -78,7 +78,7 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         manhattan_distances = np.sum(np.abs(points - estim_tip_coordinates), axis=1)
         manhattan_distances = distance.cdist(points, [estim_tip_coordinates], metric='cityblock')
         # Plot manhattan distances histogram
-        plt.hist(manhattan_distances, bins = 100)
+        plt.hist(manhattan_distances, bins = 25)
         # Add labels
         plt.title(str(mouse_id) + ' tdTomato, Manhattan distances from Estim tip')
         plt.xlabel('Manhattan distance (um)')
@@ -98,7 +98,7 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
         p = 3
         minkowski_distances = distance.cdist(points, [estim_tip_coordinates], 'minkowski', p=p)
 
-        plt.hist(minkowski_distances, bins=100)
+        plt.hist(minkowski_distances, bins=25)
         plt.xlabel('Minkowski Distance (um) (p={})'.format(p))
         plt.ylabel('Cell Count')
         plt.title(str(mouse_id) + ' tdTomato, Minkowski Distances from estim tip')
@@ -114,7 +114,7 @@ def distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_
 
 
         chebyshev_distances = distance.cdist(points, [estim_tip_coordinates], 'chebyshev')
-        plt.hist(chebyshev_distances, bins=100)
+        plt.hist(chebyshev_distances, bins=25)
         plt.xlabel('tdTomato, Chebyshev Distance (um)')
         plt.ylabel('Cell count')
         plt.title(str(mouse_id) + ' tdTomato Chebyshev Distances from estim tip')

@@ -51,7 +51,7 @@ cellfinder_output_path = '/Users/grant/Desktop/cellfinder/G21/cellfinder_output_
 # Good example: [4750., 4900., 1900.] (middle of brain)
 # [rostral-caudal, z-dpeth, medial-lateral ]
  #[higher# = back of brain, higher# = deeper, higher# = right hemi]
-estim_tip_coordinates = [5300., 5350., 3300.]  
+estim_tip_coordinates = [9000., 1200., 3000.]  
 
 opticalfiber_tip_coordinates = [5450., 5500., 3450.] 
 
