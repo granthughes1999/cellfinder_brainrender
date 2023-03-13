@@ -48,7 +48,7 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
     # run distance_calculations_histograms() from distance_calculation_and_histograms.py
     # calculates 3d-space distances, saves out each cells distance in arrays, and creates histograms of those distances relative to the estim_tip coordinates
     distance_calculations_histograms(brainrender_folder_path,mouse_id,estim_tip_coordinates,cellfinder_output_path)
-
+    distance_calculations_histograms_rfp(brainrender_folder_path,mouse_id,estim_tip_coordinates,cellfinder_output_path)
     #Save out the updateME datafram
     updateME_save_path = cellfinder_output_path + str(mouse_id) + "_Completed_Analysis/UpdateME.csv" 
     upddateME_df.to_csv(updateME_save_path, index=False)
