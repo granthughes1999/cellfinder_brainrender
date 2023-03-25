@@ -321,21 +321,24 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
 
     # check if 3D render has been saved out
     # if not export the 3D render, which can be opened in a web viewer
-    if save_render == True:
-        if not os.path.exists(scene_export_path):
-            print('Saving out brainrender scence, this may take a few minutes...')
-            scene.export(scene_export_path)
-            # os.makedirs(scene_export_path)
-            print('3D render has been created and saved too ')
-            print(f'{scene_export_path}')
 
-        else:
-            print('A 3D-render of ' + str(mouse_id) + ' already exisits...')
-            print('To save out a new render')
-            print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
-            print(' n')
-    else:
-        print('Render Not Saved....')
+    # ---------------HERE----------------------
+    # if save_render == True:
+    #     if not os.path.exists(scene_export_path):
+    #         print('Saving out brainrender scence, this may take a few minutes...')
+    #         scene.export(scene_export_path)
+    #         # os.makedirs(scene_export_path)
+    #         print('3D render has been created and saved too ')
+    #         print(f'{scene_export_path}')
+
+    #     else:
+    #         print('A 3D-render of ' + str(mouse_id) + ' already exisits...')
+    #         print('To save out a new render')
+    #         print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
+    #         print(' n')
+    # else:
+    #     print('Render Not Saved....')
+    # ---------------HERE----------------------
 
     # # locally Render the 3D brain Scence
     # rendered_brainregions_dict = {**evaluate, **extra_brain_regions_dictionary_with_cellcount}
@@ -372,6 +375,10 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
         if overlapping_cells_only == True:
             scene.add(overlapping_cells_actor,estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
+        
+        # if overlapping_gfp_cells == True:
+        #     scene.add(overlapping_cells_actor,gfp_cells_actor, estim_tip_sphere_actor, estim_cylinder_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
+            # scene.render()
        
     if brain_region_estim == True:
             # Add cells Actor to Scence
@@ -390,3 +397,19 @@ def run_brainrender(cellfinder_output_path, mouse_id, brain_regions_to_evalutate
         if overlapping_cells_only == True:
             scene.add(visual_cylinder_actor,overlapping_cells_actor,estim_tip_sphere_actor,estim_propigation_sphere_actor,opticalfiper_cylinder_actor ,opticalfiber_propigation_sphere_actor)
             scene.render()
+
+    if save_render == True:
+        if not os.path.exists(scene_export_path):
+            print('Saving out brainrender scence, this may take a few minutes...')
+            scene.export(scene_export_path)
+            # os.makedirs(scene_export_path)
+            print('3D render has been created and saved too ')
+            print(f'{scene_export_path}')
+
+        else:
+            print('A 3D-render of ' + str(mouse_id) + ' already exisits...')
+            print('To save out a new render')
+            print('Delete or remove pervious 3D-render from ' + f'{scene_export_path}' )
+            print(' n')
+    else:
+        print('Render Not Saved....')
